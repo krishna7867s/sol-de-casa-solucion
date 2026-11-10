@@ -6,26 +6,32 @@
   <title>Sol de Casa · Ahorro Solar y Referidos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Pinyon+Script&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <!-- Definiciones SVG para ornamentos dorados, nubes reales y paneles solares -->
   <svg class="svg-defs-hidden" aria-hidden="true" width="0" height="0">
     <defs>
-      <filter id="real-cloud-filter" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB">
-        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.022" numOctaves="5" seed="14" result="noise" />
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="36" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-        <feGaussianBlur in="displaced" stdDeviation="6" result="blurred" />
-        <feSpecularLighting in="blurred" surfaceScale="4" specularConstant="0.55" specularExponent="18" lighting-color="#fff6e8" result="specular">
-          <fePointLight x="400" y="-120" z="260" />
-        </feSpecularLighting>
-        <feComposite in="specular" in2="blurred" operator="in" result="specMask" />
-        <feMerge>
-          <feMergeNode in="blurred" />
-          <feMergeNode in="specMask" />
-        </feMerge>
+      <filter id="real-cloud-filter" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.011 0.020" numOctaves="4" seed="22" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="32" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+        <feGaussianBlur in="displaced" stdDeviation="7" result="softCloud" />
       </filter>
+
+      <radialGradient id="cloud-puff-blush" cx="50%" cy="38%" r="55%">
+        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.96" />
+        <stop offset="55%" stop-color="#FFF2F5" stop-opacity="0.88" />
+        <stop offset="85%" stop-color="#F9D8E2" stop-opacity="0.65" />
+        <stop offset="100%" stop-color="#F9D8E2" stop-opacity="0" />
+      </radialGradient>
+
+      <radialGradient id="cloud-puff-gold" cx="50%" cy="35%" r="55%">
+        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.98" />
+        <stop offset="52%" stop-color="#FFF9EE" stop-opacity="0.9" />
+        <stop offset="85%" stop-color="#F7E2C2" stop-opacity="0.65" />
+        <stop offset="100%" stop-color="#F7E2C2" stop-opacity="0" />
+      </radialGradient>
 
       <linearGradient id="gold-antique" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#b68d40" />
@@ -34,32 +40,13 @@
         <stop offset="100%" stop-color="#8b6220" />
       </linearGradient>
 
-      <linearGradient id="gold-halo-glow" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stop-color="#fff4d4" stop-opacity="0.95" />
-        <stop offset="60%" stop-color="#f7dfb2" stop-opacity="0.7" />
-        <stop offset="100%" stop-color="#f2ced8" stop-opacity="0" />
-      </linearGradient>
-
-      <linearGradient id="solar-panel-blue" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#2b5876" />
-        <stop offset="50%" stop-color="#3b7296" />
-        <stop offset="100%" stop-color="#1e4159" />
-      </linearGradient>
-
       <g id="rococo-corner">
-        <path d="M 4 52 C 4 24, 12 10, 44 5 C 30 12, 22 22, 26 32 C 29 39, 38 38, 38 30" fill="none" stroke="url(#gold-antique)" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="18" cy="18" r="5.5" fill="#e5a9b5" stroke="url(#gold-antique)" stroke-width="0.9"/>
-      </g>
-
-      <g id="solar-panel-badge">
-        <path d="M 22 40 L 18 48 L 46 48 L 42 40 Z" fill="#b68d40" />
-        <polygon points="10,16 54,16 58,40 6,40" fill="url(#solar-panel-blue)" stroke="url(#gold-antique)" stroke-width="2" stroke-linejoin="round" />
-        <line x1="9" y1="24" x2="55" y2="24" stroke="#9ecae6" stroke-width="1" />
-        <line x1="8" y1="32" x2="56" y2="32" stroke="#9ecae6" stroke-width="1" />
-        <line x1="21" y1="16" x2="19" y2="40" stroke="#9ecae6" stroke-width="1" />
-        <line x1="32" y1="16" x2="32" y2="40" stroke="#9ecae6" stroke-width="1" />
-        <line x1="43" y1="16" x2="45" y2="40" stroke="#9ecae6" stroke-width="1" />
-        <circle cx="32" cy="9" r="5" fill="#f7c844" stroke="url(#gold-antique)" stroke-width="1" />
+        <path d="M 4 54 C 4 22, 14 8, 48 4 C 32 10, 22 20, 26 31 C 29 38, 38 37, 38 29" fill="none" stroke="url(#gold-antique)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 10 42 C 12 26, 22 16, 40 12" fill="none" stroke="#e5c888" stroke-width="1" stroke-linecap="round"/>
+        <circle cx="17" cy="17" r="6" fill="#f4b8c6" stroke="url(#gold-antique)" stroke-width="1"/>
+        <circle cx="17" cy="17" r="2.5" fill="#fde2e8"/>
+        <ellipse cx="26" cy="12" rx="4" ry="2" transform="rotate(-25 26 12)" fill="#88a682"/>
+        <ellipse cx="12" cy="26" rx="2" ry="4" transform="rotate(-25 12 26)" fill="#88a682"/>
       </g>
     </defs>
   </svg>
@@ -69,21 +56,23 @@
     <canvas id="dawn-clouds-canvas" class="dawn-clouds-canvas"></canvas>
 
     <div class="real-cloud cloud-corner-tl" id="cloud-tl">
-      <svg viewBox="0 0 520 260" width="100%" height="100%">
+      <svg viewBox="0 0 540 280" width="100%" height="100%">
         <g filter="url(#real-cloud-filter)">
-          <ellipse cx="250" cy="145" rx="175" ry="62" fill="#f9e6ea" opacity="0.8" />
-          <ellipse cx="190" cy="120" rx="115" ry="54" fill="#fff6f4" opacity="0.9" />
-          <ellipse cx="315" cy="125" rx="125" ry="50" fill="#fdf1ec" opacity="0.88" />
+          <ellipse cx="260" cy="160" rx="195" ry="74" fill="url(#cloud-puff-blush)" />
+          <ellipse cx="185" cy="128" rx="135" ry="66" fill="url(#cloud-puff-gold)" />
+          <ellipse cx="330" cy="132" rx="140" ry="62" fill="url(#cloud-puff-blush)" />
+          <ellipse cx="255" cy="108" rx="115" ry="56" fill="#FFFFFF" opacity="0.92" />
         </g>
       </svg>
     </div>
 
     <div class="real-cloud cloud-corner-tr" id="cloud-tr">
-      <svg viewBox="0 0 520 260" width="100%" height="100%">
+      <svg viewBox="0 0 540 280" width="100%" height="100%">
         <g filter="url(#real-cloud-filter)">
-          <ellipse cx="265" cy="145" rx="180" ry="64" fill="#eedce8" opacity="0.78" />
-          <ellipse cx="320" cy="120" rx="120" ry="54" fill="#fdf0f2" opacity="0.88" />
-          <ellipse cx="205" cy="125" rx="115" ry="48" fill="#fff7f2" opacity="0.9" />
+          <ellipse cx="275" cy="160" rx="195" ry="74" fill="url(#cloud-puff-blush)" />
+          <ellipse cx="340" cy="126" rx="135" ry="64" fill="url(#cloud-puff-gold)" />
+          <ellipse cx="205" cy="132" rx="135" ry="60" fill="url(#cloud-puff-blush)" />
+          <ellipse cx="275" cy="108" rx="115" ry="56" fill="#FFFFFF" opacity="0.92" />
         </g>
       </svg>
     </div>
@@ -91,8 +80,9 @@
     <div class="real-cloud cloud-corner-bl" id="cloud-bl">
       <svg viewBox="0 0 560 280" width="100%" height="100%">
         <g filter="url(#real-cloud-filter)">
-          <ellipse cx="270" cy="155" rx="195" ry="68" fill="#f5dce2" opacity="0.8" />
-          <ellipse cx="215" cy="130" rx="135" ry="56" fill="#fdf1f3" opacity="0.88" />
+          <ellipse cx="275" cy="165" rx="205" ry="76" fill="url(#cloud-puff-blush)" />
+          <ellipse cx="210" cy="132" rx="145" ry="66" fill="url(#cloud-puff-gold)" />
+          <ellipse cx="340" cy="138" rx="140" ry="62" fill="#FFFFFF" opacity="0.9" />
         </g>
       </svg>
     </div>
@@ -100,28 +90,28 @@
     <div class="real-cloud cloud-corner-br" id="cloud-br">
       <svg viewBox="0 0 560 280" width="100%" height="100%">
         <g filter="url(#real-cloud-filter)">
-          <ellipse cx="280" cy="155" rx="190" ry="66" fill="#f3dde4" opacity="0.8" />
-          <ellipse cx="335" cy="128" rx="130" ry="55" fill="#fdf2f4" opacity="0.88" />
+          <ellipse cx="285" cy="165" rx="205" ry="76" fill="url(#cloud-puff-blush)" />
+          <ellipse cx="345" cy="132" rx="145" ry="66" fill="url(#cloud-puff-gold)" />
+          <ellipse cx="220" cy="138" rx="140" ry="62" fill="#FFFFFF" opacity="0.9" />
         </g>
       </svg>
     </div>
   </div>
 
   <main class="rococo-page-column">
-    <!-- CABECERA LIMPIA Y EDITORIAL -->
+    <!-- CABECERA ROCOCÓ CON LA CASITA SOLAR ILUSTRADA EN ACUARELA Y ROSAS -->
     <header class="celestial-header">
-      <div class="solar-house-banner" aria-hidden="true">
-        <svg viewBox="0 0 280 56" class="solar-house-svg">
-          <line x1="24" y1="36" x2="108" y2="36" stroke="#D6C9B4" stroke-width="1" />
-          <line x1="172" y1="36" x2="256" y2="36" stroke="#D6C9B4" stroke-width="1" />
-          <circle cx="140" cy="28" r="22" fill="#FDF5E6" stroke="#EDD5A8" stroke-width="1" />
-          <path d="M 124 34 L 140 20 L 156 34" fill="none" stroke="#C85A28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          <rect x="129" y="33" width="22" height="11" rx="1.5" fill="#FFFFFF" stroke="#C85A28" stroke-width="1.5" />
-          <circle cx="140" cy="14" r="3.5" fill="#D9822B" />
-        </svg>
+      <div class="solar-house-banner">
+        <div class="solar-house-vignette-frame">
+          <img
+            src="/assets/casita-solar-rococo.jpg"
+            alt="Casita solar estilo Rococó con paneles solares en el techo, rosas y sol radiante"
+            class="solar-house-img"
+          />
+        </div>
       </div>
 
-      <p class="brand-kicker">☀ Sol de Casa · Costa Rica</p>
+      <p class="brand-kicker">✦ Sol de Casa · Energía Solar en Costa Rica ✦</p>
       <h1 class="script-main-title">El Ahorro de su Techo Solar</h1>
 
       <!-- SELECTOR CLARO DE LAS 3 PERSONAS DEL CASO: ¿A QUIÉN QUIERE VER? -->
@@ -184,14 +174,14 @@
         <span id="texto-gatillo-inversor">Hoy es día de cierre de recibos de luz en Curridabat y el técnico Jorge estará en su cuadra este jueves haciendo mantenimiento anual. ¡Es el mejor momento para mandarle su postal a su vecina!</span>
       </div>
 
-      <!-- EL MEDALLÓN SOLAR CENTRAL CON EL AHORRO DEL MES -->
+      <!-- EL CARTOUCHE FLORAL ROCOCÓ CENTRAL CON EL AHORRO DEL MES -->
       <div class="solar-halo-stage">
-        <svg class="solar-halo-svg" viewBox="0 0 380 380" aria-hidden="true">
-          <circle cx="190" cy="190" r="154" fill="#FDF5E6" opacity="0.7" />
-          <circle cx="190" cy="190" r="134" fill="none" stroke="#EDD5A8" stroke-width="1" />
-          <circle cx="190" cy="190" r="122" fill="#FFFFFF" stroke="#D6C9B4" stroke-width="1.5" />
-          <circle cx="190" cy="190" r="114" fill="none" stroke="#E8E0D2" stroke-width="1" stroke-dasharray="3 4" />
-        </svg>
+        <img
+          src="/assets/cartouche-floral-rococo.jpg"
+          alt=""
+          aria-hidden="true"
+          class="solar-cartouche-bg-img"
+        />
 
         <div class="solar-halo-content">
           <span class="halo-month-label" id="ahorro-mes-etiqueta">Octubre 2026 (simulado)</span>
@@ -199,7 +189,7 @@
           <p class="halo-sub-caption">
             Antes pagaba <strong id="recibo-antes">$110</strong> → Ahora paga <strong id="recibo-despues">$33</strong>
           </p>
-          <span class="halo-Percent-badge">70 % de ahorro en su recibo</span>
+          <span class="halo-Percent-badge">✦ 70 % de ahorro en su recibo ✦</span>
         </div>
       </div>
 

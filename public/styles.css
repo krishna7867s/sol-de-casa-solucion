@@ -1,52 +1,48 @@
 /* ============================================================================
-   SOL DE CASA — DISEÑO EDITORIAL CÁLIDO, ORGÁNICO Y HUMANO
-   Inspirado en revistas de arquitectura sostenible y diseño botánico (Kinfolk / Aesop).
-   Tipografía limpia (Plus Jakarta Sans) + acentos serif editoriales (Fraunces).
-   Paleta cálida de lino solar, terracota suave, salvia botánico y carbón espresso.
+   SOL DE CASA — ESTÉTICA CELESTIAL ROCOCÓ / COQUETTE (INSPIRADA EN REFERENCIA)
+   - Casita solar ilustrada en acuarela con rosas y marco barroco dorado arriba.
+   - Nubes reales volumétricas de amanecer que viajan desde las 4 esquinas al centro.
+   - Cartouche floral Rococó con listones de satén rosa y rosas inglesas en el centro.
+   - Tipografía romántica (Pinyon Script + Cormorant Garamond) combinada con
+     lectura nítida (Plus Jakarta Sans) en controles y tablas.
    ============================================================================ */
 
 :root {
-  /* Fondos cálidos y descansados para la vista */
-  --bg-linen: #FAF7F2;
-  --bg-oat: #F3EDE2;
-  --surface-card: #FFFFFF;
-  --surface-warm: #FAF6EE;
-  --surface-subtle: #F5EFE4;
+  /* Paleta Coquette / Hime-kei Rococó de la imagen de referencia */
+  --pearl-ivory: #FFFDF9;
+  --cream-soft: #FDF7EE;
+  --blush-pale: #FDF0F4;
+  --blush-pink: #F8DCE4;
+  --blush-rose-deep: #EBBAC8;
+  --sky-pastel-blue: #E6EFF7;
+  --sky-lavender: #F2EAF7;
 
-  /* Bordes delicados de piedra cálida */
-  --border-light: #E8E0D2;
-  --border-medium: #D6C9B4;
-  --border-strong: #BFA98A;
+  /* Oro champán y filigrana barroca */
+  --gold-champagne: #C59B4E;
+  --gold-antique: #997028;
+  --gold-light: #EAD39C;
+  --gold-cream-bg: #FCF4E1;
 
-  /* Tinta de alta legibilidad */
-  --ink-primary: #1F1B18;
-  --ink-secondary: #574F47;
-  --ink-muted: #7A7067;
+  /* Verde hoja de rosa (salvia suave) */
+  --rose-leaf-green: #4E7A5B;
+  --rose-leaf-bg: #ECF6EE;
+  --rose-leaf-border: #B8DCC2;
 
-  /* Acentos naturales: Sol Terracota, Ámbar Miel y Verde Salvia */
-  --solar-terracotta: #C85A28;
-  --solar-terracotta-hover: #AD491B;
-  --solar-amber: #D9822B;
-  --solar-honey-bg: #FDF5E6;
-  --solar-honey-border: #EDD5A8;
+  /* Tinta marrón-rosada de alto contraste y lectura suave */
+  --ink-brown-rose: #42262B;
+  --ink-secondary: #68454C;
+  --ink-muted: #8A656D;
 
-  --sage-green: #1D6346;
-  --sage-bg: #EAF5EF;
-  --sage-border: #B7DEC9;
-
-  --danger-ink: #9E2A2B;
-  --danger-bg: #FDF0F0;
-  --danger-border: #EAC2C2;
-
-  /* Tipografía: Sans-serif limpia para lectura + Serif óptica solo en titulares y cifras */
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Tipografías */
+  --font-script: 'Pinyon Script', cursive;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* Radios suaves y orgánicos */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
   --radius-pill: 999px;
 }
 
@@ -60,14 +56,24 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: var(--bg-linen);
-  background-image: radial-gradient(ellipse 90% 50% at 50% 0%, #FFF9EC 0%, var(--bg-linen) 70%);
-  color: var(--ink-primary);
+  color: var(--ink-brown-rose);
   font-family: var(--font-sans);
   font-size: 15.5px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  /* Cielo pastel de amanecer (celeste nube -> lavanda -> crema perla -> rosa coquette) */
+  background:
+    radial-gradient(circle at 50% 14%, rgba(255, 253, 249, 0.95) 0%, rgba(255, 253, 249, 0) 54%),
+    linear-gradient(
+      180deg,
+      var(--sky-pastel-blue) 0%,
+      var(--sky-lavender) 18%,
+      var(--pearl-ivory) 45%,
+      var(--blush-pale) 76%,
+      var(--blush-pink) 100%
+    );
+  background-attachment: fixed;
 }
 
 .svg-defs-hidden {
@@ -79,15 +85,14 @@ html, body {
 }
 
 /* ============================================================================
-   ATMOSFERA DE CIELO SUTIL (NO INVADE NI ENSUCIA EL TEXTO)
+   ESCENARIO DE NUBES REALES DESDE LAS 4 ESQUINAS AL CENTRO
    ============================================================================ */
 .celestial-sky {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
-  opacity: 0.35;
 }
 
 .dawn-clouds-canvas {
@@ -96,137 +101,156 @@ html, body {
   width: 100%;
   height: 100%;
   pointer-events: none;
+  z-index: 1;
 }
 
 .real-cloud {
   position: absolute;
-  width: min(42vw, 420px);
+  width: min(52vw, 540px);
   height: auto;
   aspect-ratio: 2 / 1;
-  opacity: 0.45;
   will-change: transform, opacity;
+  z-index: 2;
 }
 
 .cloud-corner-tl {
   top: -4%;
   left: -8%;
-  animation: cloudFromTopLeft 5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: cloudFromTopLeft 4.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .cloud-corner-tr {
   top: -4%;
   right: -8%;
-  animation: cloudFromTopRight 5.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: cloudFromTopRight 5.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .cloud-corner-bl {
-  bottom: -6%;
-  left: -10%;
-  animation: cloudFromBottomLeft 5.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  bottom: -5%;
+  left: -9%;
+  animation: cloudFromBottomLeft 5.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .cloud-corner-br {
-  bottom: -6%;
-  right: -10%;
-  animation: cloudFromBottomRight 5.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  bottom: -5%;
+  right: -9%;
+  animation: cloudFromBottomRight 5.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes cloudFromTopLeft {
-  0% { transform: translate(-40vw, -25vh); opacity: 0; }
-  100% { transform: translate(2vw, 2vh); opacity: 0.4; }
+  0% { transform: translate(-55vw, -38vh) scale(0.92); opacity: 0.15; }
+  100% { transform: translate(10vw, 7vh) scale(1.04); opacity: 0.9; }
 }
+
 @keyframes cloudFromTopRight {
-  0% { transform: translate(40vw, -25vh); opacity: 0; }
-  100% { transform: translate(-2vw, 2vh); opacity: 0.4; }
+  0% { transform: translate(55vw, -38vh) scale(0.92); opacity: 0.15; }
+  100% { transform: translate(-10vw, 8vh) scale(1.04); opacity: 0.9; }
 }
+
 @keyframes cloudFromBottomLeft {
-  0% { transform: translate(-40vw, 25vh); opacity: 0; }
-  100% { transform: translate(2vw, -2vh); opacity: 0.35; }
+  0% { transform: translate(-55vw, 38vh) scale(0.92); opacity: 0.15; }
+  100% { transform: translate(11vw, -9vh) scale(1.04); opacity: 0.88; }
 }
+
 @keyframes cloudFromBottomRight {
-  0% { transform: translate(40vw, 25vh); opacity: 0; }
-  100% { transform: translate(-2vw, -2vh); opacity: 0.35; }
+  0% { transform: translate(55vw, 38vh) scale(0.92); opacity: 0.15; }
+  100% { transform: translate(-11vw, -9vh) scale(1.04); opacity: 0.88; }
 }
 
 /* ============================================================================
-   CONTENEDOR PRINCIPAL Y CABECERA LIMPIA
+   COLUMNA CENTRAL Y CABECERA CON LA CASITA SOLAR ROCOCÓ
    ============================================================================ */
 .rococo-page-column {
   position: relative;
-  z-index: 2;
-  max-width: 820px;
+  z-index: 3;
+  max-width: 790px;
   margin: 0 auto;
-  padding: 28px 20px 72px;
+  padding: 20px 18px 72px;
 }
 
 .celestial-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
-/* Ilustración superior compacta y discreta */
+/* Casita Solar Rococó arriba */
 .solar-house-banner {
-  max-width: 240px;
-  margin: 0 auto 8px;
-  opacity: 0.92;
+  max-width: 560px;
+  margin: 0 auto 12px;
 }
 
-.solar-house-svg {
+.solar-house-vignette-frame {
+  position: relative;
+  background-color: #FFFDFB;
+  border: 2px solid var(--gold-champagne);
+  outline: 1px solid var(--gold-light);
+  outline-offset: -6px;
+  border-radius: var(--radius-xl);
+  padding: 8px;
+  box-shadow: 0 12px 32px -10px rgba(138, 101, 109, 0.18);
+  overflow: hidden;
+}
+
+.solar-house-img {
   width: 100%;
   height: auto;
   display: block;
+  border-radius: calc(var(--radius-xl) - 6px);
 }
 
 .brand-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0 0 6px;
-  padding: 4px 14px;
+  display: inline-block;
+  margin: 4px 0 2px;
+  padding: 4px 18px;
   border-radius: var(--radius-pill);
-  background-color: var(--solar-honey-bg);
-  border: 1px solid var(--solar-honey-border);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--blush-pale) 100%);
+  border: 1px solid var(--gold-champagne);
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--solar-terracotta);
+  color: var(--gold-antique);
   font-weight: 700;
 }
 
 .script-main-title {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.85rem, 4vw, 2.45rem);
-  color: var(--ink-primary);
-  margin: 4px 0 18px;
-  letter-spacing: -0.02em;
-  line-height: 1.18;
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6vw, 3.6rem);
+  color: var(--ink-brown-rose);
+  margin: 2px 0 14px;
+  line-height: 1.12;
+  text-shadow: 0 1px 0 #FFFDF9;
 }
 
 /* ============================================================================
-   NAVEGACIÓN DE LAS 4 VISTAS (SEGMENTED PILL BAR MODERNA Y CLARA)
+   MENÚ ROCOCÓ DE LAS 4 VISTAS (ESTILO CAMAFEO DE LA IMAGEN DE REFERENCIA)
    ============================================================================ */
 .role-Explain-banner {
-  background-color: var(--bg-oat);
-  border: 1px solid var(--border-light);
+  background: linear-gradient(180deg, rgba(255, 253, 249, 0.94) 0%, rgba(253, 240, 244, 0.94) 100%);
+  border: 1.5px solid var(--gold-champagne);
+  outline: 1px solid rgba(197, 155, 78, 0.45);
+  outline-offset: -5px;
   border-radius: var(--radius-lg);
-  padding: 12px;
-  margin: 0 auto 14px;
+  padding: 14px 16px 16px;
+  margin: 0 auto 12px;
+  box-shadow: 0 8px 24px -10px rgba(138, 101, 109, 0.14);
 }
 
 .role-explain-title {
   margin: 0 0 10px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--ink-muted);
+  font-family: var(--font-serif);
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: var(--gold-antique);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
 }
 
 .screen-ribbon-nav {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  gap: 10px;
 }
 
 @media (max-width: 680px) {
@@ -238,63 +262,67 @@ html, body {
 .nav-ribbon-tab {
   font-family: var(--font-sans);
   color: var(--ink-secondary);
-  background-color: rgba(255, 255, 255, 0.65);
-  border: 1px solid transparent;
+  background: linear-gradient(180deg, #FFFDF9 0%, #FAF0EB 100%);
+  border: 1.5px solid var(--gold-light);
   border-radius: var(--radius-md);
-  padding: 10px 12px;
+  padding: 10px 10px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 3px;
-  text-align: left;
-  transition: all 0.18s ease;
+  text-align: center;
+  transition: all 0.2s ease;
 }
 
 .nav-ribbon-tab:hover {
-  background-color: var(--surface-card);
-  border-color: var(--border-medium);
+  border-color: var(--gold-champagne);
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--blush-pale) 100%);
 }
 
 .nav-ribbon-tab strong {
-  font-size: 0.86rem;
+  font-family: var(--font-serif);
+  font-size: 1.04rem;
   font-weight: 700;
-  color: var(--ink-primary);
-  line-height: 1.25;
+  color: var(--ink-brown-rose);
+  line-height: 1.2;
 }
 
 .nav-ribbon-tab small {
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   color: var(--ink-muted);
-  line-height: 1.3;
+  line-height: 1.25;
 }
 
 .nav-ribbon-tab.is-active {
-  background-color: var(--surface-card);
-  border-color: var(--solar-terracotta);
-  box-shadow: 0 2px 8px rgba(31, 27, 24, 0.06);
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--blush-pink) 100%);
+  border: 2px solid var(--gold-champagne);
+  box-shadow: 0 4px 12px rgba(197, 155, 78, 0.22);
 }
 
 .nav-ribbon-tab.is-active strong {
-  color: var(--solar-terracotta);
+  color: var(--ink-brown-rose);
 }
 
-/* Barra de selección de familia simulada */
+/* Barra de selección de familia y botón de repetir nubes */
 .family-selector-bar {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 8px 16px;
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-light);
+  padding: 8px 18px;
+  background: rgba(255, 253, 249, 0.92);
+  border: 1.5px solid var(--gold-champagne);
   border-radius: var(--radius-pill);
+  box-shadow: 0 4px 14px rgba(138, 101, 109, 0.1);
 }
 
 .selector-label {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 700;
   color: var(--ink-secondary);
 }
 
@@ -302,209 +330,213 @@ html, body {
   font-family: var(--font-sans);
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--ink-primary);
-  background-color: var(--surface-warm);
-  border: 1px solid var(--border-medium);
-  border-radius: var(--radius-sm);
-  padding: 6px 12px;
+  color: var(--ink-brown-rose);
+  background-color: var(--cream-soft);
+  border: 1px solid var(--gold-champagne);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
   cursor: pointer;
   outline: none;
-}
-
-.rococo-select:focus {
-  border-color: var(--solar-terracotta);
 }
 
 .pearl-mini-btn {
   font-family: var(--font-sans);
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--ink-secondary);
-  background-color: var(--surface-subtle);
-  border: 1px solid var(--border-medium);
+  color: var(--ink-brown-rose);
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--blush-pink) 100%);
+  border: 1px solid var(--gold-champagne);
   border-radius: var(--radius-pill);
   padding: 6px 14px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s ease;
 }
 
 .pearl-mini-btn:hover {
-  background-color: var(--border-light);
-  color: var(--ink-primary);
+  background: linear-gradient(180deg, var(--blush-pale) 0%, var(--blush-rose-deep) 100%);
+  transform: translateY(-1px);
 }
 
 /* ============================================================================
-   TARJETA PRINCIPAL DE CADA PANTALLA (LIMPIA, ESPACIOSA Y RELAJANTE)
+   MARCO PRINCIPAL DE CADA PANTALLA (CON ORNAMENTOS ROCOCÓ EN LAS 4 ESQUINAS)
    ============================================================================ */
 .rococo-card-frame {
   position: relative;
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-light);
+  background: linear-gradient(180deg, rgba(255, 253, 249, 0.97) 0%, rgba(253, 247, 238, 0.97) 100%);
+  border: 2px solid var(--gold-champagne);
+  outline: 1px solid var(--gold-light);
+  outline-offset: -8px;
   border-radius: var(--radius-xl);
-  padding: 36px 34px;
-  box-shadow: 0 8px 30px -12px rgba(31, 27, 24, 0.06);
+  padding: 38px 32px 34px;
+  box-shadow: 0 14px 38px -12px rgba(114, 76, 84, 0.16);
 }
 
 @media (max-width: 560px) {
   .rococo-card-frame {
-    padding: 24px 18px;
-    border-radius: var(--radius-lg);
+    padding: 28px 16px 24px;
   }
 }
 
-/* Ocultamos los ornamentos viejos de las esquinas que recargaban el diseño */
 .corner-ornament {
-  display: none;
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  pointer-events: none;
+  z-index: 3;
 }
+.corner-tl { top: 6px; left: 6px; }
+.corner-tr { top: 6px; right: 6px; }
+.corner-bl { bottom: 6px; left: 6px; }
+.corner-br { bottom: 6px; right: 6px; }
 
 .simple-step-badge {
   display: inline-block;
-  font-size: 0.72rem;
+  font-family: var(--font-serif);
+  font-size: 0.84rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--solar-terracotta);
-  background-color: var(--solar-honey-bg);
-  border: 1px solid var(--solar-honey-border);
+  color: var(--gold-antique);
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--gold-cream-bg) 100%);
+  border: 1px solid var(--gold-champagne);
   border-radius: var(--radius-pill);
-  padding: 4px 12px;
-  margin-bottom: 10px;
+  padding: 3px 16px;
+  margin-bottom: 8px;
 }
 
 .section-script-subtitle {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.45rem, 3vw, 1.8rem);
-  color: var(--ink-primary);
-  margin: 0 0 10px;
-  letter-spacing: -0.015em;
-  line-height: 1.25;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: clamp(1.65rem, 3.5vw, 2.05rem);
+  color: var(--ink-brown-rose);
+  margin: 2px 0 10px;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .paola-warm-intro,
 .section-lead-text {
-  max-width: 600px;
-  margin: 0 auto 20px;
+  text-align: center;
+  max-width: 610px;
+  margin: 0 auto 18px;
   font-size: 0.98rem;
   color: var(--ink-secondary);
-  line-height: 1.65;
 }
 
 .simulado-pill {
   display: inline-block;
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--ink-muted);
-  background-color: var(--surface-subtle);
-  border: 1px solid var(--border-light);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--gold-antique);
+  background-color: var(--gold-cream-bg);
+  border: 1px solid var(--gold-light);
   border-radius: var(--radius-pill);
-  padding: 1px 9px;
+  padding: 1px 10px;
 }
 
 /* Aviso inteligente del inversor */
 .smart-trigger-banner {
-  background-color: var(--solar-honey-bg);
-  border: 1px solid var(--solar-honey-border);
-  border-left: 4px solid var(--solar-amber);
+  background: linear-gradient(90deg, var(--gold-cream-bg) 0%, #FFFDF9 100%);
+  border: 1px solid var(--gold-champagne);
+  border-left: 4px solid var(--gold-champagne);
   border-radius: var(--radius-md);
   padding: 12px 16px;
-  margin: 0 auto 24px;
-  max-width: 660px;
+  margin: 0 auto 18px;
+  max-width: 630px;
   font-size: 0.88rem;
   color: var(--ink-secondary);
   text-align: left;
-  line-height: 1.55;
 }
 
 .smart-trigger-banner strong {
-  color: var(--ink-primary);
+  color: var(--ink-brown-rose);
   display: block;
   margin-bottom: 2px;
 }
 
 /* ============================================================================
-   MEDALLÓN CENTRAL DE AHORRO ($77 ESTE MES)
+   CARTOUCHE FLORAL ROCOCÓ CENTRAL ($77 ESTE MES)
+   Usa la ilustración de acuarela con rosas inglesas, listones y marco barroco
    ============================================================================ */
 .solar-halo-stage {
   position: relative;
-  width: min(100%, 310px);
-  height: 310px;
-  margin: 8px auto 24px;
+  width: min(100%, 590px);
+  aspect-ratio: 16 / 9;
+  margin: 8px auto 22px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1.5px solid var(--gold-champagne);
+  box-shadow: 0 10px 28px -8px rgba(138, 101, 109, 0.2);
+  background-color: #FFFDF9;
 }
 
-.solar-halo-svg {
+.solar-cartouche-bg-img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
   pointer-events: none;
-  opacity: 0.85;
-}
-
-@keyframes sunRaysBreathe {
-  0%, 100% { transform: translate(190px, 190px) scale(0.99); }
-  50% { transform: translate(190px, 190px) scale(1.02); }
-}
-
-.sun-breathing-rays {
-  animation: sunRaysBreathe 8s ease-in-out infinite;
 }
 
 .solar-halo-content {
   position: relative;
   z-index: 2;
   text-align: center;
-  max-width: 215px;
+  max-width: 320px;
+  padding: 12px 18px;
+  background: radial-gradient(ellipse at center, rgba(255, 253, 249, 0.92) 45%, rgba(255, 253, 249, 0) 100%);
+  border-radius: var(--radius-lg);
 }
 
 .halo-month-label {
   display: block;
-  font-size: 0.74rem;
+  font-family: var(--font-serif);
+  font-size: 0.86rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ink-muted);
+  letter-spacing: 0.14em;
+  color: var(--gold-antique);
   font-weight: 700;
-  margin-bottom: 4px;
 }
 
 .halo-amount-script {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 2.25rem;
-  color: var(--sage-green);
-  line-height: 1.08;
-  margin: 4px 0 6px;
-  letter-spacing: -0.02em;
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 6vw, 3.5rem);
+  color: var(--ink-brown-rose);
+  line-height: 1.05;
+  margin: 2px 0 4px;
 }
 
 .halo-sub-caption {
   margin: 0 0 8px;
-  font-size: 0.86rem;
+  font-size: 0.92rem;
   color: var(--ink-secondary);
 }
 
 .halo-Percent-badge {
   display: inline-block;
-  font-size: 0.78rem;
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
   font-weight: 700;
-  color: var(--sage-green);
-  background-color: var(--sage-bg);
-  border: 1px solid var(--sage-border);
+  color: var(--rose-leaf-green);
+  background-color: var(--rose-leaf-bg);
+  border: 1px solid var(--rose-leaf-border);
   border-radius: var(--radius-pill);
-  padding: 3px 12px;
+  padding: 3px 14px;
 }
 
 /* ============================================================================
-   TARJETAS DE MÉTRICAS (KPI CARDS LIMPIAS)
+   MEDALLONES GEMELOS (ACUMULADO Y ENERGÍA SOLAR)
    ============================================================================ */
 .twin-medallions {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
-  margin: 14px 0 24px;
+  margin: 12px 0 22px;
 }
 
 @media (max-width: 560px) {
@@ -514,34 +546,27 @@ html, body {
 }
 
 .rococo-medallion {
-  background-color: var(--surface-warm);
-  border: 1px solid var(--border-light);
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--blush-pale) 100%);
+  border: 1.5px solid var(--gold-light);
   border-radius: var(--radius-md);
-  padding: 16px 18px;
+  padding: 14px 16px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .highlight-truth-medallion {
-  background-color: var(--sage-bg);
-  border-color: var(--sage-border);
-}
-
-.highlight-truth-medallion .medallion-kicker {
-  color: var(--sage-green);
-}
-
-.highlight-truth-medallion .medallion-value {
-  color: var(--sage-green);
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--gold-cream-bg) 100%);
+  border: 1.5px solid var(--gold-champagne);
 }
 
 .medallion-kicker {
-  font-size: 0.74rem;
+  font-family: var(--font-serif);
+  font-size: 0.84rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--ink-muted);
+  letter-spacing: 0.08em;
+  color: var(--gold-antique);
   font-weight: 700;
 }
 
@@ -549,45 +574,45 @@ html, body {
   font-family: var(--font-display);
   font-size: 1.65rem;
   font-weight: 700;
-  color: var(--ink-primary);
-  letter-spacing: -0.02em;
+  color: var(--ink-brown-rose);
 }
 
 .medallion-note {
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   color: var(--ink-secondary);
 }
 
 .simple-gold-hr {
   border: none;
-  border-top: 1px solid var(--border-light);
-  margin: 30px 0;
+  border-top: 1px solid var(--gold-light);
+  margin: 26px 0;
 }
 
 /* ============================================================================
-   POSTAL COMPARTIBLE CON VECINOS (DISEÑO DE POSTAL BOUTIQUE + QR)
+   POSTAL CELESTIAL COMPARTIBLE CON VECINOS (CON SELLO Y QR REAL)
    ============================================================================ */
 .share-section {
   text-align: center;
 }
 
 .letter-envelope-wrapper {
-  max-width: 650px;
-  margin: 0 auto 20px;
-  border: 1px solid var(--border-medium);
+  max-width: 640px;
+  margin: 0 auto 18px;
+  border: 1.5px solid var(--gold-champagne);
   border-radius: var(--radius-lg);
-  background-color: var(--surface-warm);
+  background-color: var(--pearl-ivory);
   overflow: hidden;
+  box-shadow: 0 8px 24px -10px rgba(138, 101, 109, 0.16);
 }
 
 .envelope-flap-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   padding: 10px 16px;
-  background-color: var(--bg-oat);
-  border-bottom: 1px solid var(--border-light);
+  background: linear-gradient(90deg, var(--blush-pink) 0%, var(--blush-pale) 100%);
+  border-bottom: 1px solid var(--gold-champagne);
   text-align: left;
 }
 
@@ -595,18 +620,19 @@ html, body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background-color: var(--solar-terracotta);
-  color: #FFFFFF;
-  font-size: 0.85rem;
+  border: 1px solid var(--gold-antique);
+  background: radial-gradient(circle, var(--gold-light) 0%, var(--gold-champagne) 100%);
+  color: var(--ink-brown-rose);
+  font-size: 0.9rem;
 }
 
 .envelope-status-txt {
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 600;
-  color: var(--ink-secondary);
+  color: var(--ink-brown-rose);
   flex: 1;
 }
 
@@ -614,20 +640,17 @@ html, body {
   font-family: var(--font-sans);
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--ink-secondary);
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-medium);
+  color: var(--ink-brown-rose);
+  background-color: var(--pearl-ivory);
+  border: 1px solid var(--gold-champagne);
   border-radius: var(--radius-pill);
   padding: 4px 12px;
   cursor: pointer;
 }
 
-.letter-fold-btn:hover {
-  background-color: var(--surface-subtle);
-}
-
 .celestial-postcard-body {
-  padding: 18px;
+  padding: 16px;
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--blush-pale) 100%);
 }
 
 .letter-envelope-wrapper:not(.is-open) .celestial-postcard-body {
@@ -635,10 +658,10 @@ html, body {
 }
 
 .postcard-inner-border {
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-light);
+  background-color: rgba(255, 253, 249, 0.94);
+  border: 1px solid var(--gold-champagne);
   border-radius: var(--radius-md);
-  padding: 22px;
+  padding: 18px;
 }
 
 .postcard-with-qr-flex {
@@ -646,12 +669,12 @@ html, body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 18px;
 }
 
 .postcard-text-col {
-  flex: 1 1 280px;
-  text-align: left;
+  flex: 1 1 270px;
+  text-align: center;
 }
 
 .postcard-qr-col {
@@ -660,187 +683,169 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--surface-warm);
-  border: 1px solid var(--border-light);
+  background-color: var(--cream-soft);
+  border: 1px solid var(--gold-light);
   border-radius: var(--radius-md);
-  padding: 12px;
+  padding: 10px;
 }
 
 .qr-rococo-frame {
-  width: 132px;
-  height: 132px;
+  width: 134px;
+  height: 134px;
   padding: 6px;
-  background-color: #FFFFFF;
-  border: 1px solid var(--border-light);
+  background-color: #FFFDF9;
+  border: 1.5px solid var(--gold-champagne);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .postcard-stamp {
-  margin: 0 0 6px;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  margin: 0 0 4px;
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--solar-terracotta);
+  color: var(--gold-antique);
   font-weight: 700;
 }
 
 .postcard-Script-heading {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 600;
-  margin: 0 0 10px;
-  color: var(--ink-primary);
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--ink-brown-rose);
 }
 
 .postcard-mini-halo {
   display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: 6px 14px;
-  margin: 0 0 12px;
-  background-color: var(--sage-bg);
-  border: 1px solid var(--sage-border);
-  border-radius: var(--radius-md);
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 22px;
+  margin: 4px 0 10px;
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--gold-cream-bg) 100%);
+  border: 1px solid var(--gold-champagne);
+  border-radius: var(--radius-pill);
 }
 
 .postcard-mini-amount {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.55rem;
-  color: var(--sage-green);
+  font-family: var(--font-script);
+  font-size: 2.3rem;
+  line-height: 1;
+  color: var(--ink-brown-rose);
 }
 
 .postcard-mini-label {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  color: var(--sage-green);
+  color: var(--gold-antique);
 }
 
 .postcard-quote {
-  margin: 0 0 12px;
-  font-size: 0.92rem;
+  margin: 6px auto 12px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
   color: var(--ink-secondary);
-  line-height: 1.55;
 }
 
 .postcard-personal-link-box {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  background-color: var(--surface-subtle);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  padding: 5px 10px;
-  font-size: 0.8rem;
-  color: var(--ink-secondary);
+  background-color: var(--cream-soft);
+  border: 1px solid var(--gold-light);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.82rem;
 }
 
 .link-box-code {
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-weight: 600;
-  color: var(--solar-terracotta);
+  font-weight: 700;
+  color: var(--gold-antique);
 }
 
 /* ============================================================================
-   BOTONES REDONDEADOS Y AGRADABLES AL TACTO (SIN PUNTAS RECORTADAS)
+   BOTONES OVALADOS ESTILO CARTOUCHE ROCOCÓ (COMO "THEMES / WALL PAPERS")
    ============================================================================ */
 .ribbon-actions-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  margin: 18px 0;
+  margin: 16px 0;
 }
 
 .ribbon-gold-button {
   font-family: var(--font-sans);
   font-size: 0.92rem;
   font-weight: 600;
-  padding: 11px 22px;
+  color: var(--ink-brown-rose);
+  padding: 11px 24px;
   border-radius: var(--radius-pill);
-  border: 1px solid transparent;
+  border: 1.5px solid var(--gold-champagne);
   cursor: pointer;
-  transition: all 0.18s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(197, 155, 78, 0.16);
 }
 
 .primary-ribbon-btn {
-  background-color: var(--solar-terracotta);
-  color: #FFFFFF;
-  border-color: var(--solar-terracotta);
-}
-
-.primary-ribbon-btn:hover {
-  background-color: var(--solar-terracotta-hover);
-  transform: translateY(-1px);
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--blush-pink) 55%, var(--blush-rose-deep) 100%);
 }
 
 .secondary-ribbon-btn {
-  background-color: var(--surface-warm);
-  color: var(--ink-primary);
-  border-color: var(--border-medium);
-}
-
-.secondary-ribbon-btn:hover {
-  background-color: var(--bg-oat);
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--sky-lavender) 100%);
 }
 
 .tertiary-ribbon-btn {
-  background-color: var(--sage-bg);
-  color: var(--sage-green);
-  border-color: var(--sage-border);
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--gold-cream-bg) 100%);
 }
 
-.tertiary-ribbon-btn:hover {
-  background-color: #dcf0e5;
+.ribbon-gold-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(197, 155, 78, 0.26);
 }
 
 .share-feedback-banner {
   max-width: 580px;
   margin: 12px auto 16px;
   padding: 12px 16px;
-  background-color: var(--sage-bg);
-  border: 1px solid var(--sage-border);
+  background-color: var(--rose-leaf-bg);
+  border: 1.5px solid var(--rose-leaf-border);
   border-radius: var(--radius-md);
-  color: var(--sage-green);
+  color: var(--ink-brown-rose);
   font-size: 0.9rem;
-  font-weight: 500;
 }
 
 /* ============================================================================
-   TABLAS EDITORIALES LIMPIAS Y CAJAS DE PASOS (PANTALLAS 2, 3 Y 4)
+   TABLAS Y CAJAS DE PASOS (PANTALLAS 2, 3 Y 4)
    ============================================================================ */
 .inverter-history-details {
-  margin-top: 20px;
+  margin-top: 18px;
   text-align: left;
-  border-top: 1px solid var(--border-light);
-  padding-top: 14px;
+  border-top: 1px solid var(--gold-light);
+  padding-top: 12px;
 }
 
 .history-summary-btn {
   cursor: pointer;
   text-align: center;
-  font-weight: 600;
-  color: var(--ink-secondary);
-  font-size: 0.88rem;
-}
-
-.history-summary-btn:hover {
-  color: var(--solar-terracotta);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--gold-antique);
+  font-size: 1.02rem;
 }
 
 .history-table-wrap {
-  margin-top: 12px;
+  margin-top: 10px;
   overflow-x: auto;
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--gold-champagne);
   border-radius: var(--radius-md);
 }
 
@@ -848,212 +853,188 @@ html, body {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.88rem;
-  background-color: var(--surface-card);
+  background-color: var(--pearl-ivory);
 }
 
 .rococo-table th,
 .rococo-table td {
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border-light);
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--gold-light);
   text-align: left;
 }
 
-.rococo-table tr:last-child td {
-  border-bottom: none;
-}
-
 .rococo-table th {
-  background-color: var(--surface-warm);
-  color: var(--ink-secondary);
+  background-color: var(--blush-pale);
+  color: var(--ink-brown-rose);
+  font-family: var(--font-serif);
+  font-size: 0.94rem;
   font-weight: 700;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
-/* Indicador de 3 pasos en la vista de la vecina */
 .three-steps-ribbon {
   list-style: none;
   padding: 0;
-  margin: 0 auto 22px;
+  margin: 0 auto 18px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
 
-@media (max-width: 580px) {
+@media (max-width: 560px) {
   .three-steps-ribbon {
     grid-template-columns: 1fr;
   }
 }
 
 .step-pill {
-  background-color: var(--surface-warm);
-  border: 1px solid var(--border-light);
+  background-color: var(--pearl-ivory);
+  border: 1px solid var(--gold-light);
   border-radius: var(--radius-md);
-  padding: 10px 14px;
-  text-align: left;
+  padding: 8px 12px;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 2px;
 }
 
 .step-pill.is-done {
-  background-color: var(--sage-bg);
-  border-color: var(--sage-border);
-}
-
-.step-pill.is-done .step-num {
-  color: var(--sage-green);
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--blush-pink) 100%);
+  border: 1.5px solid var(--gold-champagne);
 }
 
 .step-num {
-  font-size: 0.72rem;
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--ink-muted);
+  letter-spacing: 0.1em;
+  color: var(--gold-antique);
   font-weight: 700;
 }
 
 .step-name {
   font-size: 0.88rem;
   font-weight: 700;
-  color: var(--ink-primary);
+  color: var(--ink-brown-rose);
 }
 
-/* Bloques de cada paso */
 .clean-step-box {
-  background-color: var(--surface-warm);
-  border: 1px solid var(--border-light);
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--cream-soft) 100%);
+  border: 1.5px solid var(--gold-light);
   border-radius: var(--radius-lg);
-  padding: 22px;
-  margin-bottom: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
   text-align: center;
 }
 
 .step-box-header {
-  font-size: 0.76rem;
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--solar-terracotta);
-  border-bottom: 1px solid var(--border-light);
-  padding-bottom: 10px;
-  margin-bottom: 16px;
+  color: var(--gold-antique);
+  border-bottom: 1px solid var(--gold-light);
+  padding-bottom: 8px;
+  margin-bottom: 14px;
 }
 
 .neighbor-proof-halo {
   display: inline-flex;
   flex-direction: column;
   padding: 14px 28px;
-  margin: 8px auto 10px;
-  background-color: var(--surface-card);
-  border: 1px solid var(--sage-border);
-  border-radius: var(--radius-lg);
+  margin: 6px auto 10px;
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--gold-cream-bg) 100%);
+  border: 1.5px solid var(--gold-champagne);
+  border-radius: var(--radius-pill);
 }
 
 .proof-kicker {
-  font-size: 0.74rem;
+  font-family: var(--font-serif);
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ink-muted);
+  letter-spacing: 0.1em;
+  color: var(--gold-antique);
   font-weight: 700;
 }
 
 .proof-big-script {
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--sage-green);
-  margin: 2px 0;
+  font-family: var(--font-script);
+  font-size: 2.35rem;
+  color: var(--ink-brown-rose);
+  line-height: 1.05;
 }
 
 .proof-accum-note,
 .privacy-whisper {
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   color: var(--ink-secondary);
 }
 
-/* Calculadora del vecino */
 .calculator-rococo-box {
-  max-width: 540px;
-  margin: 0 auto 18px;
-  padding: 20px;
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-light);
+  max-width: 520px;
+  margin: 0 auto 16px;
+  padding: 18px;
+  background-color: var(--pearl-ivory);
+  border: 1px solid var(--gold-light);
   border-radius: var(--radius-md);
 }
 
 .calc-input-label {
   display: block;
   font-weight: 600;
-  font-size: 0.96rem;
-  color: var(--ink-primary);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .calc-controls-row {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
 .currency-input-wrap {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background-color: var(--surface-warm);
-  border: 1.5px solid var(--border-medium);
-  border-radius: var(--radius-md);
-  padding: 6px 16px;
-}
-
-.currency-input-wrap:focus-within {
-  border-color: var(--solar-terracotta);
+  background-color: var(--cream-soft);
+  border: 1.5px solid var(--gold-champagne);
+  border-radius: var(--radius-pill);
+  padding: 4px 16px;
 }
 
 .currency-prefix {
   font-family: var(--font-display);
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--solar-terracotta);
+  color: var(--gold-antique);
 }
 
 .rococo-number-input {
   font-family: var(--font-display);
-  font-size: 1.45rem;
+  font-size: 1.4rem;
   font-weight: 700;
   width: 90px;
   text-align: center;
   border: none;
   background: transparent;
-  color: var(--ink-primary);
+  color: var(--ink-brown-rose);
   outline: none;
-}
-
-.currency-suffix {
-  font-size: 0.85rem;
-  color: var(--ink-muted);
-  font-weight: 600;
 }
 
 .rococo-range-slider {
   width: 100%;
-  max-width: 360px;
-  accent-color: var(--solar-terracotta);
-  cursor: pointer;
+  max-width: 340px;
+  accent-color: var(--gold-champagne);
 }
 
 .calc-trio-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
-@media (max-width: 620px) {
+@media (max-width: 600px) {
   .calc-trio-cards {
     grid-template-columns: 1fr;
   }
@@ -1063,48 +1044,43 @@ html, body {
   margin: 0 auto;
   font-size: 0.88rem;
   color: var(--ink-secondary);
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-light);
+  background-color: var(--pearl-ivory);
+  border: 1px solid var(--gold-light);
   border-radius: var(--radius-md);
-  padding: 12px 16px;
-  line-height: 1.6;
+  padding: 10px 14px;
 }
 
 .capacity-ribbon-notice {
-  margin: 0 auto 14px;
-  padding: 10px 14px;
-  background-color: var(--solar-honey-bg);
-  border: 1px solid var(--solar-honey-border);
+  margin: 0 auto 12px;
+  padding: 8px 14px;
+  background-color: var(--gold-cream-bg);
+  border: 1px solid var(--gold-champagne);
   border-radius: var(--radius-md);
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  color: var(--ink-primary);
 }
 
-/* Agenda directa en 2 campos */
 .booking-rococo-form {
   text-align: left;
 }
 
 .slots-fieldset {
-  border: 1px solid var(--border-light);
+  border: 1px solid var(--gold-light);
   border-radius: var(--radius-md);
-  background-color: var(--surface-card);
-  padding: 16px;
-  margin: 0 0 16px;
+  background-color: var(--pearl-ivory);
+  padding: 14px;
+  margin: 0 0 14px;
 }
 
 .slots-legend {
   font-weight: 700;
-  font-size: 0.88rem;
-  color: var(--ink-primary);
-  padding: 0 8px;
+  padding: 0 6px;
 }
 
 .slots-rococo-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 8px;
 }
 
 @media (max-width: 560px) {
@@ -1116,31 +1092,25 @@ html, body {
 .slot-radio-card {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--border-light);
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid var(--gold-light);
   border-radius: var(--radius-sm);
-  background-color: var(--surface-warm);
+  background-color: var(--cream-soft);
   cursor: pointer;
   font-size: 0.86rem;
-  transition: all 0.15s ease;
 }
 
 .slot-radio-card:hover {
-  border-color: var(--solar-terracotta);
-  background-color: var(--solar-honey-bg);
-}
-
-.slot-radio-card input[type="radio"] {
-  accent-color: var(--solar-terracotta);
-  margin-top: 3px;
+  background-color: var(--blush-pale);
+  border-color: var(--gold-champagne);
 }
 
 .two-fields-only-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
 @media (max-width: 560px) {
@@ -1152,29 +1122,22 @@ html, body {
 .rococo-field-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .field-label {
   font-weight: 600;
   font-size: 0.88rem;
-  color: var(--ink-primary);
 }
 
 .rococo-text-input {
   font-family: var(--font-sans);
-  font-size: 0.94rem;
-  color: var(--ink-primary);
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-medium);
+  font-size: 0.92rem;
+  color: var(--ink-brown-rose);
+  background-color: var(--pearl-ivory);
+  border: 1px solid var(--gold-champagne);
   border-radius: var(--radius-sm);
-  padding: 10px 12px;
-  outline: none;
-  transition: border-color 0.15s ease;
-}
-
-.rococo-text-input:focus {
-  border-color: var(--solar-terracotta);
+  padding: 9px 12px;
 }
 
 .booking-submit-wrap {
@@ -1182,22 +1145,20 @@ html, body {
 }
 
 .booking-confirmation-card {
-  margin-top: 16px;
-  padding: 18px;
-  background-color: var(--sage-bg);
-  border: 1px solid var(--sage-border);
+  margin-top: 14px;
+  padding: 14px;
+  background-color: var(--rose-leaf-bg);
+  border: 1.5px solid var(--rose-leaf-border);
   border-radius: var(--radius-md);
   text-align: center;
 }
 
-/* ============================================================================
-   BARRA DE PROGRESO Y RECOMPENSAS (PANTALLA 3)
-   ============================================================================ */
+/* Barra de avance y recompensas (Pantalla 3) */
 .rococo-progress-container {
-  margin: 12px auto 20px;
-  padding: 20px;
-  background-color: var(--surface-warm);
-  border: 1px solid var(--border-light);
+  margin: 10px auto 18px;
+  padding: 16px;
+  background: linear-gradient(180deg, #FFFDF9 0%, var(--blush-pale) 100%);
+  border: 1.5px solid var(--gold-champagne);
   border-radius: var(--radius-lg);
 }
 
@@ -1205,33 +1166,33 @@ html, body {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .progress-stage-label {
   font-weight: 600;
   font-size: 0.92rem;
-  color: var(--ink-primary);
 }
 
 .progress-pct-script {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--sage-green);
+  font-family: var(--font-script);
+  font-size: 2.1rem;
+  color: var(--gold-antique);
 }
 
 .ribbon-progress-track {
-  height: 14px;
-  background-color: var(--bg-oat);
+  height: 18px;
+  background-color: var(--pearl-ivory);
+  border: 1.5px solid var(--gold-champagne);
   border-radius: var(--radius-pill);
+  padding: 2px;
+  margin-bottom: 14px;
   overflow: hidden;
-  margin-bottom: 16px;
 }
 
 .ribbon-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--solar-amber), var(--sage-green));
+  background: linear-gradient(90deg, var(--blush-rose-deep), var(--gold-champagne));
   border-radius: var(--radius-pill);
   transition: width 0.4s ease;
 }
@@ -1239,7 +1200,7 @@ html, body {
 .milestones-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 8px;
   text-align: left;
 }
 
@@ -1250,36 +1211,31 @@ html, body {
 }
 
 .milestone-card {
-  padding: 12px 14px;
-  border: 1px solid var(--border-light);
+  padding: 10px 12px;
+  border: 1px solid var(--gold-light);
   border-radius: var(--radius-md);
-  background-color: var(--surface-card);
+  background-color: var(--pearl-ivory);
   display: flex;
   flex-direction: column;
-  gap: 3px;
 }
 
 .milestone-card.is-completed {
-  background-color: var(--sage-bg);
-  border-color: var(--sage-border);
+  background-color: var(--rose-leaf-bg);
+  border-color: var(--rose-leaf-border);
 }
 
 .milestone-step-badge {
-  font-size: 0.72rem;
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--solar-terracotta);
+  color: var(--gold-antique);
   font-weight: 700;
-}
-
-.milestone-card.is-completed .milestone-step-badge {
-  color: var(--sage-green);
 }
 
 .family-referrals-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   text-align: left;
 }
 
@@ -1288,10 +1244,10 @@ html, body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding: 12px 16px;
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-light);
+  gap: 8px;
+  padding: 10px 14px;
+  background-color: var(--pearl-ivory);
+  border: 1px solid var(--gold-light);
   border-radius: var(--radius-md);
 }
 
@@ -1302,124 +1258,111 @@ html, body {
   font-weight: 700;
   text-transform: uppercase;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--solar-honey-border);
-  background-color: var(--solar-honey-bg);
-  color: var(--solar-terracotta);
+  border: 1px solid var(--gold-champagne);
+  background-color: var(--blush-pale);
 }
 
 .referral-status-pill.estado-firmada {
-  background-color: var(--sage-bg);
-  border-color: var(--sage-border);
-  color: var(--sage-green);
+  background-color: var(--rose-leaf-bg);
+  border-color: var(--rose-leaf-border);
+  color: var(--rose-leaf-green);
 }
 
 .referral-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 .server-rule-tester-box {
-  margin-top: 16px;
-  padding: 16px;
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-light);
+  margin-top: 14px;
+  padding: 14px;
+  background-color: var(--pearl-ivory);
+  border: 1px solid var(--gold-light);
   border-radius: var(--radius-md);
   text-align: left;
 }
 
 .tester-heading {
-  margin: 0 0 10px;
-  font-size: 0.92rem;
-  color: var(--ink-primary);
+  margin: 0 0 8px;
+  font-size: 0.94rem;
 }
 
 .tester-controls-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .tester-field {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.86rem;
+  gap: 6px;
   font-weight: 600;
-  color: var(--ink-secondary);
+  font-size: 0.86rem;
 }
 
 .validator-response-box {
-  margin-top: 12px;
-  padding: 12px 14px;
+  margin-top: 10px;
+  padding: 10px 12px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-light);
-  background-color: var(--surface-warm);
+  border: 1px solid var(--gold-light);
+  background-color: var(--cream-soft);
   font-size: 0.88rem;
 }
 
 .validator-response-box.is-rejected {
-  background-color: var(--danger-bg);
-  border-color: var(--danger-border);
-  color: var(--danger-ink);
+  background-color: #FCE8EC;
+  border-color: #C86D7D;
 }
 
 .validator-response-box.is-approved {
-  background-color: var(--sage-bg);
-  border-color: var(--sage-border);
-  color: var(--sage-green);
+  background-color: var(--rose-leaf-bg);
+  border-color: var(--rose-leaf-border);
 }
 
-/* ============================================================================
-   PANEL DE ANDRÉS (PANTALLA 4)
-   ============================================================================ */
+/* Panel de Andrés (Pantalla 4) */
 .funnel-steps-row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  gap: 8px;
 }
 
-@media (max-width: 660px) {
+@media (max-width: 640px) {
   .funnel-steps-row {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 .funnel-step-card {
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-light);
+  background-color: var(--pearl-ivory);
+  border: 1px solid var(--gold-light);
   border-radius: var(--radius-md);
-  padding: 12px 10px;
+  padding: 10px 8px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 3px;
 }
 
 .funnel-step-highlight {
-  background-color: var(--sage-bg);
-  border-color: var(--sage-border);
+  background-color: var(--rose-leaf-bg);
+  border-color: var(--rose-leaf-border);
 }
 
 .funnel-step-label {
-  font-size: 0.72rem;
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--ink-muted);
+  color: var(--gold-antique);
   font-weight: 700;
-}
-
-.funnel-step-highlight .funnel-step-label,
-.funnel-step-highlight .funnel-step-num {
-  color: var(--sage-green);
 }
 
 .funnel-step-num {
   font-family: var(--font-display);
   font-size: 1.65rem;
   font-weight: 700;
-  color: var(--ink-primary);
+  color: var(--ink-brown-rose);
 }
 
 .funnel-step-sub {
@@ -1429,13 +1372,12 @@ html, body {
 
 .capacity-alert-banner {
   padding: 10px 14px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--danger-border);
-  background-color: var(--danger-bg);
-  color: var(--danger-ink);
-  font-size: 0.88rem;
+  border: 1.5px solid #C86D7D;
+  background-color: #FCE8EC;
   font-weight: 600;
+  font-size: 0.88rem;
   text-align: center;
 }
 
@@ -1445,41 +1387,31 @@ html, body {
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   font-size: 0.9rem;
-  color: var(--ink-secondary);
-}
-
-.honest-math-list strong {
-  color: var(--ink-primary);
 }
 
 .battery-upsell-checkbox {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  background-color: var(--solar-honey-bg);
-  border: 1px solid var(--solar-honey-border);
+  gap: 8px;
+  background-color: var(--blush-pale);
+  border: 1px solid var(--gold-champagne);
   border-radius: var(--radius-md);
   padding: 10px 14px;
-  font-size: 0.84rem;
-  color: var(--ink-secondary);
+  font-size: 0.85rem;
   text-align: left;
   cursor: pointer;
-  max-width: 460px;
-}
-
-.battery-upsell-checkbox strong {
-  color: var(--ink-primary);
+  max-width: 450px;
 }
 
 .battery-upsell-checkbox input[type="checkbox"] {
   margin-top: 3px;
-  accent-color: var(--solar-terracotta);
+  accent-color: var(--gold-champagne);
 }
 
 .cashflow-protection-box {
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-light);
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--gold-light);
 }
