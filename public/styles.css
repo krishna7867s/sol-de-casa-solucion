@@ -1,27 +1,53 @@
 /* ============================================================================
-   ESTILO EDITORIAL EN PAPEL IMPRESO / POSTAL GRABADA — SOL DE CASA
-   Cero sombras difusas de IA (sin box-shadow blur, sin text-shadow, sin drop-shadow).
-   Paleta plana y táctil sobre papel crema perla, rosa empolvado y tinta marrón.
+   SOL DE CASA — DISEÑO EDITORIAL CÁLIDO, ORGÁNICO Y HUMANO
+   Inspirado en revistas de arquitectura sostenible y diseño botánico (Kinfolk / Aesop).
+   Tipografía limpia (Plus Jakarta Sans) + acentos serif editoriales (Fraunces).
+   Paleta cálida de lino solar, terracota suave, salvia botánico y carbón espresso.
    ============================================================================ */
 
 :root {
-  --paper-cream: #faf4ea;
-  --paper-warm: #f3e9d8;
-  --paper-rose: #f2dce0;
-  --paper-rose-deep: #e2bec5;
-  --sky-dawn-top: #dfe9f0;
-  --sky-lavender: #eae3f1;
-  --gold-line: #a47c38;
-  --gold-dark: #7a571c;
-  --gold-pale: #f0e2c4;
-  --leaf-green: #5e7458;
-  --leaf-pale: #e4ede0;
-  --ink-dark: #3d2327;
-  --ink-muted: #654348;
+  /* Fondos cálidos y descansados para la vista */
+  --bg-linen: #FAF7F2;
+  --bg-oat: #F3EDE2;
+  --surface-card: #FFFFFF;
+  --surface-warm: #FAF6EE;
+  --surface-subtle: #F5EFE4;
 
-  /* Tipografía editorial clásica de libro impreso */
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  /* Bordes delicados de piedra cálida */
+  --border-light: #E8E0D2;
+  --border-medium: #D6C9B4;
+  --border-strong: #BFA98A;
+
+  /* Tinta de alta legibilidad */
+  --ink-primary: #1F1B18;
+  --ink-secondary: #574F47;
+  --ink-muted: #7A7067;
+
+  /* Acentos naturales: Sol Terracota, Ámbar Miel y Verde Salvia */
+  --solar-terracotta: #C85A28;
+  --solar-terracotta-hover: #AD491B;
+  --solar-amber: #D9822B;
+  --solar-honey-bg: #FDF5E6;
+  --solar-honey-border: #EDD5A8;
+
+  --sage-green: #1D6346;
+  --sage-bg: #EAF5EF;
+  --sage-border: #B7DEC9;
+
+  --danger-ink: #9E2A2B;
+  --danger-bg: #FDF0F0;
+  --danger-border: #EAC2C2;
+
+  /* Tipografía: Sans-serif limpia para lectura + Serif óptica solo en titulares y cifras */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Fraunces', Georgia, serif;
+
+  /* Radios suaves y orgánicos */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
 }
 
 *,
@@ -34,19 +60,14 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  color: var(--ink-dark);
-  font-family: var(--font-serif);
-  font-size: 19px;
-  line-height: 1.5;
+  background-color: var(--bg-linen);
+  background-image: radial-gradient(ellipse 90% 50% at 50% 0%, #FFF9EC 0%, var(--bg-linen) 70%);
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  font-size: 15.5px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-  background: linear-gradient(
-    180deg,
-    var(--sky-dawn-top) 0%,
-    var(--sky-lavender) 18%,
-    var(--paper-cream) 48%,
-    var(--paper-rose) 100%
-  );
-  background-attachment: fixed;
 }
 
 .svg-defs-hidden {
@@ -58,7 +79,7 @@ html, body {
 }
 
 /* ============================================================================
-   CIELO Y NUBES REALES DESDE LAS 4 ESQUINAS (SIN DROP-SHADOW ARTIFICIAL)
+   ATMOSFERA DE CIELO SUTIL (NO INVADE NI ENSUCIA EL TEXTO)
    ============================================================================ */
 .celestial-sky {
   position: fixed;
@@ -66,6 +87,7 @@ html, body {
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
+  opacity: 0.35;
 }
 
 .dawn-clouds-canvas {
@@ -74,80 +96,79 @@ html, body {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
 }
 
 .real-cloud {
   position: absolute;
-  width: min(50vw, 480px);
+  width: min(42vw, 420px);
   height: auto;
   aspect-ratio: 2 / 1;
+  opacity: 0.45;
   will-change: transform, opacity;
 }
 
 .cloud-corner-tl {
-  top: -3%;
-  left: -6%;
-  animation: cloudFromTopLeft 4.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  top: -4%;
+  left: -8%;
+  animation: cloudFromTopLeft 5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .cloud-corner-tr {
-  top: -3%;
-  right: -6%;
-  animation: cloudFromTopRight 5.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  top: -4%;
+  right: -8%;
+  animation: cloudFromTopRight 5.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .cloud-corner-bl {
-  bottom: -4%;
-  left: -8%;
-  animation: cloudFromBottomLeft 5.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  bottom: -6%;
+  left: -10%;
+  animation: cloudFromBottomLeft 5.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .cloud-corner-br {
-  bottom: -4%;
-  right: -8%;
-  animation: cloudFromBottomRight 5.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  bottom: -6%;
+  right: -10%;
+  animation: cloudFromBottomRight 5.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes cloudFromTopLeft {
-  0% { transform: translate(-50vw, -35vh); opacity: 0.2; }
-  100% { transform: translate(8vw, 6vh); opacity: 0.78; }
+  0% { transform: translate(-40vw, -25vh); opacity: 0; }
+  100% { transform: translate(2vw, 2vh); opacity: 0.4; }
 }
-
 @keyframes cloudFromTopRight {
-  0% { transform: translate(50vw, -35vh); opacity: 0.2; }
-  100% { transform: translate(-8vw, 7vh); opacity: 0.78; }
+  0% { transform: translate(40vw, -25vh); opacity: 0; }
+  100% { transform: translate(-2vw, 2vh); opacity: 0.4; }
 }
-
 @keyframes cloudFromBottomLeft {
-  0% { transform: translate(-50vw, 35vh); opacity: 0.2; }
-  100% { transform: translate(9vw, -8vh); opacity: 0.75; }
+  0% { transform: translate(-40vw, 25vh); opacity: 0; }
+  100% { transform: translate(2vw, -2vh); opacity: 0.35; }
 }
-
 @keyframes cloudFromBottomRight {
-  0% { transform: translate(50vw, 35vh); opacity: 0.2; }
-  100% { transform: translate(-9vw, -8vh); opacity: 0.75; }
+  0% { transform: translate(40vw, 25vh); opacity: 0; }
+  100% { transform: translate(-2vw, -2vh); opacity: 0.35; }
 }
 
 /* ============================================================================
-   COLUMNA EDITORIAL CENTRADA (PAPEL GRABADO, SIN SOMBRAS DIFUSAS)
+   CONTENEDOR PRINCIPAL Y CABECERA LIMPIA
    ============================================================================ */
 .rococo-page-column {
   position: relative;
   z-index: 2;
-  max-width: 700px;
+  max-width: 820px;
   margin: 0 auto;
-  padding: 24px 16px 64px;
+  padding: 28px 20px 72px;
 }
 
 .celestial-header {
   text-align: center;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
 }
 
+/* Ilustración superior compacta y discreta */
 .solar-house-banner {
-  max-width: 440px;
-  margin: 0 auto 6px;
+  max-width: 240px;
+  margin: 0 auto 8px;
+  opacity: 0.92;
 }
 
 .solar-house-svg {
@@ -157,204 +178,258 @@ html, body {
 }
 
 .brand-kicker {
-  margin: 0;
-  font-size: 0.84rem;
-  letter-spacing: 0.18em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 6px;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+  background-color: var(--solar-honey-bg);
+  border: 1px solid var(--solar-honey-border);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold-dark);
+  color: var(--solar-terracotta);
   font-weight: 700;
 }
 
 .script-main-title {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.9rem, 5vw, 2.5rem);
-  color: var(--ink-dark);
-  margin: 4px 0 14px;
-  line-height: 1.15;
+  font-size: clamp(1.85rem, 4vw, 2.45rem);
+  color: var(--ink-primary);
+  margin: 4px 0 18px;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
 }
 
-/* Navegación tipo índice de libro antiguo (bordes rectos dobles, sin sombras) */
+/* ============================================================================
+   NAVEGACIÓN DE LAS 4 VISTAS (SEGMENTED PILL BAR MODERNA Y CLARA)
+   ============================================================================ */
 .role-Explain-banner {
-  background-color: var(--paper-cream);
-  border: 1px solid var(--gold-line);
-  padding: 10px 12px 12px;
-  margin: 0 auto 10px;
+  background-color: var(--bg-oat);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  margin: 0 auto 14px;
 }
 
 .role-explain-title {
-  margin: 0 0 8px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--gold-dark);
+  margin: 0 0 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-muted);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
 }
 
 .screen-ribbon-nav {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
+  gap: 8px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 680px) {
   .screen-ribbon-nav {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 .nav-ribbon-tab {
-  font-family: var(--font-serif);
-  color: var(--ink-muted);
-  background-color: var(--paper-warm);
-  border: 1px solid var(--gold-line);
-  padding: 8px 8px;
+  font-family: var(--font-sans);
+  color: var(--ink-secondary);
+  background-color: rgba(255, 255, 255, 0.65);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  text-align: center;
+  align-items: flex-start;
+  gap: 3px;
+  text-align: left;
+  transition: all 0.18s ease;
+}
+
+.nav-ribbon-tab:hover {
+  background-color: var(--surface-card);
+  border-color: var(--border-medium);
 }
 
 .nav-ribbon-tab strong {
-  font-size: 0.96rem;
-  color: var(--ink-dark);
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+  line-height: 1.25;
 }
 
 .nav-ribbon-tab small {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--ink-muted);
+  line-height: 1.3;
 }
 
 .nav-ribbon-tab.is-active {
-  background-color: var(--paper-rose);
-  border: 2px solid var(--gold-dark);
-  color: var(--ink-dark);
+  background-color: var(--surface-card);
+  border-color: var(--solar-terracotta);
+  box-shadow: 0 2px 8px rgba(31, 27, 24, 0.06);
 }
 
+.nav-ribbon-tab.is-active strong {
+  color: var(--solar-terracotta);
+}
+
+/* Barra de selección de familia simulada */
 .family-selector-bar {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 8px 12px;
-  padding: 8px 12px;
-  background-color: var(--paper-cream);
-  border: 1px solid var(--gold-line);
+  gap: 10px;
+  padding: 8px 16px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
 }
 
 .selector-label {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--ink-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink-secondary);
 }
 
 .rococo-select {
-  font-family: var(--font-serif);
-  font-size: 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
   font-weight: 600;
-  color: var(--ink-dark);
-  background-color: var(--paper-warm);
-  border: 1px solid var(--gold-line);
-  padding: 4px 10px;
+  color: var(--ink-primary);
+  background-color: var(--surface-warm);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
   cursor: pointer;
+  outline: none;
+}
+
+.rococo-select:focus {
+  border-color: var(--solar-terracotta);
 }
 
 .pearl-mini-btn {
-  font-family: var(--font-serif);
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: var(--ink-dark);
-  background-color: var(--paper-rose);
-  border: 1px solid var(--gold-line);
-  padding: 4px 12px;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
   cursor: pointer;
+  transition: all 0.15s ease;
 }
 
 .pearl-mini-btn:hover {
-  background-color: var(--paper-rose-deep);
+  background-color: var(--border-light);
+  color: var(--ink-primary);
 }
 
 /* ============================================================================
-   HOJA DE CARTA IMPRESA CON DOBLE FILETE DORADO (CERO SOMBRAS)
+   TARJETA PRINCIPAL DE CADA PANTALLA (LIMPIA, ESPACIOSA Y RELAJANTE)
    ============================================================================ */
 .rococo-card-frame {
   position: relative;
-  background-color: var(--paper-cream);
-  border: 2px solid var(--gold-line);
-  outline: 1px solid var(--gold-line);
-  outline-offset: -6px;
-  padding: 34px 26px 30px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 36px 34px;
+  box-shadow: 0 8px 30px -12px rgba(31, 27, 24, 0.06);
 }
 
-@media (max-width: 520px) {
+@media (max-width: 560px) {
   .rococo-card-frame {
-    padding: 28px 16px 24px;
+    padding: 24px 18px;
+    border-radius: var(--radius-lg);
   }
 }
 
+/* Ocultamos los ornamentos viejos de las esquinas que recargaban el diseño */
 .corner-ornament {
-  position: absolute;
-  width: 48px;
-  height: 48px;
-  pointer-events: none;
-  z-index: 3;
+  display: none;
 }
-.corner-tl { top: 4px; left: 4px; }
-.corner-tr { top: 4px; right: 4px; }
-.corner-bl { bottom: 4px; left: 4px; }
-.corner-br { bottom: 4px; right: 4px; }
 
 .simple-step-badge {
   display: inline-block;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold-dark);
-  background-color: var(--gold-pale);
-  border: 1px solid var(--gold-line);
-  padding: 2px 12px;
-  margin-bottom: 6px;
+  color: var(--solar-terracotta);
+  background-color: var(--solar-honey-bg);
+  border: 1px solid var(--solar-honey-border);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  margin-bottom: 10px;
 }
 
 .section-script-subtitle {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1.6rem;
-  color: var(--ink-dark);
-  margin: 4px 0 8px;
-  text-align: center;
+  font-size: clamp(1.45rem, 3vw, 1.8rem);
+  color: var(--ink-primary);
+  margin: 0 0 10px;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
 }
 
 .paola-warm-intro,
 .section-lead-text {
-  text-align: center;
-  max-width: 560px;
-  margin: 0 auto 14px;
-  font-size: 1.06rem;
-  color: var(--ink-dark);
+  max-width: 600px;
+  margin: 0 auto 20px;
+  font-size: 0.98rem;
+  color: var(--ink-secondary);
+  line-height: 1.65;
 }
 
 .simulado-pill {
   display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--ink-muted);
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  padding: 1px 9px;
+}
+
+/* Aviso inteligente del inversor */
+.smart-trigger-banner {
+  background-color: var(--solar-honey-bg);
+  border: 1px solid var(--solar-honey-border);
+  border-left: 4px solid var(--solar-amber);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin: 0 auto 24px;
+  max-width: 660px;
   font-size: 0.88rem;
-  font-style: italic;
-  color: var(--gold-dark);
-  background-color: var(--paper-warm);
-  border: 1px solid var(--gold-line);
-  padding: 0 7px;
+  color: var(--ink-secondary);
+  text-align: left;
+  line-height: 1.55;
+}
+
+.smart-trigger-banner strong {
+  color: var(--ink-primary);
+  display: block;
+  margin-bottom: 2px;
 }
 
 /* ============================================================================
-   HALO SOLAR CENTRAL (GRABADO EDITORIAL PLANO)
+   MEDALLÓN CENTRAL DE AHORRO ($77 ESTE MES)
    ============================================================================ */
 .solar-halo-stage {
   position: relative;
-  width: min(100%, 330px);
-  height: 330px;
-  margin: 6px auto 16px;
+  width: min(100%, 310px);
+  height: 310px;
+  margin: 8px auto 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -366,137 +441,153 @@ html, body {
   width: 100%;
   height: 100%;
   pointer-events: none;
+  opacity: 0.85;
 }
 
 @keyframes sunRaysBreathe {
-  0%, 100% { transform: translate(190px, 190px) scale(0.98); }
-  50% { transform: translate(190px, 190px) scale(1.03); }
+  0%, 100% { transform: translate(190px, 190px) scale(0.99); }
+  50% { transform: translate(190px, 190px) scale(1.02); }
 }
 
 .sun-breathing-rays {
-  animation: sunRaysBreathe 7s ease-in-out infinite;
+  animation: sunRaysBreathe 8s ease-in-out infinite;
 }
 
 .solar-halo-content {
   position: relative;
   z-index: 2;
   text-align: center;
-  max-width: 210px;
+  max-width: 215px;
 }
 
 .halo-month-label {
   display: block;
-  font-size: 0.82rem;
+  font-size: 0.74rem;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--gold-dark);
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
   font-weight: 700;
+  margin-bottom: 4px;
 }
 
 .halo-amount-script {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 2.3rem;
-  color: var(--ink-dark);
-  line-height: 1.1;
-  margin: 4px 0;
+  font-size: 2.25rem;
+  color: var(--sage-green);
+  line-height: 1.08;
+  margin: 4px 0 6px;
+  letter-spacing: -0.02em;
 }
 
 .halo-sub-caption {
-  margin: 0 0 6px;
-  font-size: 0.98rem;
-  color: var(--ink-dark);
+  margin: 0 0 8px;
+  font-size: 0.86rem;
+  color: var(--ink-secondary);
 }
 
 .halo-Percent-badge {
   display: inline-block;
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  color: var(--ink-dark);
-  background-color: var(--leaf-pale);
-  border: 1px solid var(--leaf-green);
-  padding: 2px 10px;
+  color: var(--sage-green);
+  background-color: var(--sage-bg);
+  border: 1px solid var(--sage-border);
+  border-radius: var(--radius-pill);
+  padding: 3px 12px;
 }
 
 /* ============================================================================
-   CAJAS Y MEDALLONES (BORDES FINOS DE TINTA Y ORO, SIN SOMBRAS)
+   TARJETAS DE MÉTRICAS (KPI CARDS LIMPIAS)
    ============================================================================ */
 .twin-medallions {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin: 10px 0 16px;
+  gap: 14px;
+  margin: 14px 0 24px;
 }
 
-@media (max-width: 540px) {
+@media (max-width: 560px) {
   .twin-medallions {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 }
 
 .rococo-medallion {
-  background-color: var(--paper-warm);
-  border: 1px solid var(--gold-line);
-  padding: 12px 14px;
+  background-color: var(--surface-warm);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .highlight-truth-medallion {
-  background-color: var(--gold-pale);
-  border: 1.5px solid var(--gold-dark);
+  background-color: var(--sage-bg);
+  border-color: var(--sage-border);
+}
+
+.highlight-truth-medallion .medallion-kicker {
+  color: var(--sage-green);
+}
+
+.highlight-truth-medallion .medallion-value {
+  color: var(--sage-green);
 }
 
 .medallion-kicker {
-  font-size: 0.8rem;
+  font-size: 0.74rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--gold-dark);
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
   font-weight: 700;
 }
 
 .medallion-value {
   font-family: var(--font-display);
-  font-size: 1.75rem;
+  font-size: 1.65rem;
   font-weight: 700;
-  color: var(--ink-dark);
+  color: var(--ink-primary);
+  letter-spacing: -0.02em;
 }
 
 .medallion-note {
-  font-size: 0.92rem;
-  color: var(--ink-muted);
+  font-size: 0.82rem;
+  color: var(--ink-secondary);
 }
 
 .simple-gold-hr {
   border: none;
-  border-top: 1px solid var(--gold-line);
-  margin: 22px 0;
+  border-top: 1px solid var(--border-light);
+  margin: 30px 0;
 }
 
 /* ============================================================================
-   POSTAL Y BOTONES EN FORMA DE LISTÓN PLANO
+   POSTAL COMPARTIBLE CON VECINOS (DISEÑO DE POSTAL BOUTIQUE + QR)
    ============================================================================ */
 .share-section {
   text-align: center;
 }
 
 .letter-envelope-wrapper {
-  max-width: 560px;
-  margin: 0 auto 16px;
-  border: 1.5px solid var(--gold-line);
-  background-color: var(--paper-warm);
+  max-width: 650px;
+  margin: 0 auto 20px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  background-color: var(--surface-warm);
+  overflow: hidden;
 }
 
 .envelope-flap-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding: 8px 12px;
-  background-color: var(--paper-rose);
-  border-bottom: 1px solid var(--gold-line);
+  gap: 12px;
+  padding: 10px 16px;
+  background-color: var(--bg-oat);
+  border-bottom: 1px solid var(--border-light);
   text-align: left;
 }
 
@@ -504,34 +595,39 @@ html, body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--gold-dark);
-  background-color: var(--gold-pale);
-  color: var(--ink-dark);
-  font-size: 0.9rem;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--solar-terracotta);
+  color: #FFFFFF;
+  font-size: 0.85rem;
 }
 
 .envelope-status-txt {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--ink-dark);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-secondary);
   flex: 1;
 }
 
 .letter-fold-btn {
-  font-family: var(--font-serif);
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--ink-dark);
-  background-color: var(--paper-cream);
-  border: 1px solid var(--gold-line);
-  padding: 2px 10px;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
   cursor: pointer;
 }
 
+.letter-fold-btn:hover {
+  background-color: var(--surface-subtle);
+}
+
 .celestial-postcard-body {
-  padding: 14px;
+  padding: 18px;
 }
 
 .letter-envelope-wrapper:not(.is-open) .celestial-postcard-body {
@@ -539,9 +635,10 @@ html, body {
 }
 
 .postcard-inner-border {
-  background-color: var(--paper-cream);
-  border: 1px solid var(--gold-line);
-  padding: 16px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 22px;
 }
 
 .postcard-with-qr-flex {
@@ -549,12 +646,12 @@ html, body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 20px;
 }
 
 .postcard-text-col {
-  flex: 1 1 260px;
-  text-align: center;
+  flex: 1 1 280px;
+  text-align: left;
 }
 
 .postcard-qr-col {
@@ -563,328 +660,400 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: var(--surface-warm);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 12px;
 }
 
 .qr-rococo-frame {
-  width: 136px;
-  height: 136px;
+  width: 132px;
+  height: 132px;
   padding: 6px;
-  background-color: var(--paper-cream);
-  border: 1.5px solid var(--gold-line);
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 6px;
 }
 
 .postcard-stamp {
-  margin: 0 0 4px;
-  font-size: 0.76rem;
-  letter-spacing: 0.14em;
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold-dark);
+  color: var(--solar-terracotta);
   font-weight: 700;
 }
 
 .postcard-Script-heading {
   font-family: var(--font-display);
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 600;
-  margin: 0 0 8px;
-  color: var(--ink-dark);
+  margin: 0 0 10px;
+  color: var(--ink-primary);
 }
 
 .postcard-mini-halo {
   display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 8px 20px;
-  margin: 4px 0 8px;
-  background-color: var(--gold-pale);
-  border: 1px solid var(--gold-line);
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 14px;
+  margin: 0 0 12px;
+  background-color: var(--sage-bg);
+  border: 1px solid var(--sage-border);
+  border-radius: var(--radius-md);
 }
 
 .postcard-mini-amount {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.85rem;
-  color: var(--ink-dark);
+  font-size: 1.55rem;
+  color: var(--sage-green);
 }
 
 .postcard-mini-label {
-  font-size: 0.86rem;
-  color: var(--ink-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--sage-green);
 }
 
 .postcard-quote {
-  margin: 6px auto 10px;
-  font-style: italic;
-  font-size: 1rem;
-  color: var(--ink-dark);
+  margin: 0 0 12px;
+  font-size: 0.92rem;
+  color: var(--ink-secondary);
+  line-height: 1.55;
 }
 
 .postcard-personal-link-box {
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
   gap: 6px;
-  background-color: var(--paper-warm);
-  border: 1px solid var(--gold-line);
-  padding: 4px 10px;
-  font-size: 0.9rem;
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  color: var(--ink-secondary);
 }
 
 .link-box-code {
-  font-family: var(--font-serif);
-  font-weight: 700;
-  color: var(--gold-dark);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-weight: 600;
+  color: var(--solar-terracotta);
 }
 
-/* Botones tipo listón plano (sin brillos ni sombras de IA) */
+/* ============================================================================
+   BOTONES REDONDEADOS Y AGRADABLES AL TACTO (SIN PUNTAS RECORTADAS)
+   ============================================================================ */
 .ribbon-actions-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  margin: 14px 0;
+  margin: 18px 0;
 }
 
 .ribbon-gold-button {
-  font-family: var(--font-serif);
-  font-size: 1.04rem;
-  font-weight: 700;
-  color: var(--ink-dark);
-  padding: 10px 22px;
-  border: 1.5px solid var(--gold-dark);
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 11px 22px;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
   cursor: pointer;
-  clip-path: polygon(8px 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0% 50%);
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .primary-ribbon-btn {
-  background-color: var(--paper-rose);
+  background-color: var(--solar-terracotta);
+  color: #FFFFFF;
+  border-color: var(--solar-terracotta);
+}
+
+.primary-ribbon-btn:hover {
+  background-color: var(--solar-terracotta-hover);
+  transform: translateY(-1px);
 }
 
 .secondary-ribbon-btn {
-  background-color: var(--sky-lavender);
+  background-color: var(--surface-warm);
+  color: var(--ink-primary);
+  border-color: var(--border-medium);
+}
+
+.secondary-ribbon-btn:hover {
+  background-color: var(--bg-oat);
 }
 
 .tertiary-ribbon-btn {
-  background-color: var(--gold-pale);
+  background-color: var(--sage-bg);
+  color: var(--sage-green);
+  border-color: var(--sage-border);
 }
 
-.ribbon-gold-button:hover {
-  background-color: var(--paper-rose-deep);
+.tertiary-ribbon-btn:hover {
+  background-color: #dcf0e5;
 }
 
 .share-feedback-banner {
-  max-width: 540px;
-  margin: 10px auto 14px;
-  padding: 10px 14px;
-  background-color: var(--leaf-pale);
-  border: 1.5px solid var(--leaf-green);
-  color: var(--ink-dark);
-  font-size: 0.96rem;
+  max-width: 580px;
+  margin: 12px auto 16px;
+  padding: 12px 16px;
+  background-color: var(--sage-bg);
+  border: 1px solid var(--sage-border);
+  border-radius: var(--radius-md);
+  color: var(--sage-green);
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 /* ============================================================================
-   TABLAS Y CAJAS DE PASOS (PANTALLAS 2, 3 Y 4)
+   TABLAS EDITORIALES LIMPIAS Y CAJAS DE PASOS (PANTALLAS 2, 3 Y 4)
    ============================================================================ */
 .inverter-history-details {
-  margin-top: 14px;
+  margin-top: 20px;
   text-align: left;
-  border-top: 1px solid var(--gold-line);
-  padding-top: 10px;
+  border-top: 1px solid var(--border-light);
+  padding-top: 14px;
 }
 
 .history-summary-btn {
   cursor: pointer;
   text-align: center;
-  font-weight: 700;
-  color: var(--gold-dark);
-  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  font-size: 0.88rem;
+}
+
+.history-summary-btn:hover {
+  color: var(--solar-terracotta);
 }
 
 .history-table-wrap {
-  margin-top: 10px;
+  margin-top: 12px;
   overflow-x: auto;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
 }
 
 .rococo-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.95rem;
-  background-color: var(--paper-cream);
-  border: 1px solid var(--gold-line);
+  font-size: 0.88rem;
+  background-color: var(--surface-card);
 }
 
 .rococo-table th,
 .rococo-table td {
-  padding: 8px 10px;
-  border: 1px solid rgba(164, 124, 56, 0.4);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-light);
   text-align: left;
 }
 
-.rococo-table th {
-  background-color: var(--paper-rose);
-  color: var(--ink-dark);
-  font-weight: 700;
+.rococo-table tr:last-child td {
+  border-bottom: none;
 }
 
+.rococo-table th {
+  background-color: var(--surface-warm);
+  color: var(--ink-secondary);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Indicador de 3 pasos en la vista de la vecina */
 .three-steps-ribbon {
   list-style: none;
   padding: 0;
-  margin: 0 auto 16px;
+  margin: 0 auto 22px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 10px;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 580px) {
   .three-steps-ribbon {
     grid-template-columns: 1fr;
   }
 }
 
 .step-pill {
-  background-color: var(--paper-warm);
-  border: 1px solid var(--gold-line);
-  padding: 6px 10px;
-  text-align: center;
+  background-color: var(--surface-warm);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  text-align: left;
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .step-pill.is-done {
-  background-color: var(--paper-rose);
-  border: 1.5px solid var(--gold-dark);
+  background-color: var(--sage-bg);
+  border-color: var(--sage-border);
+}
+
+.step-pill.is-done .step-num {
+  color: var(--sage-green);
 }
 
 .step-num {
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--gold-dark);
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
   font-weight: 700;
 }
 
 .step-name {
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  color: var(--ink-dark);
+  color: var(--ink-primary);
 }
 
+/* Bloques de cada paso */
 .clean-step-box {
-  background-color: var(--paper-warm);
-  border: 1px solid var(--gold-line);
-  padding: 16px;
-  margin-bottom: 14px;
+  background-color: var(--surface-warm);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  margin-bottom: 18px;
   text-align: center;
 }
 
 .step-box-header {
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gold-dark);
-  border-bottom: 1px solid var(--gold-line);
-  padding-bottom: 6px;
-  margin-bottom: 12px;
+  color: var(--solar-terracotta);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 10px;
+  margin-bottom: 16px;
 }
 
 .neighbor-proof-halo {
   display: inline-flex;
   flex-direction: column;
-  padding: 12px 24px;
-  margin: 4px auto 8px;
-  background-color: var(--gold-pale);
-  border: 1.5px solid var(--gold-dark);
+  padding: 14px 28px;
+  margin: 8px auto 10px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--sage-border);
+  border-radius: var(--radius-lg);
 }
 
 .proof-kicker {
-  font-size: 0.8rem;
+  font-size: 0.74rem;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--gold-dark);
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
   font-weight: 700;
 }
 
 .proof-big-script {
   font-family: var(--font-display);
-  font-size: 1.85rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: var(--ink-dark);
+  color: var(--sage-green);
+  margin: 2px 0;
 }
 
 .proof-accum-note,
 .privacy-whisper {
-  font-size: 0.9rem;
-  color: var(--ink-muted);
+  font-size: 0.84rem;
+  color: var(--ink-secondary);
 }
 
+/* Calculadora del vecino */
 .calculator-rococo-box {
-  max-width: 500px;
-  margin: 0 auto 14px;
-  padding: 14px;
-  background-color: var(--paper-cream);
-  border: 1px solid var(--gold-line);
+  max-width: 540px;
+  margin: 0 auto 18px;
+  padding: 20px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
 }
 
 .calc-input-label {
   display: block;
-  font-weight: 700;
-  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.96rem;
+  color: var(--ink-primary);
+  margin-bottom: 12px;
 }
 
 .calc-controls-row {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 14px;
+  margin-bottom: 16px;
 }
 
 .currency-input-wrap {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background-color: var(--paper-warm);
-  border: 1px solid var(--gold-dark);
-  padding: 4px 12px;
+  background-color: var(--surface-warm);
+  border: 1.5px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 6px 16px;
+}
+
+.currency-input-wrap:focus-within {
+  border-color: var(--solar-terracotta);
 }
 
 .currency-prefix {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  color: var(--gold-dark);
+  color: var(--solar-terracotta);
 }
 
 .rococo-number-input {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
   font-weight: 700;
   width: 90px;
   text-align: center;
   border: none;
   background: transparent;
-  color: var(--ink-dark);
+  color: var(--ink-primary);
+  outline: none;
+}
+
+.currency-suffix {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  font-weight: 600;
 }
 
 .rococo-range-slider {
   width: 100%;
-  max-width: 340px;
-  accent-color: var(--gold-dark);
+  max-width: 360px;
+  accent-color: var(--solar-terracotta);
+  cursor: pointer;
 }
 
 .calc-trio-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 620px) {
   .calc-trio-cards {
     grid-template-columns: 1fr;
   }
@@ -892,42 +1061,50 @@ html, body {
 
 .honest-truth-footnote {
   margin: 0 auto;
-  font-size: 0.95rem;
-  color: var(--ink-dark);
-  background-color: var(--paper-cream);
-  border: 1px solid var(--gold-line);
-  padding: 8px 12px;
+  font-size: 0.88rem;
+  color: var(--ink-secondary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  line-height: 1.6;
 }
 
 .capacity-ribbon-notice {
-  margin: 0 auto 12px;
-  padding: 8px 12px;
-  background-color: var(--gold-pale);
-  border: 1px solid var(--gold-line);
-  font-size: 0.94rem;
-  font-weight: 700;
+  margin: 0 auto 14px;
+  padding: 10px 14px;
+  background-color: var(--solar-honey-bg);
+  border: 1px solid var(--solar-honey-border);
+  border-radius: var(--radius-md);
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink-primary);
 }
 
+/* Agenda directa en 2 campos */
 .booking-rococo-form {
   text-align: left;
 }
 
 .slots-fieldset {
-  border: 1px solid var(--gold-line);
-  background-color: var(--paper-cream);
-  padding: 12px;
-  margin: 0 0 12px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background-color: var(--surface-card);
+  padding: 16px;
+  margin: 0 0 16px;
 }
 
 .slots-legend {
   font-weight: 700;
-  padding: 0 6px;
+  font-size: 0.88rem;
+  color: var(--ink-primary);
+  padding: 0 8px;
 }
 
 .slots-rococo-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: 10px;
 }
 
 @media (max-width: 560px) {
@@ -939,19 +1116,31 @@ html, body {
 .slot-radio-card {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  padding: 8px 10px;
-  border: 1px solid var(--gold-line);
-  background-color: var(--paper-warm);
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background-color: var(--surface-warm);
   cursor: pointer;
-  font-size: 0.94rem;
+  font-size: 0.86rem;
+  transition: all 0.15s ease;
+}
+
+.slot-radio-card:hover {
+  border-color: var(--solar-terracotta);
+  background-color: var(--solar-honey-bg);
+}
+
+.slot-radio-card input[type="radio"] {
+  accent-color: var(--solar-terracotta);
+  margin-top: 3px;
 }
 
 .two-fields-only-row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 14px;
+  margin-bottom: 16px;
 }
 
 @media (max-width: 560px) {
@@ -963,20 +1152,29 @@ html, body {
 .rococo-field-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .field-label {
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--ink-primary);
 }
 
 .rococo-text-input {
-  font-family: var(--font-serif);
-  font-size: 1.02rem;
-  color: var(--ink-dark);
-  background-color: var(--paper-cream);
-  border: 1px solid var(--gold-dark);
-  padding: 8px 10px;
+  font-family: var(--font-sans);
+  font-size: 0.94rem;
+  color: var(--ink-primary);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.rococo-text-input:focus {
+  border-color: var(--solar-terracotta);
 }
 
 .booking-submit-wrap {
@@ -984,57 +1182,64 @@ html, body {
 }
 
 .booking-confirmation-card {
-  margin-top: 14px;
-  padding: 14px;
-  background-color: var(--leaf-pale);
-  border: 1.5px solid var(--leaf-green);
+  margin-top: 16px;
+  padding: 18px;
+  background-color: var(--sage-bg);
+  border: 1px solid var(--sage-border);
+  border-radius: var(--radius-md);
   text-align: center;
 }
 
-/* Barra de avance y recompensas (Pantalla 3) */
+/* ============================================================================
+   BARRA DE PROGRESO Y RECOMPENSAS (PANTALLA 3)
+   ============================================================================ */
 .rococo-progress-container {
-  margin: 10px auto 16px;
-  padding: 14px;
-  background-color: var(--paper-warm);
-  border: 1px solid var(--gold-line);
+  margin: 12px auto 20px;
+  padding: 20px;
+  background-color: var(--surface-warm);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
 }
 
 .progress-header-row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .progress-stage-label {
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--ink-primary);
 }
 
 .progress-pct-script {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.6rem;
-  color: var(--gold-dark);
+  font-size: 1.5rem;
+  color: var(--sage-green);
 }
 
 .ribbon-progress-track {
-  height: 22px;
-  background-color: var(--paper-cream);
-  border: 1.5px solid var(--gold-dark);
-  padding: 2px;
-  margin-bottom: 12px;
+  height: 14px;
+  background-color: var(--bg-oat);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  margin-bottom: 16px;
 }
 
 .ribbon-progress-fill {
   height: 100%;
-  background-color: var(--paper-rose-deep);
+  background: linear-gradient(90deg, var(--solar-amber), var(--sage-green));
+  border-radius: var(--radius-pill);
   transition: width 0.4s ease;
 }
 
 .milestones-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  gap: 10px;
   text-align: left;
 }
 
@@ -1045,29 +1250,36 @@ html, body {
 }
 
 .milestone-card {
-  padding: 8px 10px;
-  border: 1px solid var(--gold-line);
-  background-color: var(--paper-cream);
+  padding: 12px 14px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background-color: var(--surface-card);
   display: flex;
   flex-direction: column;
+  gap: 3px;
 }
 
 .milestone-card.is-completed {
-  background-color: var(--leaf-pale);
-  border-color: var(--leaf-green);
+  background-color: var(--sage-bg);
+  border-color: var(--sage-border);
 }
 
 .milestone-step-badge {
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  color: var(--gold-dark);
+  letter-spacing: 0.05em;
+  color: var(--solar-terracotta);
   font-weight: 700;
+}
+
+.milestone-card.is-completed .milestone-step-badge {
+  color: var(--sage-green);
 }
 
 .family-referrals-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   text-align: left;
 }
 
@@ -1076,129 +1288,154 @@ html, body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  padding: 10px 12px;
-  background-color: var(--paper-cream);
-  border: 1px solid var(--gold-line);
+  gap: 10px;
+  padding: 12px 16px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
 }
 
 .referral-status-pill {
   display: inline-block;
-  padding: 1px 8px;
-  font-size: 0.78rem;
+  padding: 2px 10px;
+  font-size: 0.74rem;
   font-weight: 700;
   text-transform: uppercase;
-  border: 1px solid var(--gold-line);
-  background-color: var(--paper-rose);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--solar-honey-border);
+  background-color: var(--solar-honey-bg);
+  color: var(--solar-terracotta);
 }
 
 .referral-status-pill.estado-firmada {
-  background-color: var(--leaf-pale);
-  border-color: var(--leaf-green);
+  background-color: var(--sage-bg);
+  border-color: var(--sage-border);
+  color: var(--sage-green);
 }
 
 .referral-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
 .server-rule-tester-box {
-  margin-top: 14px;
-  padding: 12px 14px;
-  background-color: var(--paper-cream);
-  border: 1px solid var(--gold-line);
+  margin-top: 16px;
+  padding: 16px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
   text-align: left;
 }
 
 .tester-heading {
-  margin: 0 0 8px;
-  font-size: 1rem;
+  margin: 0 0 10px;
+  font-size: 0.92rem;
+  color: var(--ink-primary);
 }
 
 .tester-controls-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .tester-field {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-weight: 700;
+  gap: 8px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink-secondary);
 }
 
 .validator-response-box {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--gold-line);
-  background-color: var(--paper-warm);
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  background-color: var(--surface-warm);
+  font-size: 0.88rem;
 }
 
 .validator-response-box.is-rejected {
-  background-color: #f4d8dc;
-  border-color: #9e3f4d;
+  background-color: var(--danger-bg);
+  border-color: var(--danger-border);
+  color: var(--danger-ink);
 }
 
 .validator-response-box.is-approved {
-  background-color: var(--leaf-pale);
-  border-color: var(--leaf-green);
+  background-color: var(--sage-bg);
+  border-color: var(--sage-border);
+  color: var(--sage-green);
 }
 
-/* Panel de Andrés (Pantalla 4) */
+/* ============================================================================
+   PANEL DE ANDRÉS (PANTALLA 4)
+   ============================================================================ */
 .funnel-steps-row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
+  gap: 10px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 660px) {
   .funnel-steps-row {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 .funnel-step-card {
-  background-color: var(--paper-cream);
-  border: 1px solid var(--gold-line);
-  padding: 8px 6px;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 12px 10px;
   text-align: center;
   display: flex;
   flex-direction: column;
+  gap: 3px;
 }
 
 .funnel-step-highlight {
-  background-color: var(--leaf-pale);
-  border-color: var(--leaf-green);
+  background-color: var(--sage-bg);
+  border-color: var(--sage-border);
 }
 
 .funnel-step-label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  color: var(--gold-dark);
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
   font-weight: 700;
+}
+
+.funnel-step-highlight .funnel-step-label,
+.funnel-step-highlight .funnel-step-num {
+  color: var(--sage-green);
 }
 
 .funnel-step-num {
   font-family: var(--font-display);
-  font-size: 1.75rem;
+  font-size: 1.65rem;
   font-weight: 700;
-  color: var(--ink-dark);
+  color: var(--ink-primary);
 }
 
 .funnel-step-sub {
-  font-size: 0.82rem;
-  color: var(--ink-muted);
+  font-size: 0.78rem;
+  color: var(--ink-secondary);
 }
 
 .capacity-alert-banner {
-  padding: 8px 12px;
-  margin-bottom: 10px;
-  border: 1.5px solid #9e3f4d;
-  background-color: #f4d8dc;
-  font-weight: 700;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--danger-border);
+  background-color: var(--danger-bg);
+  color: var(--danger-ink);
+  font-size: 0.88rem;
+  font-weight: 600;
   text-align: center;
 }
 
@@ -1208,40 +1445,41 @@ html, body {
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--ink-secondary);
 }
 
-.smart-trigger-banner {
-  background-color: var(--gold-pale);
-  border: 1px solid var(--gold-dark);
-  padding: 10px 14px;
-  margin: 0 auto 14px;
-  max-width: 580px;
-  font-size: 0.94rem;
-  text-align: left;
+.honest-math-list strong {
+  color: var(--ink-primary);
 }
 
 .battery-upsell-checkbox {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  background-color: var(--paper-warm);
-  border: 1px solid var(--gold-line);
-  padding: 8px 12px;
-  font-size: 0.9rem;
+  gap: 10px;
+  background-color: var(--solar-honey-bg);
+  border: 1px solid var(--solar-honey-border);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 0.84rem;
+  color: var(--ink-secondary);
   text-align: left;
   cursor: pointer;
-  max-width: 440px;
+  max-width: 460px;
+}
+
+.battery-upsell-checkbox strong {
+  color: var(--ink-primary);
 }
 
 .battery-upsell-checkbox input[type="checkbox"] {
-  margin-top: 4px;
-  accent-color: var(--gold-dark);
+  margin-top: 3px;
+  accent-color: var(--solar-terracotta);
 }
 
 .cashflow-protection-box {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--gold-line);
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-light);
 }
-
