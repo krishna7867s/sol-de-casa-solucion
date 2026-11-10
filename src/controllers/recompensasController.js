@@ -1,13 +1,13 @@
-const { db } = require('../db');
 const { CASE_CONSTANTS, calcularCostoPorVentaRecompensa } = require('../constants');
 const { sanitizarTexto } = require('../middleware/validate');
+const { Recompensa } = require('../models/orm');
 
 /**
  * Función de dominio: Calcula el costo de recompensas por venta frente al tope de $300
  * de Andrés ($133,33 de las 2,22 visitas + recompensas <= $300 -> tope real ≈ $167).
  */
 function obtenerResumenReglaAndres() {
-  const recompensas = db.prepare('SELECT * FROM recompensas WHERE activa = 1 ORDER BY id ASC').all();
+  const recompensas = Recompensa.findAllActive();
   const costoVisitasPorVenta = Number(CASE_CONSTANTS.COSTO_VISITAS_POR_VENTA_REF.toFixed(2)); // $133.33
   const presupuestoMaxRecompensas = Number(CASE_CONSTANTS.PRESUPUESTO_MAX_RECOMPENSAS_POR_VENTA.toFixed(2)); // $166.67
 
@@ -92,12 +92,16 @@ function validarOAgregarRecompensa(req, res) {
     const receptor = quien_recibe === 'vecino' ? 'vecino' : 'familia';
     const mult = disparador === 'agendar' ? Number(CASE_CONSTANTS.MULTIPLICADOR_AGENDAR_POR_VENTA.toFixed(4)) : 1.0;
 
-    db.prepare(`
-      INSERT INTO recompensas (
-        codigo, nombre, descripcion, disparador, quien_recibe,
-        costo_sol_de_casa, multiplicador_embudo, costo_por_venta_calculado, activa
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
-    `).run(cod, nom, desc, disparador, receptor, Number(costo_sol_de_casa), mult, costoPorVentaNueva);
+    Recompensa.create({
+      codigo: cod,
+      nombre: nom,
+      descripcion: desc,
+      disparador,
+      quien_recibe: receptor,
+      costo_sol_de_casa: Number(costo_sol_de_casa),
+      multiplicador_embudo: mult,
+      costo_por_venta_calculado: costoPorVentaNueva
+    });
   }
 
   res.json({

@@ -1,7 +1,14 @@
 const crypto = require('crypto');
-const { db } = require('../db');
 const { CASE_CONSTANTS } = require('../constants');
 const { obtenerResumenReglaAndres } = require('./recompensasController');
+const {
+  Familia,
+  AhorroMensual,
+  Comparticion,
+  VisitaVecino,
+  Reserva,
+  MovimientoRecompensa
+} = require('../models/orm');
 
 /**
  * GET /api/familias/:token/ahorro
@@ -10,22 +17,12 @@ const { obtenerResumenReglaAndres } = require('./recompensasController');
 function obtenerAhorroFamilia(req, res) {
   const { token } = req.params;
 
-  const familia = db.prepare(`
-    SELECT id, token_personal, nombre_pila, nombre_completo, barrio,
-           fecha_instalacion, recibo_antes, tiene_plan_mantenimiento, es_simulado
-    FROM familias WHERE token_personal = ?
-  `).get(token);
-
+  const familia = Familia.findByToken(token);
   if (!familia) {
     return res.status(404).json({ error: 'Familia no encontrada.' });
   }
 
-  const historial = db.prepare(`
-    SELECT mes, etiqueta_mes, kwh_producidos, recibo_antes, recibo_despues, ahorro, es_simulado
-    FROM ahorros_mensuales
-    WHERE familia_id = ?
-    ORDER BY mes DESC
-  `).all(familia.id);
+  const historial = AhorroMensual.findByFamiliaId(familia.id);
 
   const ultimoMes = historial[0] || null;
   const ahorroAcumulado = Number(
@@ -35,18 +32,16 @@ function obtenerAhorroFamilia(req, res) {
     historial.reduce((acc, row) => acc + row.kwh_producidos, 0)
   );
 
-  let comparticionActiva = db.prepare(`
-    SELECT codigo_ref, canal, fecha FROM comparticiones
-    WHERE familia_id = ? ORDER BY id DESC LIMIT 1
-  `).get(familia.id);
+  let comparticionActiva = Comparticion.findLatestByFamiliaId(familia.id);
 
   if (!comparticionActiva) {
     const nuevoRef = `ref_${familia.id}_${crypto.randomBytes(6).toString('hex')}`;
-    db.prepare(`
-      INSERT INTO comparticiones (codigo_ref, familia_id, canal, fecha, es_simulado)
-      VALUES (?, ?, 'LinkDirecto', ?, 1)
-    `).run(nuevoRef, familia.id, new Date().toISOString());
-    comparticionActiva = { codigo_ref: nuevoRef, canal: 'LinkDirecto', fecha: new Date().toISOString() };
+    comparticionActiva = Comparticion.create({
+      codigo_ref: nuevoRef,
+      familia_id: familia.id,
+      canal: 'LinkDirecto',
+      fecha: new Date().toISOString()
+    });
   }
 
   res.json({
@@ -94,7 +89,7 @@ function obtenerAhorroFamilia(req, res) {
 function registrarComparticionFamilia(req, res) {
   const { token } = req.params;
 
-  const familia = db.prepare('SELECT id, nombre_pila, barrio, recibo_antes FROM familias WHERE token_personal = ?').get(token);
+  const familia = Familia.findByToken(token);
   if (!familia) {
     return res.status(404).json({ error: 'Familia no encontrada.' });
   }
@@ -105,10 +100,12 @@ function registrarComparticionFamilia(req, res) {
   const codigoRef = `ref_${familia.id}_${crypto.randomBytes(6).toString('hex')}`;
   const fecha = new Date().toISOString();
 
-  const info = db.prepare(`
-    INSERT INTO comparticiones (codigo_ref, familia_id, canal, fecha, es_simulado)
-    VALUES (?, ?, ?, ?, 1)
-  `).run(codigoRef, familia.id, canal, fecha);
+  const creada = Comparticion.create({
+    codigo_ref: codigoRef,
+    familia_id: familia.id,
+    canal,
+    fecha
+  });
 
   const ahorroMes = Number((familia.recibo_antes * CASE_CONSTANTS.PCT_AHORRO_PROMEDIO).toFixed(2));
 
@@ -116,7 +113,7 @@ function registrarComparticionFamilia(req, res) {
     ok: true,
     mensaje: 'Tarjeta de ahorro lista para compartir (simulado).',
     comparticion: {
-      id: info.lastInsertRowid,
+      id: creada.id,
       codigo_ref: codigoRef,
       canal,
       fecha,
@@ -138,31 +135,16 @@ function registrarComparticionFamilia(req, res) {
 function obtenerProgresoRecompensasFamilia(req, res) {
   const { token } = req.params;
 
-  const familia = db.prepare('SELECT id, nombre_pila, nombre_completo, barrio FROM familias WHERE token_personal = ?').get(token);
+  const familia = Familia.findByToken(token);
   if (!familia) {
     return res.status(404).json({ error: 'Familia no encontrada.' });
   }
 
-  const reservasVecinos = db.prepare(`
-    SELECT id, nombre_vecino, horario_elegido, estado, fecha_creacion, fecha_actualizacion
-    FROM reservas
-    WHERE familia_referente_id = ?
-    ORDER BY id DESC
-  `).all(familia.id);
+  const reservasVecinos = Reserva.findByFamiliaReferenteId(familia.id);
+  const movimientos = MovimientoRecompensa.findDetailedByFamiliaId(familia.id);
 
-  const movimientos = db.prepare(`
-    SELECT m.id, m.evento, m.costo, m.fecha, m.reserva_id,
-           r.nombre as recompensa_nombre, r.quien_recibe, r.disparador,
-           res.nombre_vecino
-    FROM movimientos_recompensa m
-    JOIN recompensas r ON r.id = m.recompensa_id
-    JOIN reservas res ON res.id = m.reserva_id
-    WHERE m.familia_id = ?
-    ORDER BY m.id DESC
-  `).all(familia.id);
-
-  const totalComparticiones = db.prepare('SELECT COUNT(*) as total FROM comparticiones WHERE familia_id = ?').get(familia.id).total;
-  const totalVecinosCalculadora = db.prepare('SELECT COUNT(*) as total FROM visitas_vecino WHERE familia_referente_id = ? AND uso_calculadora = 1').get(familia.id).total;
+  const totalComparticiones = Comparticion.countByFamiliaId(familia.id);
+  const totalVecinosCalculadora = VisitaVecino.countCalculadoraByFamiliaId(familia.id);
   const totalAgendadas = reservasVecinos.length;
   const totalHechas = reservasVecinos.filter(r => r.estado === 'hecha' || r.estado === 'firmada').length;
   const totalFirmadas = reservasVecinos.filter(r => r.estado === 'firmada').length;

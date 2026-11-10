@@ -1,23 +1,23 @@
-const { db } = require('../db');
 const { CASE_CONSTANTS, calcularAhorroVecino } = require('../constants');
 const { sanitizarTexto } = require('../middleware/validate');
+const {
+  AhorroMensual,
+  Comparticion,
+  VisitaVecino,
+  HorarioDisponible,
+  Reserva,
+  Recompensa,
+  MovimientoRecompensa,
+  runInTransaction
+} = require('../models/orm');
 
 /**
  * Función de dominio: Calcula el estado de capacidad de las 100 visitas del mes
  * y limita los horarios ofrecidos a la capacidad restante.
  */
 function obtenerEstadoCapacidadVisitas() {
-  const reservasActivas = db.prepare(`
-    SELECT COUNT(*) as total FROM reservas
-    WHERE estado IN ('agendada', 'hecha', 'firmada')
-  `).get().total;
-
-  const horariosLibresDB = db.prepare(`
-    SELECT id, fecha_hora, etiqueta_horario, tecnico
-    FROM horarios_disponibles
-    WHERE reservado = 0
-    ORDER BY fecha_hora ASC
-  `).all();
+  const reservasActivas = Reserva.countActive();
+  const horariosLibresDB = HorarioDisponible.findAvailable();
 
   const visitasAnunciosHoy = CASE_CONSTANTS.VISITAS_OCUPADAS_ANUNCIOS_HOY; // 97.5
   const capacidadMaxima = CASE_CONSTANTS.CAPACIDAD_MAXIMA_VISITAS;         // 100
@@ -47,30 +47,13 @@ function obtenerEstadoCapacidadVisitas() {
 function obtenerTarjetaVecino(req, res) {
   const codigoRef = req.params.codigo_ref;
 
-  const comp = db.prepare(`
-    SELECT c.id as comparticion_id, c.codigo_ref, c.canal, c.familia_id,
-           f.nombre_pila, f.barrio, f.recibo_antes
-    FROM comparticiones c
-    JOIN familias f ON f.id = c.familia_id
-    WHERE c.codigo_ref = ?
-  `).get(codigoRef);
-
+  const comp = Comparticion.findWithFamiliaByCodigoRef(codigoRef);
   if (!comp) {
     return res.status(404).json({ error: 'Postal de vecino no encontrada o enlace inválido.' });
   }
 
-  const ultimoAhorro = db.prepare(`
-    SELECT etiqueta_mes, ahorro
-    FROM ahorros_mensuales
-    WHERE familia_id = ?
-    ORDER BY mes DESC LIMIT 1
-  `).get(comp.familia_id);
-
-  const acumuladoRow = db.prepare(`
-    SELECT SUM(ahorro) as total, COUNT(*) as meses
-    FROM ahorros_mensuales
-    WHERE familia_id = ?
-  `).get(comp.familia_id);
+  const ultimoAhorro = AhorroMensual.findLatestByFamiliaId(comp.familia_id);
+  const acumuladoRow = AhorroMensual.getSummaryByFamiliaId(comp.familia_id);
 
   const ahorroMes = ultimoAhorro
     ? ultimoAhorro.ahorro
@@ -106,7 +89,7 @@ function calcularAhorroParaVecino(req, res) {
   const reciboMensual = req.body.recibo_mensual;
   const incluyeBateria = req.body.incluye_bateria;
 
-  const comp = db.prepare('SELECT id, familia_id FROM comparticiones WHERE codigo_ref = ?').get(codigoRef);
+  const comp = Comparticion.findByCodigoRef(codigoRef);
   if (!comp) {
     return res.status(404).json({ error: 'Código de referencia no encontrado.' });
   }
@@ -118,19 +101,14 @@ function calcularAhorroParaVecino(req, res) {
     return res.status(400).json({ error: err.message });
   }
 
-  const info = db.prepare(`
-    INSERT INTO visitas_vecino (
-      comparticion_id, familia_referente_id, uso_calculadora,
-      recibo_ingresado, ahorro_calculado, anios_recuperacion, fecha, es_simulado
-    ) VALUES (?, ?, 1, ?, ?, ?, ?, 1)
-  `).run(
-    comp.id,
-    comp.familia_id,
-    calculo.recibo_ingresado,
-    calculo.ahorro_mensual_estimado,
-    calculo.anios_recuperacion,
-    new Date().toISOString()
-  );
+  const visita = VisitaVecino.create({
+    comparticion_id: comp.id,
+    familia_referente_id: comp.familia_id,
+    recibo_ingresado: calculo.recibo_ingresado,
+    ahorro_calculado: calculo.ahorro_mensual_estimado,
+    anios_recuperacion: calculo.anios_recuperacion,
+    fecha: new Date().toISOString()
+  });
 
   const textoBateria = calculo.incluye_bateria_respaldo
     ? ` Incluye la Batería de Respaldo contra apagones ($3.000 adicionales, total $9.500; aporta +$510 de contribución neta a Sol de Casa).`
@@ -138,7 +116,7 @@ function calcularAhorroParaVecino(req, res) {
 
   res.status(201).json({
     ok: true,
-    visita_vecino_id: info.lastInsertRowid,
+    visita_vecino_id: visita.id,
     codigo_ref: codigoRef,
     resultado_calculadora: {
       ...calculo,
@@ -178,13 +156,7 @@ function agendarVisitaDirecta(req, res) {
   const horarioTexto = sanitizarTexto(req.body?.horario_elegido, 100);
   const visitaVecinoId = req.body?.visita_vecino_id ? Number(req.body.visita_vecino_id) : null;
 
-  const comp = db.prepare(`
-    SELECT c.id, c.familia_id, f.nombre_pila, f.barrio
-    FROM comparticiones c
-    JOIN familias f ON f.id = c.familia_id
-    WHERE c.codigo_ref = ?
-  `).get(codigoRef);
-
+  const comp = Comparticion.findWithFamiliaByCodigoRef(codigoRef);
   if (!comp) {
     return res.status(404).json({ error: 'No se encontró la referencia de la familia.' });
   }
@@ -215,57 +187,47 @@ function agendarVisitaDirecta(req, res) {
   const ahora = new Date().toISOString();
   const nombreConEtiqueta = nombre.toLowerCase().includes('simulado') ? nombre : `${nombre} (simulado)`;
 
-  const transaccionAgendar = db.transaction(() => {
-    const updateHorario = db.prepare('UPDATE horarios_disponibles SET reservado = 1 WHERE id = ? AND reservado = 0').run(horarioRow.id);
-    if (updateHorario.changes === 0) {
-      throw new Error('Ese horario acaba de ser ocupado. Por favor elija otro.');
-    }
-
-    const infoReserva = db.prepare(`
-      INSERT INTO reservas (
-        comparticion_id, familia_referente_id, visita_vecino_id,
-        nombre_vecino, telefono_vecino, horario_elegido, estado,
-        fecha_creacion, fecha_actualizacion, es_simulado
-      ) VALUES (?, ?, ?, ?, ?, ?, 'agendada', ?, ?, 1)
-    `).run(
-      comp.id,
-      comp.familia_id,
-      visitaVecinoId,
-      nombreConEtiqueta,
-      telefono,
-      horarioRow.etiqueta_horario,
-      ahora,
-      ahora
-    );
-
-    const reservaId = infoReserva.lastInsertRowid;
-
-    const recompensasAgendar = db.prepare(`
-      SELECT id, nombre, costo_sol_de_casa FROM recompensas
-      WHERE disparador = 'agendar' AND activa = 1
-    `).all();
-
-    const movimientosCreados = [];
-    const insertMov = db.prepare(`
-      INSERT OR IGNORE INTO movimientos_recompensa (
-        familia_id, recompensa_id, reserva_id, evento, costo, fecha, es_simulado
-      ) VALUES (?, ?, ?, 'agendar', ?, ?, 1)
-    `);
-
-    for (const rec of recompensasAgendar) {
-      insertMov.run(comp.familia_id, rec.id, reservaId, rec.costo_sol_de_casa, ahora);
-      movimientosCreados.push({
-        recompensa: rec.nombre,
-        evento: 'agendar',
-        costo_sol_de_casa: rec.costo_sol_de_casa
-      });
-    }
-
-    return { reservaId, movimientosCreados };
-  });
-
   try {
-    const resultado = transaccionAgendar();
+    const resultado = runInTransaction(() => {
+      const reservadoOk = HorarioDisponible.markReserved(horarioRow.id);
+      if (!reservadoOk) {
+        throw new Error('Ese horario acaba de ser ocupado. Por favor elija otro.');
+      }
+
+      const nuevaReserva = Reserva.create({
+        comparticion_id: comp.id,
+        familia_referente_id: comp.familia_id,
+        visita_vecino_id: visitaVecinoId,
+        nombre_vecino: nombreConEtiqueta,
+        telefono_vecino: telefono,
+        horario_elegido: horarioRow.etiqueta_horario,
+        estado: 'agendada',
+        fecha_creacion: ahora,
+        fecha_actualizacion: ahora
+      });
+
+      const recompensasAgendar = Recompensa.findActiveByDisparador('agendar');
+      const movimientosCreados = [];
+
+      for (const rec of recompensasAgendar) {
+        MovimientoRecompensa.createOrIgnore({
+          familia_id: comp.familia_id,
+          recompensa_id: rec.id,
+          reserva_id: nuevaReserva.id,
+          evento: 'agendar',
+          costo: rec.costo_sol_de_casa,
+          fecha: ahora
+        });
+        movimientosCreados.push({
+          recompensa: rec.nombre,
+          evento: 'agendar',
+          costo_sol_de_casa: rec.costo_sol_de_casa
+        });
+      }
+
+      return { reservaId: nuevaReserva.id, movimientosCreados };
+    });
+
     res.status(201).json({
       ok: true,
       mensaje: `¡Visita agendada sin esperar las 31 horas de llamada! El técnico irá el ${horarioRow.etiqueta_horario}.`,

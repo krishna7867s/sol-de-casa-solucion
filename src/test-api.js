@@ -1,6 +1,7 @@
 const assert = require('assert');
 const { app } = require('../server');
 const { seedDatabase } = require('./seed');
+const { Familia, Reserva } = require('./models/orm');
 
 /**
  * Invoca una ruta de Express directamente en memoria (sin abrir sockets TCP),
@@ -179,7 +180,18 @@ async function runTests() {
   }, '10.0.0.50');
   assert.strictEqual(rPrivacidad.status, 400);
   assert.strictEqual(rPrivacidad.body.codigo, 'PRIVACY_EXCESS_FIELDS_REJECTED');
-  console.log('  ✔ [10/10] Middleware de Validación -> Rechaza campos invasivos del formulario viejo (correo, dirección, techo).');
+  console.log('  ✔ [10/11] Middleware de Validación -> Rechaza campos invasivos del formulario viejo (correo, dirección, techo).');
+
+  // 11. Probar Capa ORM (prevención de consultas malformadas y whitelist de esquema)
+  assert.throws(() => {
+    Familia.findOneBy('columna_inexistente; DROP TABLE familias;--', 'valor');
+  }, /ORM Error/);
+  assert.throws(() => {
+    Reserva.validatePayload({ nombre_vecino: 'Vecino', campo_pirata: '1=1' });
+  }, /ORM Error/);
+  const intentoInyeccion = Familia.findByToken("' OR '1'='1");
+  assert.strictEqual(intentoInyeccion, undefined);
+  console.log('  ✔ [11/11] Capa ORM (src/models/orm.js) -> Impide consultas malformadas, valida esquema y parametriza valores.');
 
   // Restaurar estado limpio de la semilla después de los tests
   await invokeExpress(app, 'POST', '/api/demo/reset');

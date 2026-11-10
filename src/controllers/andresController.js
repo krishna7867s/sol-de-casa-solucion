@@ -1,17 +1,25 @@
 const os = require('os');
 const QRCode = require('qrcode');
-const { db } = require('../db');
 const { seedDatabase } = require('../seed');
 const { CASE_CONSTANTS } = require('../constants');
 const { sanitizarTexto } = require('../middleware/validate');
 const { obtenerResumenReglaAndres } = require('./recompensasController');
 const { obtenerEstadoCapacidadVisitas } = require('./vecinoController');
+const {
+  Familia,
+  Comparticion,
+  VisitaVecino,
+  Reserva,
+  Recompensa,
+  MovimientoRecompensa,
+  runInTransaction
+} = require('../models/orm');
 
 /**
  * GET /api/health
  */
 function obtenerEstadoSalud(req, res) {
-  const fams = db.prepare('SELECT id, token_personal, nombre_pila, barrio FROM familias').all();
+  const fams = Familia.findAllPublic();
   res.json({
     ok: true,
     servicio: 'Sol de Casa API - Prototipo Parte 2 (Datos Simulados)',
@@ -33,36 +41,31 @@ function avanzarEstadoReservaDemo(req, res) {
     });
   }
 
-  const reserva = db.prepare('SELECT * FROM reservas WHERE id = ?').get(reservaId);
+  const reserva = Reserva.findById(reservaId);
   if (!reserva) {
     return res.status(404).json({ error: `Reserva con ID ${reservaId} no encontrada.` });
   }
 
   const ahora = new Date().toISOString();
 
-  const transaccionAvanzar = db.transaction(() => {
-    db.prepare(`
-      UPDATE reservas SET estado = ?, fecha_actualizacion = ? WHERE id = ?
-    `).run(nuevoEstado, ahora, reservaId);
+  const recompensasDesbloqueadas = runInTransaction(() => {
+    Reserva.updateEstado(reservaId, nuevoEstado, ahora);
 
     const nuevasRecompensas = [];
 
     if (nuevoEstado === 'firmada') {
-      const recompensasFirma = db.prepare(`
-        SELECT id, nombre, quien_recibe, costo_sol_de_casa
-        FROM recompensas
-        WHERE disparador = 'firmar' AND activa = 1
-      `).all();
-
-      const insertMov = db.prepare(`
-        INSERT OR IGNORE INTO movimientos_recompensa (
-          familia_id, recompensa_id, reserva_id, evento, costo, fecha, es_simulado
-        ) VALUES (?, ?, ?, 'firmar', ?, ?, 1)
-      `);
+      const recompensasFirma = Recompensa.findActiveByDisparador('firmar');
 
       for (const rec of recompensasFirma) {
-        const info = insertMov.run(reserva.familia_referente_id, rec.id, reservaId, rec.costo_sol_de_casa, ahora);
-        if (info.changes > 0) {
+        const insertado = MovimientoRecompensa.createOrIgnore({
+          familia_id: reserva.familia_referente_id,
+          recompensa_id: rec.id,
+          reserva_id: reservaId,
+          evento: 'firmar',
+          costo: rec.costo_sol_de_casa,
+          fecha: ahora
+        });
+        if (insertado) {
           nuevasRecompensas.push({
             recompensa: rec.nombre,
             quien_recibe: rec.quien_recibe,
@@ -75,8 +78,7 @@ function avanzarEstadoReservaDemo(req, res) {
     return nuevasRecompensas;
   });
 
-  const recompensasDesbloqueadas = transaccionAvanzar();
-  const reservaActualizada = db.prepare('SELECT * FROM reservas WHERE id = ?').get(reservaId);
+  const reservaActualizada = Reserva.findById(reservaId);
 
   res.json({
     ok: true,
@@ -93,15 +95,13 @@ function avanzarEstadoReservaDemo(req, res) {
  * Pieza 5: Panel de Andrés con embudo en vivo, CAC frente a $300 y visitas frente a 100
  */
 function obtenerPanelAndres(req, res) {
-  const totalComparticiones = db.prepare('SELECT COUNT(*) as total FROM comparticiones').get().total;
-  const totalCalculadora = db.prepare('SELECT COUNT(*) as total FROM visitas_vecino WHERE uso_calculadora = 1').get().total;
-  const totalAgendadas = db.prepare('SELECT COUNT(*) as total FROM reservas').get().total;
-  const totalHechas = db.prepare("SELECT COUNT(*) as total FROM reservas WHERE estado IN ('hecha', 'firmada')").get().total;
-  const totalFirmadas = db.prepare("SELECT COUNT(*) as total FROM reservas WHERE estado = 'firmada'").get().total;
+  const totalComparticiones = Comparticion.count();
+  const totalCalculadora = VisitaVecino.countAllCalculadora();
+  const totalAgendadas = Reserva.count();
+  const totalHechas = Reserva.countHechasOFirmadas();
+  const totalFirmadas = Reserva.countFirmadas();
 
-  const gastoRecompensasReal = Number(
-    (db.prepare('SELECT SUM(costo) as total FROM movimientos_recompensa').get().total || 0).toFixed(2)
-  );
+  const gastoRecompensasReal = MovimientoRecompensa.sumAllCostos();
 
   const resumenRegla = obtenerResumenReglaAndres();
   const estadoCapacidad = obtenerEstadoCapacidadVisitas();
@@ -111,13 +111,7 @@ function obtenerPanelAndres(req, res) {
     ? Number(((costoVisitasObservadas + gastoRecompensasReal) / totalFirmadas).toFixed(2))
     : resumenRegla.cac_referido_total_calculado;
 
-  const listaReservas = db.prepare(`
-    SELECT r.id, r.nombre_vecino, r.telefono_vecino, r.horario_elegido, r.estado,
-           r.fecha_creacion, f.nombre_pila as familia_referente, f.barrio
-    FROM reservas r
-    JOIN familias f ON f.id = r.familia_referente_id
-    ORDER BY r.id DESC
-  `).all();
+  const listaReservas = Reserva.findAllWithFamilia();
 
   res.json({
     etiqueta_panel: 'Panel de Control de Andrés · Datos Simulados en Vivo',
