@@ -378,3 +378,4 @@ module.exports = {
   MovimientoRecompensa,
   runInTransaction
 };
+
