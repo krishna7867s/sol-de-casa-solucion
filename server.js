@@ -11,6 +11,14 @@ const {
   calcularCostoPorVentaRecompensa,
   calcularAhorroVecino
 } = require('./src/constants');
+const {
+  sanitizarTexto,
+  validarTokenFamilia,
+  validarCodigoRef,
+  validarCalculadoraVecino,
+  validarAgendarVecino,
+  validarConfiguracionRecompensa
+} = require('./src/middleware/validate');
 
 const app = express();
 app.use(cors());
@@ -54,17 +62,6 @@ function rateLimiterAgendar(req, res, next) {
     });
   }
   next();
-}
-
-// Utilidad para limpiar y validar texto de entrada
-function sanitizarTexto(str, maxLen = 80) {
-  if (typeof str !== 'string') return '';
-  return str.replace(/[<>]/g, '').trim().slice(0, maxLen);
-}
-
-// Utilidad para validar formato de token personal (imposible de adivinar)
-function esTokenValido(token) {
-  return typeof token === 'string' && /^fam_[a-f0-9]{32,64}$/.test(token);
 }
 
 // ============================================================================
@@ -127,11 +124,8 @@ app.get('/api/health', (req, res) => {
 // ============================================================================
 // ENDPOINT 1: Ahorro de la familia (Pieza 1: Ahorro a la vista)
 // ============================================================================
-app.get('/api/familias/:token/ahorro', (req, res) => {
+app.get('/api/familias/:token/ahorro', validarTokenFamilia, (req, res) => {
   const { token } = req.params;
-  if (!esTokenValido(token)) {
-    return res.status(400).json({ error: 'Formato de token personal inválido.' });
-  }
 
   const familia = db.prepare(`
     SELECT id, token_personal, nombre_pila, nombre_completo, barrio,
@@ -214,11 +208,8 @@ app.get('/api/familias/:token/ahorro', (req, res) => {
 // ============================================================================
 // ENDPOINT 2: Registrar compartición de tarjeta (Pieza 2: Compartir)
 // ============================================================================
-app.post('/api/familias/:token/compartir', (req, res) => {
+app.post('/api/familias/:token/compartir', validarTokenFamilia, (req, res) => {
   const { token } = req.params;
-  if (!esTokenValido(token)) {
-    return res.status(400).json({ error: 'Formato de token personal inválido.' });
-  }
 
   const familia = db.prepare('SELECT id, nombre_pila, barrio, recibo_antes FROM familias WHERE token_personal = ?').get(token);
   if (!familia) {
@@ -261,11 +252,8 @@ app.post('/api/familias/:token/compartir', (req, res) => {
 // ENDPOINT 3: Ver la tarjeta como vecino (Pieza 3: Privacidad cuidada)
 // SEGURIDAD: Muestra SOLO el nombre de pila, el barrio y el ahorro de la familia.
 // ============================================================================
-app.get('/api/vecino/tarjeta/:codigo_ref', (req, res) => {
-  const codigoRef = sanitizarTexto(req.params.codigo_ref, 60);
-  if (!codigoRef) {
-    return res.status(400).json({ error: 'Código de referencia requerido.' });
-  }
+app.get('/api/vecino/tarjeta/:codigo_ref', validarCodigoRef, (req, res) => {
+  const codigoRef = req.params.codigo_ref;
 
   const comp = db.prepare(`
     SELECT c.id as comparticion_id, c.codigo_ref, c.canal, c.familia_id,
@@ -323,14 +311,10 @@ app.get('/api/vecino/tarjeta/:codigo_ref', (req, res) => {
 // Dice la verdad: 70% de ahorro y recuperación en ≈ 7 años con recibo de $110,
 // y permite cotizar la Batería de Respaldo ($3.000, +$510 contribución de Parte 1).
 // ============================================================================
-app.post('/api/vecino/calculadora', (req, res) => {
-  const codigoRef = sanitizarTexto(req.body?.codigo_ref, 60);
-  const reciboMensual = Number(req.body?.recibo_mensual);
-  const incluyeBateria = Boolean(req.body?.incluye_bateria);
-
-  if (!codigoRef) {
-    return res.status(400).json({ error: 'El campo codigo_ref es obligatorio.' });
-  }
+app.post('/api/vecino/calculadora', validarCodigoRef, validarCalculadoraVecino, (req, res) => {
+  const codigoRef = req.body.codigo_ref;
+  const reciboMensual = req.body.recibo_mensual;
+  const incluyeBateria = req.body.incluye_bateria;
 
   const comp = db.prepare('SELECT id, familia_id FROM comparticiones WHERE codigo_ref = ?').get(codigoRef);
   if (!comp) {
@@ -395,28 +379,17 @@ app.get('/api/horarios', (req, res) => {
 // ============================================================================
 // ENDPOINT 6: Agendar visita técnica directamente (Pieza 3 - Paso 3)
 // - Pide SOLO nombre y teléfono (frente a los 6 campos del formulario antiguo)
-// - Protegido con rate limit (máx 5 intentos)
+// - Protegido con rate limit (máx 5 intentos) y middleware de validación
 // - Respeta capacidad restante de horarios
 // - Registra quién lo refirió y activa recompensa de 'agendar'
 // ============================================================================
-app.post('/api/vecino/agendar', rateLimiterAgendar, (req, res) => {
-  const codigoRef = sanitizarTexto(req.body?.codigo_ref, 60);
-  const nombre = sanitizarTexto(req.body?.nombre, 60);
-  const telefono = sanitizarTexto(req.body?.telefono, 25);
+app.post('/api/vecino/agendar', rateLimiterAgendar, validarCodigoRef, validarAgendarVecino, (req, res) => {
+  const codigoRef = req.body.codigo_ref;
+  const nombre = req.body.nombre;
+  const telefono = req.body.telefono;
   const horarioId = req.body?.horario_id ? Number(req.body.horario_id) : null;
   const horarioTexto = sanitizarTexto(req.body?.horario_elegido, 100);
   const visitaVecinoId = req.body?.visita_vecino_id ? Number(req.body.visita_vecino_id) : null;
-
-  // Rechazar si envían campos invasivos del formulario viejo (correo, dirección, techo, etc.) o si faltan nombre y teléfono
-  if (!codigoRef) {
-    return res.status(400).json({ error: 'Falta el código de referencia (codigo_ref) de la familia que refiere.' });
-  }
-  if (!nombre || nombre.length < 2) {
-    return res.status(400).json({ error: 'Por favor escriba su nombre (mínimo 2 caracteres).' });
-  }
-  if (!telefono || !/^[0-9+\-\s()]{7,20}$/.test(telefono)) {
-    return res.status(400).json({ error: 'Por favor ingrese un número de teléfono válido en Costa Rica (ej. 8888-8888).' });
-  }
 
   const comp = db.prepare(`
     SELECT c.id, c.familia_id, f.nombre_pila, f.barrio
@@ -577,7 +550,7 @@ app.get('/api/recompensas/catalogo', (req, res) => {
 });
 
 // Endpoint para probar/configurar recompensas verificando en el servidor la regla de <= $300
-app.post('/api/recompensas/validar-o-agregar', (req, res) => {
+app.post('/api/recompensas/validar-o-agregar', validarConfiguracionRecompensa, (req, res) => {
   const { codigo, nombre, descripcion, disparador, quien_recibe, costo_sol_de_casa, persistir } = req.body || {};
 
   let costoPorVentaNueva;
@@ -640,11 +613,8 @@ app.post('/api/recompensas/validar-o-agregar', (req, res) => {
 // ============================================================================
 // ENDPOINT 8: Progreso de recompensas de la familia (Pieza 4: Barra de avance)
 // ============================================================================
-app.get('/api/familias/:token/recompensas', (req, res) => {
+app.get('/api/familias/:token/recompensas', validarTokenFamilia, (req, res) => {
   const { token } = req.params;
-  if (!esTokenValido(token)) {
-    return res.status(400).json({ error: 'Formato de token personal inválido.' });
-  }
 
   const familia = db.prepare('SELECT id, nombre_pila, nombre_completo, barrio FROM familias WHERE token_personal = ?').get(token);
   if (!familia) {

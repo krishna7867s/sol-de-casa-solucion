@@ -166,7 +166,20 @@ async function runTests() {
     ultimoStatus = rLimit.status;
   }
   assert.strictEqual(ultimoStatus, 429);
-  console.log('  ✔ [9/9] Rate Limiter en POST /api/vecino/agendar -> Bloquea con HTTP 429 al superar 5 intentos.');
+  console.log('  ✔ [9/10] Rate Limiter en POST /api/vecino/agendar -> Bloquea con HTTP 429 al superar 5 intentos.');
+
+  // 10. Probar Middleware de Validación y Privacidad (rechazar campos del formulario viejo de 6 preguntas)
+  const rPrivacidad = await invokeExpress(app, 'POST', '/api/vecino/agendar', {
+    codigo_ref: nuevoRef,
+    nombre: 'Doña Rosa',
+    telefono: '8811-2233',
+    correo: 'rosa@correo.com',
+    direccion: '200m sur de la iglesia',
+    tipo_techo: 'Teja'
+  }, '10.0.0.50');
+  assert.strictEqual(rPrivacidad.status, 400);
+  assert.strictEqual(rPrivacidad.body.codigo, 'PRIVACY_EXCESS_FIELDS_REJECTED');
+  console.log('  ✔ [10/10] Middleware de Validación -> Rechaza campos invasivos del formulario viejo (correo, dirección, techo).');
 
   // Restaurar estado limpio de la semilla después de los tests
   await invokeExpress(app, 'POST', '/api/demo/reset');
