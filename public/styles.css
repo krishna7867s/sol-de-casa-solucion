@@ -1,0 +1,1212 @@
+/* ============================================================================
+   ESTILO EDITORIAL EN PAPEL IMPRESO / POSTAL GRABADA — SOL DE CASA
+   Cero sombras difusas de IA (sin box-shadow blur, sin text-shadow, sin drop-shadow).
+   Paleta plana y táctil sobre papel crema perla, rosa empolvado y tinta marrón.
+   ============================================================================ */
+
+:root {
+  --paper-cream: #faf4ea;
+  --paper-warm: #f3e9d8;
+  --paper-rose: #f2dce0;
+  --paper-rose-deep: #e2bec5;
+  --sky-dawn-top: #dfe9f0;
+  --sky-lavender: #eae3f1;
+  --gold-line: #a47c38;
+  --gold-dark: #7a571c;
+  --gold-pale: #f0e2c4;
+  --leaf-green: #5e7458;
+  --leaf-pale: #e4ede0;
+  --ink-dark: #3d2327;
+  --ink-muted: #654348;
+
+  /* Tipografía editorial clásica de libro impreso */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-display: 'Fraunces', Georgia, serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  color: var(--ink-dark);
+  font-family: var(--font-serif);
+  font-size: 19px;
+  line-height: 1.5;
+  overflow-x: hidden;
+  background: linear-gradient(
+    180deg,
+    var(--sky-dawn-top) 0%,
+    var(--sky-lavender) 18%,
+    var(--paper-cream) 48%,
+    var(--paper-rose) 100%
+  );
+  background-attachment: fixed;
+}
+
+.svg-defs-hidden {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ============================================================================
+   CIELO Y NUBES REALES DESDE LAS 4 ESQUINAS (SIN DROP-SHADOW ARTIFICIAL)
+   ============================================================================ */
+.celestial-sky {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.dawn-clouds-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.real-cloud {
+  position: absolute;
+  width: min(50vw, 480px);
+  height: auto;
+  aspect-ratio: 2 / 1;
+  will-change: transform, opacity;
+}
+
+.cloud-corner-tl {
+  top: -3%;
+  left: -6%;
+  animation: cloudFromTopLeft 4.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.cloud-corner-tr {
+  top: -3%;
+  right: -6%;
+  animation: cloudFromTopRight 5.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.cloud-corner-bl {
+  bottom: -4%;
+  left: -8%;
+  animation: cloudFromBottomLeft 5.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.cloud-corner-br {
+  bottom: -4%;
+  right: -8%;
+  animation: cloudFromBottomRight 5.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes cloudFromTopLeft {
+  0% { transform: translate(-50vw, -35vh); opacity: 0.2; }
+  100% { transform: translate(8vw, 6vh); opacity: 0.78; }
+}
+
+@keyframes cloudFromTopRight {
+  0% { transform: translate(50vw, -35vh); opacity: 0.2; }
+  100% { transform: translate(-8vw, 7vh); opacity: 0.78; }
+}
+
+@keyframes cloudFromBottomLeft {
+  0% { transform: translate(-50vw, 35vh); opacity: 0.2; }
+  100% { transform: translate(9vw, -8vh); opacity: 0.75; }
+}
+
+@keyframes cloudFromBottomRight {
+  0% { transform: translate(50vw, 35vh); opacity: 0.2; }
+  100% { transform: translate(-9vw, -8vh); opacity: 0.75; }
+}
+
+/* ============================================================================
+   COLUMNA EDITORIAL CENTRADA (PAPEL GRABADO, SIN SOMBRAS DIFUSAS)
+   ============================================================================ */
+.rococo-page-column {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.celestial-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.solar-house-banner {
+  max-width: 440px;
+  margin: 0 auto 6px;
+}
+
+.solar-house-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.brand-kicker {
+  margin: 0;
+  font-size: 0.84rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.script-main-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.9rem, 5vw, 2.5rem);
+  color: var(--ink-dark);
+  margin: 4px 0 14px;
+  line-height: 1.15;
+}
+
+/* Navegación tipo índice de libro antiguo (bordes rectos dobles, sin sombras) */
+.role-Explain-banner {
+  background-color: var(--paper-cream);
+  border: 1px solid var(--gold-line);
+  padding: 10px 12px 12px;
+  margin: 0 auto 10px;
+}
+
+.role-explain-title {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.screen-ribbon-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+@media (max-width: 640px) {
+  .screen-ribbon-nav {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.nav-ribbon-tab {
+  font-family: var(--font-serif);
+  color: var(--ink-muted);
+  background-color: var(--paper-warm);
+  border: 1px solid var(--gold-line);
+  padding: 8px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.nav-ribbon-tab strong {
+  font-size: 0.96rem;
+  color: var(--ink-dark);
+}
+
+.nav-ribbon-tab small {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+}
+
+.nav-ribbon-tab.is-active {
+  background-color: var(--paper-rose);
+  border: 2px solid var(--gold-dark);
+  color: var(--ink-dark);
+}
+
+.family-selector-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 12px;
+  padding: 8px 12px;
+  background-color: var(--paper-cream);
+  border: 1px solid var(--gold-line);
+}
+
+.selector-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+}
+
+.rococo-select {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-dark);
+  background-color: var(--paper-warm);
+  border: 1px solid var(--gold-line);
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.pearl-mini-btn {
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink-dark);
+  background-color: var(--paper-rose);
+  border: 1px solid var(--gold-line);
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.pearl-mini-btn:hover {
+  background-color: var(--paper-rose-deep);
+}
+
+/* ============================================================================
+   HOJA DE CARTA IMPRESA CON DOBLE FILETE DORADO (CERO SOMBRAS)
+   ============================================================================ */
+.rococo-card-frame {
+  position: relative;
+  background-color: var(--paper-cream);
+  border: 2px solid var(--gold-line);
+  outline: 1px solid var(--gold-line);
+  outline-offset: -6px;
+  padding: 34px 26px 30px;
+}
+
+@media (max-width: 520px) {
+  .rococo-card-frame {
+    padding: 28px 16px 24px;
+  }
+}
+
+.corner-ornament {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  z-index: 3;
+}
+.corner-tl { top: 4px; left: 4px; }
+.corner-tr { top: 4px; right: 4px; }
+.corner-bl { bottom: 4px; left: 4px; }
+.corner-br { bottom: 4px; right: 4px; }
+
+.simple-step-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  background-color: var(--gold-pale);
+  border: 1px solid var(--gold-line);
+  padding: 2px 12px;
+  margin-bottom: 6px;
+}
+
+.section-script-subtitle {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--ink-dark);
+  margin: 4px 0 8px;
+  text-align: center;
+}
+
+.paola-warm-intro,
+.section-lead-text {
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto 14px;
+  font-size: 1.06rem;
+  color: var(--ink-dark);
+}
+
+.simulado-pill {
+  display: inline-block;
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--gold-dark);
+  background-color: var(--paper-warm);
+  border: 1px solid var(--gold-line);
+  padding: 0 7px;
+}
+
+/* ============================================================================
+   HALO SOLAR CENTRAL (GRABADO EDITORIAL PLANO)
+   ============================================================================ */
+.solar-halo-stage {
+  position: relative;
+  width: min(100%, 330px);
+  height: 330px;
+  margin: 6px auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.solar-halo-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+@keyframes sunRaysBreathe {
+  0%, 100% { transform: translate(190px, 190px) scale(0.98); }
+  50% { transform: translate(190px, 190px) scale(1.03); }
+}
+
+.sun-breathing-rays {
+  animation: sunRaysBreathe 7s ease-in-out infinite;
+}
+
+.solar-halo-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 210px;
+}
+
+.halo-month-label {
+  display: block;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.halo-amount-script {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.3rem;
+  color: var(--ink-dark);
+  line-height: 1.1;
+  margin: 4px 0;
+}
+
+.halo-sub-caption {
+  margin: 0 0 6px;
+  font-size: 0.98rem;
+  color: var(--ink-dark);
+}
+
+.halo-Percent-badge {
+  display: inline-block;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--ink-dark);
+  background-color: var(--leaf-pale);
+  border: 1px solid var(--leaf-green);
+  padding: 2px 10px;
+}
+
+/* ============================================================================
+   CAJAS Y MEDALLONES (BORDES FINOS DE TINTA Y ORO, SIN SOMBRAS)
+   ============================================================================ */
+.twin-medallions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 10px 0 16px;
+}
+
+@media (max-width: 540px) {
+  .twin-medallions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rococo-medallion {
+  background-color: var(--paper-warm);
+  border: 1px solid var(--gold-line);
+  padding: 12px 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.highlight-truth-medallion {
+  background-color: var(--gold-pale);
+  border: 1.5px solid var(--gold-dark);
+}
+
+.medallion-kicker {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.medallion-value {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--ink-dark);
+}
+
+.medallion-note {
+  font-size: 0.92rem;
+  color: var(--ink-muted);
+}
+
+.simple-gold-hr {
+  border: none;
+  border-top: 1px solid var(--gold-line);
+  margin: 22px 0;
+}
+
+/* ============================================================================
+   POSTAL Y BOTONES EN FORMA DE LISTÓN PLANO
+   ============================================================================ */
+.share-section {
+  text-align: center;
+}
+
+.letter-envelope-wrapper {
+  max-width: 560px;
+  margin: 0 auto 16px;
+  border: 1.5px solid var(--gold-line);
+  background-color: var(--paper-warm);
+}
+
+.envelope-flap-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  background-color: var(--paper-rose);
+  border-bottom: 1px solid var(--gold-line);
+  text-align: left;
+}
+
+.wax-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--gold-dark);
+  background-color: var(--gold-pale);
+  color: var(--ink-dark);
+  font-size: 0.9rem;
+}
+
+.envelope-status-txt {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink-dark);
+  flex: 1;
+}
+
+.letter-fold-btn {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink-dark);
+  background-color: var(--paper-cream);
+  border: 1px solid var(--gold-line);
+  padding: 2px 10px;
+  cursor: pointer;
+}
+
+.celestial-postcard-body {
+  padding: 14px;
+}
+
+.letter-envelope-wrapper:not(.is-open) .celestial-postcard-body {
+  display: none;
+}
+
+.postcard-inner-border {
+  background-color: var(--paper-cream);
+  border: 1px solid var(--gold-line);
+  padding: 16px;
+}
+
+.postcard-with-qr-flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.postcard-text-col {
+  flex: 1 1 260px;
+  text-align: center;
+}
+
+.postcard-qr-col {
+  flex: 0 0 auto;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-rococo-frame {
+  width: 136px;
+  height: 136px;
+  padding: 6px;
+  background-color: var(--paper-cream);
+  border: 1.5px solid var(--gold-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.postcard-stamp {
+  margin: 0 0 4px;
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.postcard-Script-heading {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--ink-dark);
+}
+
+.postcard-mini-halo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 20px;
+  margin: 4px 0 8px;
+  background-color: var(--gold-pale);
+  border: 1px solid var(--gold-line);
+}
+
+.postcard-mini-amount {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.85rem;
+  color: var(--ink-dark);
+}
+
+.postcard-mini-label {
+  font-size: 0.86rem;
+  color: var(--ink-muted);
+}
+
+.postcard-quote {
+  margin: 6px auto 10px;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-dark);
+}
+
+.postcard-personal-link-box {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--paper-warm);
+  border: 1px solid var(--gold-line);
+  padding: 4px 10px;
+  font-size: 0.9rem;
+}
+
+.link-box-code {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  color: var(--gold-dark);
+}
+
+/* Botones tipo listón plano (sin brillos ni sombras de IA) */
+.ribbon-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.ribbon-gold-button {
+  font-family: var(--font-serif);
+  font-size: 1.04rem;
+  font-weight: 700;
+  color: var(--ink-dark);
+  padding: 10px 22px;
+  border: 1.5px solid var(--gold-dark);
+  cursor: pointer;
+  clip-path: polygon(8px 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0% 50%);
+}
+
+.primary-ribbon-btn {
+  background-color: var(--paper-rose);
+}
+
+.secondary-ribbon-btn {
+  background-color: var(--sky-lavender);
+}
+
+.tertiary-ribbon-btn {
+  background-color: var(--gold-pale);
+}
+
+.ribbon-gold-button:hover {
+  background-color: var(--paper-rose-deep);
+}
+
+.share-feedback-banner {
+  max-width: 540px;
+  margin: 10px auto 14px;
+  padding: 10px 14px;
+  background-color: var(--leaf-pale);
+  border: 1.5px solid var(--leaf-green);
+  color: var(--ink-dark);
+  font-size: 0.96rem;
+}
+
+/* ============================================================================
+   TABLAS Y CAJAS DE PASOS (PANTALLAS 2, 3 Y 4)
+   ============================================================================ */
+.inverter-history-details {
+  margin-top: 14px;
+  text-align: left;
+  border-top: 1px solid var(--gold-line);
+  padding-top: 10px;
+}
+
+.history-summary-btn {
+  cursor: pointer;
+  text-align: center;
+  font-weight: 700;
+  color: var(--gold-dark);
+  font-size: 0.98rem;
+}
+
+.history-table-wrap {
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.rococo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background-color: var(--paper-cream);
+  border: 1px solid var(--gold-line);
+}
+
+.rococo-table th,
+.rococo-table td {
+  padding: 8px 10px;
+  border: 1px solid rgba(164, 124, 56, 0.4);
+  text-align: left;
+}
+
+.rococo-table th {
+  background-color: var(--paper-rose);
+  color: var(--ink-dark);
+  font-weight: 700;
+}
+
+.three-steps-ribbon {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 560px) {
+  .three-steps-ribbon {
+    grid-template-columns: 1fr;
+  }
+}
+
+.step-pill {
+  background-color: var(--paper-warm);
+  border: 1px solid var(--gold-line);
+  padding: 6px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.step-pill.is-done {
+  background-color: var(--paper-rose);
+  border: 1.5px solid var(--gold-dark);
+}
+
+.step-num {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.step-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink-dark);
+}
+
+.clean-step-box {
+  background-color: var(--paper-warm);
+  border: 1px solid var(--gold-line);
+  padding: 16px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.step-box-header {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  border-bottom: 1px solid var(--gold-line);
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+}
+
+.neighbor-proof-halo {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 12px 24px;
+  margin: 4px auto 8px;
+  background-color: var(--gold-pale);
+  border: 1.5px solid var(--gold-dark);
+}
+
+.proof-kicker {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.proof-big-script {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--ink-dark);
+}
+
+.proof-accum-note,
+.privacy-whisper {
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+}
+
+.calculator-rococo-box {
+  max-width: 500px;
+  margin: 0 auto 14px;
+  padding: 14px;
+  background-color: var(--paper-cream);
+  border: 1px solid var(--gold-line);
+}
+
+.calc-input-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.calc-controls-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.currency-input-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--paper-warm);
+  border: 1px solid var(--gold-dark);
+  padding: 4px 12px;
+}
+
+.currency-prefix {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold-dark);
+}
+
+.rococo-number-input {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  width: 90px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  color: var(--ink-dark);
+}
+
+.rococo-range-slider {
+  width: 100%;
+  max-width: 340px;
+  accent-color: var(--gold-dark);
+}
+
+.calc-trio-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+  .calc-trio-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.honest-truth-footnote {
+  margin: 0 auto;
+  font-size: 0.95rem;
+  color: var(--ink-dark);
+  background-color: var(--paper-cream);
+  border: 1px solid var(--gold-line);
+  padding: 8px 12px;
+}
+
+.capacity-ribbon-notice {
+  margin: 0 auto 12px;
+  padding: 8px 12px;
+  background-color: var(--gold-pale);
+  border: 1px solid var(--gold-line);
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+.booking-rococo-form {
+  text-align: left;
+}
+
+.slots-fieldset {
+  border: 1px solid var(--gold-line);
+  background-color: var(--paper-cream);
+  padding: 12px;
+  margin: 0 0 12px;
+}
+
+.slots-legend {
+  font-weight: 700;
+  padding: 0 6px;
+}
+
+.slots-rococo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 560px) {
+  .slots-rococo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.slot-radio-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--gold-line);
+  background-color: var(--paper-warm);
+  cursor: pointer;
+  font-size: 0.94rem;
+}
+
+.two-fields-only-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 560px) {
+  .two-fields-only-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rococo-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field-label {
+  font-weight: 700;
+}
+
+.rococo-text-input {
+  font-family: var(--font-serif);
+  font-size: 1.02rem;
+  color: var(--ink-dark);
+  background-color: var(--paper-cream);
+  border: 1px solid var(--gold-dark);
+  padding: 8px 10px;
+}
+
+.booking-submit-wrap {
+  text-align: center;
+}
+
+.booking-confirmation-card {
+  margin-top: 14px;
+  padding: 14px;
+  background-color: var(--leaf-pale);
+  border: 1.5px solid var(--leaf-green);
+  text-align: center;
+}
+
+/* Barra de avance y recompensas (Pantalla 3) */
+.rococo-progress-container {
+  margin: 10px auto 16px;
+  padding: 14px;
+  background-color: var(--paper-warm);
+  border: 1px solid var(--gold-line);
+}
+
+.progress-header-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.progress-stage-label {
+  font-weight: 700;
+}
+
+.progress-pct-script {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--gold-dark);
+}
+
+.ribbon-progress-track {
+  height: 22px;
+  background-color: var(--paper-cream);
+  border: 1.5px solid var(--gold-dark);
+  padding: 2px;
+  margin-bottom: 12px;
+}
+
+.ribbon-progress-fill {
+  height: 100%;
+  background-color: var(--paper-rose-deep);
+  transition: width 0.4s ease;
+}
+
+.milestones-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  text-align: left;
+}
+
+@media (max-width: 560px) {
+  .milestones-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.milestone-card {
+  padding: 8px 10px;
+  border: 1px solid var(--gold-line);
+  background-color: var(--paper-cream);
+  display: flex;
+  flex-direction: column;
+}
+
+.milestone-card.is-completed {
+  background-color: var(--leaf-pale);
+  border-color: var(--leaf-green);
+}
+
+.milestone-step-badge {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.family-referrals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.referral-item-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  background-color: var(--paper-cream);
+  border: 1px solid var(--gold-line);
+}
+
+.referral-status-pill {
+  display: inline-block;
+  padding: 1px 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid var(--gold-line);
+  background-color: var(--paper-rose);
+}
+
+.referral-status-pill.estado-firmada {
+  background-color: var(--leaf-pale);
+  border-color: var(--leaf-green);
+}
+
+.referral-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.server-rule-tester-box {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background-color: var(--paper-cream);
+  border: 1px solid var(--gold-line);
+  text-align: left;
+}
+
+.tester-heading {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.tester-controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.tester-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.validator-response-box {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--gold-line);
+  background-color: var(--paper-warm);
+}
+
+.validator-response-box.is-rejected {
+  background-color: #f4d8dc;
+  border-color: #9e3f4d;
+}
+
+.validator-response-box.is-approved {
+  background-color: var(--leaf-pale);
+  border-color: var(--leaf-green);
+}
+
+/* Panel de Andrés (Pantalla 4) */
+.funnel-steps-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .funnel-steps-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.funnel-step-card {
+  background-color: var(--paper-cream);
+  border: 1px solid var(--gold-line);
+  padding: 8px 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.funnel-step-highlight {
+  background-color: var(--leaf-pale);
+  border-color: var(--leaf-green);
+}
+
+.funnel-step-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.funnel-step-num {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--ink-dark);
+}
+
+.funnel-step-sub {
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+}
+
+.capacity-alert-banner {
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  border: 1.5px solid #9e3f4d;
+  background-color: #f4d8dc;
+  font-weight: 700;
+  text-align: center;
+}
+
+.honest-math-list {
+  margin: 0;
+  padding-left: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}

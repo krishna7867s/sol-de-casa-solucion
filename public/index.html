@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sol de Casa · Ahorro Solar y Referidos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <!-- Definiciones SVG para ornamentos dorados, nubes reales y paneles solares -->
+  <svg class="svg-defs-hidden" aria-hidden="true" width="0" height="0">
+    <defs>
+      <filter id="real-cloud-filter" x="-25%" y="-25%" width="150%" height="150%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.022" numOctaves="5" seed="14" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="36" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+        <feGaussianBlur in="displaced" stdDeviation="6" result="blurred" />
+        <feSpecularLighting in="blurred" surfaceScale="4" specularConstant="0.55" specularExponent="18" lighting-color="#fff6e8" result="specular">
+          <fePointLight x="400" y="-120" z="260" />
+        </feSpecularLighting>
+        <feComposite in="specular" in2="blurred" operator="in" result="specMask" />
+        <feMerge>
+          <feMergeNode in="blurred" />
+          <feMergeNode in="specMask" />
+        </feMerge>
+      </filter>
+
+      <linearGradient id="gold-antique" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#b68d40" />
+        <stop offset="35%" stop-color="#e5c888" />
+        <stop offset="70%" stop-color="#9e742b" />
+        <stop offset="100%" stop-color="#8b6220" />
+      </linearGradient>
+
+      <linearGradient id="gold-halo-glow" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#fff4d4" stop-opacity="0.95" />
+        <stop offset="60%" stop-color="#f7dfb2" stop-opacity="0.7" />
+        <stop offset="100%" stop-color="#f2ced8" stop-opacity="0" />
+      </linearGradient>
+
+      <linearGradient id="solar-panel-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#2b5876" />
+        <stop offset="50%" stop-color="#3b7296" />
+        <stop offset="100%" stop-color="#1e4159" />
+      </linearGradient>
+
+      <g id="rococo-corner">
+        <path d="M 4 52 C 4 24, 12 10, 44 5 C 30 12, 22 22, 26 32 C 29 39, 38 38, 38 30" fill="none" stroke="url(#gold-antique)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="18" cy="18" r="5.5" fill="#e5a9b5" stroke="url(#gold-antique)" stroke-width="0.9"/>
+      </g>
+
+      <g id="solar-panel-badge">
+        <path d="M 22 40 L 18 48 L 46 48 L 42 40 Z" fill="#b68d40" />
+        <polygon points="10,16 54,16 58,40 6,40" fill="url(#solar-panel-blue)" stroke="url(#gold-antique)" stroke-width="2" stroke-linejoin="round" />
+        <line x1="9" y1="24" x2="55" y2="24" stroke="#9ecae6" stroke-width="1" />
+        <line x1="8" y1="32" x2="56" y2="32" stroke="#9ecae6" stroke-width="1" />
+        <line x1="21" y1="16" x2="19" y2="40" stroke="#9ecae6" stroke-width="1" />
+        <line x1="32" y1="16" x2="32" y2="40" stroke="#9ecae6" stroke-width="1" />
+        <line x1="43" y1="16" x2="45" y2="40" stroke="#9ecae6" stroke-width="1" />
+        <circle cx="32" cy="9" r="5" fill="#f7c844" stroke="url(#gold-antique)" stroke-width="1" />
+      </g>
+    </defs>
+  </svg>
+
+  <!-- FONDO DE CIELO DE AMANECER CON NUBES REALES DESDE LAS 4 ESQUINAS AL CENTRO -->
+  <div class="celestial-sky" aria-hidden="true">
+    <canvas id="dawn-clouds-canvas" class="dawn-clouds-canvas"></canvas>
+
+    <div class="real-cloud cloud-corner-tl" id="cloud-tl">
+      <svg viewBox="0 0 520 260" width="100%" height="100%">
+        <g filter="url(#real-cloud-filter)">
+          <ellipse cx="250" cy="145" rx="175" ry="62" fill="#f9e6ea" opacity="0.8" />
+          <ellipse cx="190" cy="120" rx="115" ry="54" fill="#fff6f4" opacity="0.9" />
+          <ellipse cx="315" cy="125" rx="125" ry="50" fill="#fdf1ec" opacity="0.88" />
+        </g>
+      </svg>
+    </div>
+
+    <div class="real-cloud cloud-corner-tr" id="cloud-tr">
+      <svg viewBox="0 0 520 260" width="100%" height="100%">
+        <g filter="url(#real-cloud-filter)">
+          <ellipse cx="265" cy="145" rx="180" ry="64" fill="#eedce8" opacity="0.78" />
+          <ellipse cx="320" cy="120" rx="120" ry="54" fill="#fdf0f2" opacity="0.88" />
+          <ellipse cx="205" cy="125" rx="115" ry="48" fill="#fff7f2" opacity="0.9" />
+        </g>
+      </svg>
+    </div>
+
+    <div class="real-cloud cloud-corner-bl" id="cloud-bl">
+      <svg viewBox="0 0 560 280" width="100%" height="100%">
+        <g filter="url(#real-cloud-filter)">
+          <ellipse cx="270" cy="155" rx="195" ry="68" fill="#f5dce2" opacity="0.8" />
+          <ellipse cx="215" cy="130" rx="135" ry="56" fill="#fdf1f3" opacity="0.88" />
+        </g>
+      </svg>
+    </div>
+
+    <div class="real-cloud cloud-corner-br" id="cloud-br">
+      <svg viewBox="0 0 560 280" width="100%" height="100%">
+        <g filter="url(#real-cloud-filter)">
+          <ellipse cx="280" cy="155" rx="190" ry="66" fill="#f3dde4" opacity="0.8" />
+          <ellipse cx="335" cy="128" rx="130" ry="55" fill="#fdf2f4" opacity="0.88" />
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <main class="rococo-page-column">
+    <!-- CABECERA SIMPLE Y CLARA CON ILUSTRACIÓN DE CASA SOLAR -->
+    <header class="celestial-header">
+      <div class="solar-house-banner" aria-hidden="true">
+        <svg viewBox="0 0 540 145" class="solar-house-svg">
+          <g transform="translate(270, 30)">
+            <circle r="24" fill="url(#gold-halo-glow)" />
+            <circle r="13" fill="#f7c844" stroke="url(#gold-antique)" stroke-width="1.6" />
+            <path d="M -8 14 L -42 54" stroke="#e3a82b" stroke-width="1.8" stroke-dasharray="4 3" />
+            <path d="M 0 16 L 0 52" stroke="#e3a82b" stroke-width="2" stroke-dasharray="4 3" />
+            <path d="M 8 14 L 42 54" stroke="#e3a82b" stroke-width="1.8" stroke-dasharray="4 3" />
+          </g>
+          <path d="M 70 138 Q 170 110 270 132 Q 370 110 470 138 Z" fill="#dcead7" stroke="#6f8469" stroke-width="1.2" />
+          <g transform="translate(160, 56)">
+            <rect x="28" y="40" width="164" height="38" fill="#fbf5ec" stroke="url(#gold-antique)" stroke-width="1.8" />
+            <path d="M 98 78 L 98 55 A 11 11 0 0 1 120 55 L 120 78 Z" fill="#e6b89c" stroke="url(#gold-antique)" stroke-width="1.4" />
+            <rect x="46" y="50" width="28" height="18" rx="2" fill="#fff3c4" stroke="url(#gold-antique)" stroke-width="1.3" />
+            <rect x="142" y="50" width="28" height="18" rx="2" fill="#fff3c4" stroke="url(#gold-antique)" stroke-width="1.3" />
+            <polygon points="12,42 110,4 208,42" fill="#d99b82" stroke="url(#gold-antique)" stroke-width="1.8" />
+            <!-- Paneles solares azules sobre el techo -->
+            <polygon points="34,37 106,9 106,37" fill="url(#solar-panel-blue)" stroke="#f5d98e" stroke-width="1.4" />
+            <line x1="56" y1="28" x2="106" y2="28" stroke="#9ecae6" stroke-width="1" />
+            <line x1="78" y1="20" x2="106" y2="20" stroke="#9ecae6" stroke-width="1" />
+            <polygon points="114,9 186,37 114,37" fill="url(#solar-panel-blue)" stroke="#f5d98e" stroke-width="1.4" />
+            <line x1="114" y1="28" x2="164" y2="28" stroke="#9ecae6" stroke-width="1" />
+            <line x1="114" y1="20" x2="142" y2="20" stroke="#9ecae6" stroke-width="1" />
+          </g>
+        </svg>
+      </div>
+
+      <p class="brand-kicker">☀ Sol de Casa · Paneles Solares en Costa Rica</p>
+      <h1 class="script-main-title">El Ahorro de su Techo Solar</h1>
+
+      <!-- SELECTOR CLARO DE LAS 3 PERSONAS DEL CASO: ¿A QUIÉN QUIERE VER? -->
+      <div class="role-Explain-banner">
+        <p class="role-explain-title">¿Con qué vista desea recorrer el prototipo?</p>
+        <nav class="screen-ribbon-nav" aria-label="Vistas del prototipo">
+          <button type="button" class="nav-ribbon-tab is-active" data-target="pantalla-1-familia">
+            <strong>1. Soy la Familia con Paneles</strong>
+            <small>Ver mi ahorro ($77) y compartir</small>
+          </button>
+          <button type="button" class="nav-ribbon-tab" data-target="pantalla-2-vecino">
+            <strong>2. Soy la Vecina Invitada</strong>
+            <small>Calcular mi recibo y agendar visita</small>
+          </button>
+          <button type="button" class="nav-ribbon-tab" data-target="pantalla-3-juego">
+            <strong>3. Mis Recompensas</strong>
+            <small>Lo que gano (tope ≤ $167)</small>
+          </button>
+          <button type="button" class="nav-ribbon-tab" data-target="pantalla-4-andres">
+            <strong>4. Panel de Andrés (Dueño)</strong>
+            <small>Embudo, CAC vs $300 y capacidad</small>
+          </button>
+        </nav>
+      </div>
+
+      <div class="family-selector-bar" id="barra-selector-familia">
+        <label for="select-familia" class="selector-label">Familia simulada:</label>
+        <select id="select-familia" class="rococo-select">
+          <option value="fam_c9f8e7d6b5a4938271605f4e3d2c1b0a9f8e7d6c">Doña Carmen Rojas · Curridabat (simulado)</option>
+          <option value="fam_a1b2c3d4e5f60718293a4b5c6d7e8f901a2b3c4d">Don Mauricio Vargas · Escazú (simulado)</option>
+          <option value="fam_f0e9d8c7b6a594837261504f3e2d1c0b9a8f7e6d">Familia Mora Jiménez · Heredia (simulado)</option>
+        </select>
+        <button type="button" id="btn-replay-clouds" class="pearl-mini-btn">
+          ☁ Repetir nubes
+        </button>
+      </div>
+    </header>
+
+    <!-- ======================================================================
+         VISTA 1: LA FAMILIA CON PANELES (PIEZA 1: AHORRO + PIEZA 2: COMPARTIR)
+         ====================================================================== -->
+    <section id="pantalla-1-familia" class="rococo-card-frame">
+      <svg class="corner-ornament corner-tl" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner"/></svg>
+      <svg class="corner-ornament corner-tr" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(-1,1) translate(-64,0)"/></svg>
+      <svg class="corner-ornament corner-bl" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(1,-1) translate(0,-64)"/></svg>
+      <svg class="corner-ornament corner-br" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(-1,-1) translate(-64,-64)"/></svg>
+
+      <!-- Encabezado directo -->
+      <div class="simple-step-badge">PIEZA 1 · EL AHORRO A LA VISTA</div>
+      <h2 class="section-script-subtitle">
+        Hola, <span id="fam-nombre-pila">Doña Carmen</span> (<span id="fam-barrio">Curridabat · simulado</span>)
+      </h2>
+      <p class="paola-warm-intro">
+        Sus paneles solares bajaron su recibo de luz un <strong>70 %</strong> este mes <span class="simulado-pill">(dato simulado del inversor)</span>:
+      </p>
+
+      <!-- EL HALO SOLAR CENTRAL CON EL AHORRO DEL MES -->
+      <div class="solar-halo-stage">
+        <svg class="solar-halo-svg" viewBox="0 0 380 380" aria-hidden="true">
+          <circle cx="190" cy="190" r="162" fill="url(#gold-halo-glow)" />
+          <g class="sun-breathing-rays" transform="translate(190, 190)">
+            <line x1="0" y1="-164" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="2" />
+            <line x1="0" y1="-158" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="1.4" transform="rotate(30)" />
+            <line x1="0" y1="-158" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="1.4" transform="rotate(60)" />
+            <line x1="0" y1="-164" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="2" transform="rotate(90)" />
+            <line x1="0" y1="-158" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="1.4" transform="rotate(120)" />
+            <line x1="0" y1="-158" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="1.4" transform="rotate(150)" />
+            <line x1="0" y1="-164" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="2" transform="rotate(180)" />
+            <line x1="0" y1="-158" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="1.4" transform="rotate(210)" />
+            <line x1="0" y1="-158" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="1.4" transform="rotate(240)" />
+            <line x1="0" y1="-164" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="2" transform="rotate(270)" />
+            <line x1="0" y1="-158" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="1.4" transform="rotate(300)" />
+            <line x1="0" y1="-158" x2="0" y2="-120" stroke="url(#gold-antique)" stroke-width="1.4" transform="rotate(330)" />
+          </g>
+          <circle cx="190" cy="190" r="120" fill="#fffaf3" stroke="url(#gold-antique)" stroke-width="3" />
+          <circle cx="190" cy="190" r="112" fill="none" stroke="url(#gold-antique)" stroke-width="1.2" stroke-dasharray="4 4" />
+          <g transform="translate(158, 266)">
+            <use href="#solar-panel-badge" />
+          </g>
+        </svg>
+
+        <div class="solar-halo-content">
+          <span class="halo-month-label" id="ahorro-mes-etiqueta">Octubre 2026 (simulado)</span>
+          <div class="halo-amount-script" id="ahorro-mes-monto">$77 este mes</div>
+          <p class="halo-sub-caption">
+            Antes pagaba <strong id="recibo-antes">$110</strong> → Ahora paga <strong id="recibo-despues">$33</strong>
+          </p>
+          <span class="halo-Percent-badge">70 % de ahorro en su recibo</span>
+        </div>
+      </div>
+
+      <!-- 2 Cajas claras: Acumulado y Energía producida -->
+      <div class="twin-medallions">
+        <article class="rococo-medallion">
+          <span class="medallion-kicker">Total ahorrado desde que instaló</span>
+          <strong class="medallion-value" id="ahorro-acumulado">$462</strong>
+          <span class="medallion-note" id="meses-instalados-txt">en 6 meses (simulado)</span>
+        </article>
+        <article class="rococo-medallion">
+          <span class="medallion-kicker">Energía producida por sus paneles</span>
+          <strong class="medallion-value" id="kwh-acumulados">2.495 kWh</strong>
+          <span class="medallion-note">medida por su inversor (simulado)</span>
+        </article>
+      </div>
+
+      <hr class="simple-gold-hr" />
+
+      <!-- PIEZA 2: COMPARTIR LA TARJETA POR WHATSAPP -->
+      <div class="share-section">
+        <div class="simple-step-badge">PIEZA 2 · COMPARTIR CON UN VECINO</div>
+        <h2 class="section-script-subtitle">Mándele esta postal a su vecina por WhatsApp</h2>
+        <p class="section-lead-text">
+          Cuando una vecina ve cuánto ahorra usted de verdad, confía sin preguntar primero el precio. Con esta tarjeta ella puede calcular su propio ahorro y <strong>agendar directo sin esperar las 31 horas</strong> que tarda una llamada:
+        </p>
+
+        <!-- Vista previa limpia de la tarjeta que se envía -->
+        <div class="letter-envelope-wrapper is-open" id="postal-carta-interactiva">
+          <div class="envelope-flap-header">
+            <span class="wax-seal">☀</span>
+            <span class="envelope-status-txt">Vista previa de su tarjeta (por privacidad solo muestra su nombre de pila, barrio y ahorro)</span>
+            <button type="button" id="btn-toggle-carta" class="letter-fold-btn">Abrir / Cerrar</button>
+          </div>
+
+          <div class="celestial-postcard-body" id="postal-preview-card">
+            <div class="postcard-inner-border">
+              <div class="postcard-with-qr-flex">
+                <div class="postcard-text-col">
+                  <p class="postcard-stamp">TARJETA DE AHORRO SOLAR · SOL DE CASA (SIMULADO)</p>
+                  <h3 class="postcard-Script-heading" id="postal-titulo-familia">
+                    En la casa de Doña Carmen en Curridabat
+                  </h3>
+                  <div class="postcard-mini-halo">
+                    <span class="postcard-mini-amount" id="postal-monto">$77</span>
+                    <span class="postcard-mini-label">ahorrados este mes en luz (70 % · simulado)</span>
+                  </div>
+                  <p class="postcard-quote" id="postal-frase">
+                    «Hola vecina, en nuestra casa el recibo de luz bajó un 70 % con Sol de Casa. Toque mi enlace para calcular cuánto bajaría su recibo y elegir hora con el técnico sin esperar que la llamen.»
+                  </p>
+                  <div class="postcard-personal-link-box">
+                    <span class="link-box-label">Link personal:</span>
+                    <code class="link-box-code" id="postal-link-personal">/vecino/ref_carmen_curridabat_01</code>
+                  </div>
+                </div>
+
+                <!-- QR REAL escaneable con la cámara del celular -->
+                <div class="postcard-qr-col">
+                  <div class="qr-rococo-frame" id="qr-svg-container"></div>
+                  <span id="qr-url-label" style="font-size:0.76rem; color:var(--ink-muted);">QR real escaneable</span>
+                  <a id="qr-external-link" href="https://myqrcode.com/create" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem; color:var(--gold-dark); font-weight:700; margin-top:2px;">
+                    Personalizar en MyQRCode ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones claros de acción -->
+        <div class="ribbon-actions-row">
+          <button type="button" id="btn-compartir-whatsapp" class="ribbon-gold-button primary-ribbon-btn">
+            <span>1. Enviar por WhatsApp</span>
+          </button>
+          <button type="button" id="btn-copiar-link" class="ribbon-gold-button secondary-ribbon-btn">
+            <span>2. Copiar mi link personal</span>
+          </button>
+          <button type="button" id="btn-abrir-como-vecino" class="ribbon-gold-button tertiary-ribbon-btn">
+            <span>Ver qué pasa cuando mi vecina abre el link →</span>
+          </button>
+        </div>
+
+        <div id="feedback-compartir" class="share-feedback-banner" hidden></div>
+
+        <!-- Historial mensual oculto por defecto para mantener limpia la vista -->
+        <details class="inverter-history-details">
+          <summary class="history-summary-btn">▾ Ver tabla de los últimos 6 meses del inversor (simulado)</summary>
+          <div class="history-table-wrap">
+            <table class="rococo-table">
+              <thead>
+                <tr>
+                  <th>Mes</th>
+                  <th>Producción</th>
+                  <th>Recibo antes</th>
+                  <th>Recibo con paneles</th>
+                  <th>Ahorro</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-historial-ahorro"></tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         VISTA 2: PÁGINA DE LA VECINA EN 3 PASOS CLAROS (PIEZA 3)
+         ====================================================================== -->
+    <section id="pantalla-2-vecino" class="rococo-card-frame" hidden>
+      <svg class="corner-ornament corner-tl" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner"/></svg>
+      <svg class="corner-ornament corner-tr" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(-1,1) translate(-64,0)"/></svg>
+      <svg class="corner-ornament corner-bl" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(1,-1) translate(0,-64)"/></svg>
+      <svg class="corner-ornament corner-br" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(-1,-1) translate(-64,-64)"/></svg>
+
+      <div class="simple-step-badge">PIEZA 3 · PÁGINA QUE ABRE LA VECINA (MÁXIMO 3 PASOS)</div>
+      <h2 class="section-script-subtitle">De la prueba de su vecina a agendar visita sin esperar 31 horas</h2>
+
+      <ol class="three-steps-ribbon">
+        <li class="step-pill is-done" id="ind-paso-1">
+          <span class="step-num">Paso 1 de 3</span>
+          <span class="step-name">Ver el ahorro de mi vecina</span>
+        </li>
+        <li class="step-pill" id="ind-paso-2">
+          <span class="step-num">Paso 2 de 3</span>
+          <span class="step-name">Calcular mi recibo (70 %)</span>
+        </li>
+        <li class="step-pill" id="ind-paso-3">
+          <span class="step-num">Paso 3 de 3</span>
+          <span class="step-name">Elegir hora (solo 2 datos)</span>
+        </li>
+      </ol>
+
+      <!-- CAJA PASO 1: LA TARJETA RECIBIDA -->
+      <div class="clean-step-box">
+        <div class="step-box-header">PASO 1 · LA PRUEBA QUE RECIBIÓ POR WHATSAPP</div>
+        <p style="margin:0 0 8px;">
+          Su vecina <strong id="vec-ref-nombre">Doña Carmen</strong> en <strong id="vec-ref-barrio">Curridabat (simulado)</strong> le compartió su resultado con Sol de Casa:
+        </p>
+        <div class="neighbor-proof-halo">
+          <span class="proof-kicker" id="vec-ref-mes">Octubre 2026 (simulado)</span>
+          <strong class="proof-big-script" id="vec-ref-ahorro-mes">$77 ahorrados este mes</strong>
+          <span class="proof-accum-note">
+            Acumulado: <strong id="vec-ref-ahorro-acum">$462</strong> en <span id="vec-ref-meses">6</span> meses (70 % de ahorro · simulado)
+          </span>
+        </div>
+        <p class="privacy-whisper" id="vec-ref-frase" style="margin:6px 0 0;">
+          🔒 Privacidad cuidada: esta página muestra solo el nombre de pila, el barrio y el ahorro de la familia.
+        </p>
+      </div>
+
+      <!-- CAJA PASO 2: LA CALCULADORA HONESTA -->
+      <div class="clean-step-box">
+        <div class="step-box-header">PASO 2 · CALCULE CUÁNTO AHORRARÍA EN SU CASA (DICIENDO LA VERDAD)</div>
+        <form id="form-calculadora-vecino" class="calculator-rococo-box">
+          <label for="input-recibo-vecino" class="calc-input-label">
+            ¿Cuánto paga usted de recibo de luz al mes?
+          </label>
+          <div class="calc-controls-row">
+            <div class="currency-input-wrap">
+              <span class="currency-prefix">$</span>
+              <input type="number" id="input-recibo-vecino" class="rococo-number-input" min="20" max="2000" step="5" value="110" required />
+              <span class="currency-suffix">/ mes</span>
+            </div>
+            <input type="range" id="slider-recibo-vecino" class="rococo-range-slider" min="40" max="350" step="5" value="110" />
+          </div>
+          <button type="submit" class="ribbon-gold-button primary-ribbon-btn">
+            <span>Calcular mi ahorro y años de recuperación</span>
+          </button>
+        </form>
+
+        <div id="resultado-calculadora-panel" class="calc-honest-results">
+          <div class="calc-trio-cards">
+            <article class="rococo-medallion">
+              <span class="medallion-kicker">Usted ahorraría (70 %)</span>
+              <strong class="medallion-value" id="calc-ahorro-mes">$77 / mes</strong>
+              <span class="medallion-note"><strong id="calc-ahorro-anual">$924 al año</strong> (simulado)</span>
+            </article>
+            <article class="rococo-medallion">
+              <span class="medallion-kicker">Su nuevo recibo sería</span>
+              <strong class="medallion-value" id="calc-nuevo-recibo">$33 / mes</strong>
+              <span class="medallion-note">en vez de <span id="calc-recibo-anterior">$110</span></span>
+            </article>
+            <article class="rococo-medallion highlight-truth-medallion">
+              <span class="medallion-kicker">Se recupera en</span>
+              <strong class="medallion-value" id="calc-anios-recuperacion">7,0 años</strong>
+              <span class="medallion-note">Instalación promedio: $6.500</span>
+            </article>
+          </div>
+          <p class="honest-truth-footnote" id="calc-explicacion-honesta">
+            Con $110 de recibo usted ahorra $77/mes ($924 al año) y recupera los $6.500 de inversión en ≈ 7 años. En 15 años de vida útil, <strong id="espejo-ganancia-neta">se quedan $7.360 libres en su casa</strong> en lugar de irse en recibos (<span id="espejo-recibo-base">$110/mes</span> = <span id="espejo-gasto-sin-paneles">$19.800</span>).
+          </p>
+          <div id="espejo-barra-solar" hidden></div>
+        </div>
+      </div>
+
+      <!-- CAJA PASO 3: AGENDAR DIRECTO EN SOLO 2 CAMPOS -->
+      <div class="clean-step-box">
+        <div class="step-box-header">PASO 3 · AGENDE SU VISITA SIN ESPERAR LAS 31 HORAS DE LLAMADA</div>
+        <p style="margin:0 0 10px;">
+          El formulario viejo pedía 6 datos y tardaban 31 horas en llamar. Por venir de parte de <strong id="vec-agenda-ref-nombre">Doña Carmen</strong>, elija su horario directo y deje <strong>solo su nombre y teléfono</strong>:
+        </p>
+
+        <div class="capacity-ribbon-notice" id="aviso-capacidad-horarios">
+          Cargando horarios disponibles...
+        </div>
+
+        <form id="form-agendar-vecino" class="booking-rococo-form">
+          <fieldset class="slots-fieldset">
+            <legend class="slots-legend">1. Elija día y hora con el técnico:</legend>
+            <div id="grid-horarios-disponibles" class="slots-rococo-grid"></div>
+          </fieldset>
+
+          <div class="two-fields-only-row">
+            <div class="rococo-field-group">
+              <label for="input-nombre-vecino" class="field-label">2. Su nombre:</label>
+              <input type="text" id="input-nombre-vecino" class="rococo-text-input" placeholder="Ej. Doña Marta Céspedes (simulado)" maxlength="60" required />
+            </div>
+            <div class="rococo-field-group">
+              <label for="input-telefono-vecino" class="field-label">3. Su teléfono:</label>
+              <input type="tel" id="input-telefono-vecino" class="rococo-text-input" placeholder="Ej. 8833-4455" maxlength="20" required />
+            </div>
+          </div>
+
+          <div class="booking-submit-wrap">
+            <button type="submit" id="btn-confirmar-agenda" class="ribbon-gold-button primary-ribbon-btn">
+              <span>Confirmar mi visita técnica ahora</span>
+            </button>
+          </div>
+        </form>
+
+        <div id="confirmacion-reserva-vecino" class="booking-confirmation-card" hidden></div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         VISTA 3: EL JUEGO Y LAS RECOMPENSAS (PIEZA 4 · TOPE ≈ $167 / $300)
+         ====================================================================== -->
+    <section id="pantalla-3-juego" class="rococo-card-frame" hidden>
+      <svg class="corner-ornament corner-tl" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner"/></svg>
+      <svg class="corner-ornament corner-tr" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(-1,1) translate(-64,0)"/></svg>
+      <svg class="corner-ornament corner-bl" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(1,-1) translate(0,-64)"/></svg>
+      <svg class="corner-ornament corner-br" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(-1,-1) translate(-64,-64)"/></svg>
+
+      <div class="simple-step-badge">PIEZA 4 · EL JUEGO Y RECOMPENSAS (TOPE REAL ≈ $167)</div>
+      <h2 class="section-script-subtitle">Recompensas de <span id="juego-nombre-familia">Doña Carmen (simulado)</span></h2>
+      <p class="paola-warm-intro">
+        Como nadie compra paneles dos veces, premiamos con <strong>mantenimiento y limpieza de sus paneles</strong>, respetando que para Andrés cada venta referida cueste <strong>máximo $300</strong> (incluyendo los $133,33 de las 2,22 visitas).
+      </p>
+
+      <!-- Barra de avance -->
+      <div class="rococo-progress-container">
+        <div class="progress-header-row">
+          <span class="progress-stage-label" id="juego-etapa-actual">Cargando avance...</span>
+          <strong class="progress-pct-script" id="juego-porcentaje-txt">100 %</strong>
+        </div>
+        <div class="ribbon-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" id="barra-avance-aria">
+          <div class="ribbon-progress-fill" id="juego-barra-fill" style="width: 50%;">
+            <span class="pearl-shimmer"></span>
+          </div>
+        </div>
+        <div class="milestones-grid" id="grid-hitos-juego"></div>
+      </div>
+
+      <!-- Demostración en vivo de desbloqueo -->
+      <div class="clean-step-box">
+        <div class="step-box-header">DEMOSTRACIÓN EN VIVO · AVANZAR RESERVA A «HECHA» O «FIRMADA»</div>
+        <p style="margin:0 0 10px;">
+          Haga clic en un vecino agendado para simular en vivo que firmó y ver cómo se desbloquea la <strong>Limpieza Solar ($60)</strong>:
+        </p>
+        <div id="lista-reservas-familia" class="family-referrals-list"></div>
+        <div id="feedback-avance-reserva" class="share-feedback-banner" hidden></div>
+      </div>
+
+      <!-- Tabla matemática de las recompensas -->
+      <div class="clean-step-box">
+        <div class="step-box-header">TABLA DE COSTO POR VENTA (POR QUÉ EL TOPE REAL ES $166,67 ≈ $167 Y AGENDAR PESA ×2,47)</div>
+        <div class="twin-medallions" style="grid-template-columns: repeat(3, 1fr); margin-bottom:12px;">
+          <article class="rococo-medallion">
+            <span class="medallion-kicker">2,22 Visitas × $60</span>
+            <strong class="medallion-value" id="regla-costo-visitas">$133,33</strong>
+            <span class="medallion-note">Costo de visitas por venta</span>
+          </article>
+          <article class="rococo-medallion">
+            <span class="medallion-kicker">$300 − $133,33 visitas</span>
+            <strong class="medallion-value" id="regla-presupuesto-max">$166,67</strong>
+            <span class="medallion-note">Presupuesto real (≈ $167)</span>
+          </article>
+          <article class="rococo-medallion highlight-truth-medallion">
+            <span class="medallion-kicker">CAC Referido Total</span>
+            <strong class="medallion-value" id="regla-cac-total">$268,14</strong>
+            <span class="medallion-note">$133,33 + <strong id="regla-recompensas-actual">$134,81</strong> (≤ $300)</span>
+          </article>
+        </div>
+
+        <div class="history-table-wrap">
+          <table class="rococo-table">
+            <thead>
+              <tr>
+                <th>Recompensa</th>
+                <th>Quién la recibe</th>
+                <th>Cuándo se paga</th>
+                <th>Costo unitario</th>
+                <th>Multiplicador</th>
+                <th>Costo por venta cerrada</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-catalogo-recompensas"></tbody>
+          </table>
+        </div>
+
+        <div class="server-rule-tester-box">
+          <h4 class="tester-heading">Probar el candado del Backend (rechaza si pasa de $300):</h4>
+          <form id="form-validar-recompensa" class="tester-controls-row">
+            <label class="tester-field">
+              <span>Cuándo se paga:</span>
+              <select id="test-rec-disparador" class="rococo-select">
+                <option value="agendar">Al agendar (pesa ×2,47)</option>
+                <option value="firmar">Al firmar (pesa ×1,00)</option>
+              </select>
+            </label>
+            <label class="tester-field">
+              <span>Monto ($):</span>
+              <input type="number" id="test-rec-costo" class="rococo-text-input" style="width:90px; padding:4px 8px;" value="60" min="1" max="500" required />
+            </label>
+            <button type="submit" class="pearl-mini-btn">Validar contra tope de $300</button>
+          </form>
+          <div id="resultado-validador-recompensa" class="validator-response-box" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         VISTA 4: PANEL DE ANDRÉS (PIEZA 5 · LA MEDICIÓN CON DATOS SIMULADOS)
+         ====================================================================== -->
+    <section id="pantalla-4-andres" class="rococo-card-frame" hidden>
+      <svg class="corner-ornament corner-tl" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner"/></svg>
+      <svg class="corner-ornament corner-tr" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(-1,1) translate(-64,0)"/></svg>
+      <svg class="corner-ornament corner-bl" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(1,-1) translate(0,-64)"/></svg>
+      <svg class="corner-ornament corner-br" viewBox="0 0 64 64" aria-hidden="true"><use href="#rococo-corner" transform="scale(-1,-1) translate(-64,-64)"/></svg>
+
+      <div class="simple-step-badge">PIEZA 5 · PANEL DE ANDRÉS (DATOS SIMULADOS)</div>
+      <h2 class="section-script-subtitle">Embudo, CAC frente a $300 y Capacidad de 100 Visitas</h2>
+
+      <!-- 1. Embudo -->
+      <div class="clean-step-box">
+        <div class="step-box-header">1. EMBUDO DE REFERIDOS EN VIVO (SIMULADO)</div>
+        <div class="funnel-steps-row">
+          <div class="funnel-step-card">
+            <span class="funnel-step-label">1. Compartidas</span>
+            <strong class="funnel-step-num" id="andres-emb-compartidas">6</strong>
+            <span class="funnel-step-sub">tarjetas (simulado)</span>
+          </div>
+          <div class="funnel-step-card">
+            <span class="funnel-step-label">2. Calculadora</span>
+            <strong class="funnel-step-num" id="andres-emb-calculadora">5</strong>
+            <span class="funnel-step-sub" id="andres-tasa-calc">83,3 %</span>
+          </div>
+          <div class="funnel-step-card">
+            <span class="funnel-step-label">3. Agendan</span>
+            <strong class="funnel-step-num" id="andres-emb-agendadas">3</strong>
+            <span class="funnel-step-sub" id="andres-tasa-agenda">60,0 %</span>
+          </div>
+          <div class="funnel-step-card">
+            <span class="funnel-step-label">4. Visitas hechas</span>
+            <strong class="funnel-step-num" id="andres-emb-hechas">2</strong>
+            <span class="funnel-step-sub">$60 c/u</span>
+          </div>
+          <div class="funnel-step-card funnel-step-highlight">
+            <span class="funnel-step-label">5. Firman</span>
+            <strong class="funnel-step-num" id="andres-emb-firmadas">1</strong>
+            <span class="funnel-step-sub">$1.625 contrib.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Capacidad frente a 100 -->
+      <div class="clean-step-box">
+        <div class="step-box-header">2. VISITAS PEDIDAS FRENTE A LA CAPACIDAD DE 100 AL MES</div>
+        <div id="andres-alerta-capacidad" class="capacity-alert-banner is-over-capacity">
+          Cargando capacidad...
+        </div>
+        <div class="twin-medallions" style="grid-template-columns: repeat(3, 1fr);">
+          <article class="rococo-medallion">
+            <span class="medallion-kicker">Anuncios hoy</span>
+            <strong class="medallion-value" id="andres-vis-anuncios">97,5</strong>
+            <span class="medallion-note">Meta 57,75 + Google 39,74</span>
+          </article>
+          <article class="rococo-medallion">
+            <span class="medallion-kicker">Referidos (simulado)</span>
+            <strong class="medallion-value" id="andres-vis-referidos">3</strong>
+            <span class="medallion-note">Van primero ($671/visita)</span>
+          </article>
+          <article class="rococo-medallion highlight-truth-medallion">
+            <span class="medallion-kicker">Total vs Capacidad</span>
+            <strong class="medallion-value" id="andres-vis-totales">100,5 / 100</strong>
+            <span class="medallion-note">Desplaza visitas de Meta ($233)</span>
+          </article>
+        </div>
+      </div>
+
+      <!-- 3. Comparación de canales y Regla de $300 -->
+      <div class="clean-step-box">
+        <div class="step-box-header">3. COMPARACIÓN DE CANALES Y COSTO POR VENTA FRENTE A $300</div>
+        <div class="history-table-wrap">
+          <table class="rococo-table">
+            <thead>
+              <tr>
+                <th>Canal</th>
+                <th>Visitas / venta</th>
+                <th>CAC Real</th>
+                <th>Valor de 1 visita</th>
+                <th>Orden cuando se llenan las 100</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background:#e7efe4;">
+                <td><strong>Referido (con recompensas)</strong></td>
+                <td><strong>2,22</strong></td>
+                <td><strong id="andres-cac-ref-tabla">$268,14</strong> (≤ $300)</td>
+                <td><strong>$671,25 (≈ $671)</strong></td>
+                <td><strong>1° Va primero</strong></td>
+              </tr>
+              <tr>
+                <td>Google Ads ($4.000)</td>
+                <td>3,33</td>
+                <td>$535,54 (≈ $536)</td>
+                <td>$427,50 (≈ $428)</td>
+                <td>2° Se mantiene</td>
+              </tr>
+              <tr>
+                <td>Meta Ads ($4.000)</td>
+                <td>5,56</td>
+                <td>$718,13 (≈ $718)</td>
+                <td>$232,50 (≈ $233)</td>
+                <td>3° Cede cupo a referidos</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. Técnico nuevo + Métrica semanal + Experimento A/B -->
+      <div class="clean-step-box">
+        <div class="step-box-header">4. TÉCNICO NUEVO (69 LEADS / 230 FAMILIAS), MÉTRICA SEMANAL Y EXPERIMENTO A/B</div>
+        <ul class="honest-math-list">
+          <li><strong>Técnico nuevo (+50 visitas por $1.800/mes):</strong> Cada lead referido da 0,727 visitas, así que llenar 50 visitas exige <strong>69 leads referidos</strong>. Con el rendimiento del letrero (0,3 leads por casa en 2 meses) hacen falta <strong>230 familias compartiendo (55 % de las 420)</strong>. <strong>En un solo mes no alcanza</strong>; primero sustituimos visitas de Meta por referidos.</li>
+          <li><strong>Número semanal de «Retención» para Andrés:</strong> <em>Familias Activas Compartiendo en los últimos 30 días por cada 100 instaladas</em> (meta: pasar de 8 % anual a ≥ 15 familias/mes por cada 100).</li>
+          <li><strong>Experimento A/B con 50 clientes (25 control vs 25 con Postal Celestial durante 30 días):</strong> Como con 50 casas y 8 % anual no se detectan cierres en un mes, medimos una <strong>métrica de corto plazo</strong>: % de familias que comparte su tarjeta en 30 días (pasar de &lt;5 % rastreable hoy a <strong>≥ 32 %, o ≥ 8 de las 25 familias</strong>), con <strong>contramétrica</strong> de CAC referido ≤ $300 y asistencia a visita ≥ 85 %.</li>
+        </ul>
+
+        <div style="text-align:center; margin-top:12px;">
+          <button type="button" id="btn-reset-demo" class="pearl-mini-btn">
+            ↺ Reiniciar datos simulados de demostración
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
