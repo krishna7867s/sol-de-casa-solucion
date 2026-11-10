@@ -1210,3 +1210,38 @@ html, body {
   flex-direction: column;
   gap: 6px;
 }
+
+.smart-trigger-banner {
+  background-color: var(--gold-pale);
+  border: 1px solid var(--gold-dark);
+  padding: 10px 14px;
+  margin: 0 auto 14px;
+  max-width: 580px;
+  font-size: 0.94rem;
+  text-align: left;
+}
+
+.battery-upsell-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background-color: var(--paper-warm);
+  border: 1px solid var(--gold-line);
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  max-width: 440px;
+}
+
+.battery-upsell-checkbox input[type="checkbox"] {
+  margin-top: 4px;
+  accent-color: var(--gold-dark);
+}
+
+.cashflow-protection-box {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--gold-line);
+}
+

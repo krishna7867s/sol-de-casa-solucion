@@ -194,6 +194,12 @@
         Sus paneles solares bajaron su recibo de luz un <strong>70 %</strong> este mes <span class="simulado-pill">(dato simulado del inversor)</span>:
       </p>
 
+      <!-- GATILLO CONDUCTUAL DEL INVERSOR + RUTA DEL TÉCNICO EN EL BARRIO -->
+      <div class="smart-trigger-banner" id="banner-gatillo-inversor">
+        <strong>⚡ Aviso inteligente del inversor (Gatillo de compartición):</strong>
+        <span id="texto-gatillo-inversor">Hoy es día de cierre de recibos de luz en Curridabat y el técnico Jorge estará en su cuadra este jueves haciendo mantenimiento anual. ¡Es el mejor momento para mandarle su postal a su vecina!</span>
+      </div>
+
       <!-- EL HALO SOLAR CENTRAL CON EL AHORRO DEL MES -->
       <div class="solar-halo-stage">
         <svg class="solar-halo-svg" viewBox="0 0 380 380" aria-hidden="true">
@@ -390,6 +396,15 @@
               <span class="currency-suffix">/ mes</span>
             </div>
             <input type="range" id="slider-recibo-vecino" class="rococo-range-slider" min="40" max="350" step="5" value="110" />
+
+            <!-- CONEXIÓN CON LA PARTE 1 (SECCIÓN 4): BATERÍA DE RESPALDO DE $3.000 -->
+            <label class="battery-upsell-checkbox">
+              <input type="checkbox" id="check-bateria-vecino" />
+              <span>
+                <strong>¿Se va la luz en su barrio?</strong> Agregar <strong>Batería de Respaldo ($3.000)</strong> contra apagones
+                <em>(Dato Parte 1: 3 de cada 20 casas la agregan y suma +$510 de contribución neta a Sol de Casa)</em>
+              </span>
+            </label>
           </div>
           <button type="submit" class="ribbon-gold-button primary-ribbon-btn">
             <span>Calcular mi ahorro y años de recuperación</span>
@@ -675,6 +690,31 @@
           <li><strong>Número semanal de «Retención» para Andrés:</strong> <em>Familias Activas Compartiendo en los últimos 30 días por cada 100 instaladas</em> (meta: pasar de 8 % anual a ≥ 15 familias/mes por cada 100).</li>
           <li><strong>Experimento A/B con 50 clientes (25 control vs 25 con Postal Celestial durante 30 días):</strong> Como con 50 casas y 8 % anual no se detectan cierres en un mes, medimos una <strong>métrica de corto plazo</strong>: % de familias que comparte su tarjeta en 30 días (pasar de &lt;5 % rastreable hoy a <strong>≥ 32 %, o ≥ 8 de las 25 familias</strong>), con <strong>contramétrica</strong> de CAC referido ≤ $300 y asistencia a visita ≥ 85 %.</li>
         </ul>
+
+        <!-- 5. IMPACTO EN LA CAJA DE ANDRÉS (CONEXIÓN DIRECTA CON LOS $12.000 EN BANCO Y EL PISO DE $5.000 DE SOFÍA) -->
+        <div class="cashflow-protection-box">
+          <div class="step-box-header">5. PROTECCIÓN DE CAJA DE SOFÍA (BANCO $12.000 · PISO DE SEGURIDAD $5.000)</div>
+          <div class="twin-medallions" style="grid-template-columns: repeat(3, 1fr); margin-bottom:8px;">
+            <article class="rococo-medallion">
+              <span class="medallion-kicker">Gasto hoy en Meta (10,4 ventas)</span>
+              <strong class="medallion-value">$7.465 / mes</strong>
+              <span class="medallion-note">$4.000 anuncios + $3.465 en 57,75 visitas (CAC $718)</span>
+            </article>
+            <article class="rococo-medallion">
+              <span class="medallion-kicker">Mismas 10,5 ventas por Referido</span>
+              <strong class="medallion-value">$2.815 / mes</strong>
+              <span class="medallion-note">32 leads → 23,3 visitas ($1.400) + $1.415 recompensas (CAC $268)</span>
+            </article>
+            <article class="rococo-medallion highlight-truth-medallion">
+              <span class="medallion-kicker">Plata que se queda en caja</span>
+              <strong class="medallion-value">+$4.650 / mes</strong>
+              <span class="medallion-note">Evita que la planilla se atrase y protege el piso de $5.000 de Sofía</span>
+            </article>
+          </div>
+          <p style="margin:0; font-size:0.9rem; color:var(--ink-muted);">
+            <strong>Bonus Batería de Respaldo ($3.000, Parte 1):</strong> Como 3 de cada 20 clientes (15 %) agregan la batería en la visita (+$510 de contribución neta), cada venta referida sube su contribución esperada de <strong>$1.625 a $1.701,50</strong>.
+          </p>
+        </div>
 
         <div style="text-align:center; margin-top:12px;">
           <button type="button" id="btn-reset-demo" class="pearl-mini-btn">

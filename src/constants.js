@@ -49,6 +49,14 @@ const CASE_CONSTANTS = {
   RECIBO_PROMEDIO_ANTES: 110,
   PCT_AHORRO_PROMEDIO: 0.70, // Ahorra 70% ($77/mes con recibo de $110)
 
+  // 6B. Oferta del Proveedor de la Parte 1 (Sección 4): Batería de Respaldo ($3.000)
+  PRECIO_BATERIA_RESPALDO: 3000,
+  PCT_MARGEN_BRUTO_BATERIA: 0.20,     // $600 margen bruto
+  PCT_COMISION_BATERIA: 0.03,         // $90 comisión asesora
+  CONTRIBUCION_BATERIA: 510,          // $3.000 * (20% - 3%) = $510 de contribución neta extra
+  TASA_ADOPCION_BATERIA_PRUEBA: 0.15, // 3 de 20 clientes en la visita la agregaron (15%)
+  CONTRIBUCION_PROMEDIO_CON_BATERIA: 1625 + (0.15 * 510), // $1.701,50 por venta cerrada
+
   // 7. Comparativa con canales pagados hoy ($4.000 Meta + $4.000 Google)
   COMPARATIVA_CANALES: {
     referido: {
@@ -99,25 +107,36 @@ function calcularCostoPorVentaRecompensa(costoUnitarioSolDeCasa, disparador) {
 
 /**
  * Calcula el ahorro estimado de un vecino según su recibo mensual actual.
- * Dice la verdad del caso: 70% de ahorro sobre el recibo y recuperación frente a $6.500.
+ * Dice la verdad del caso: 70% de ahorro sobre el recibo y recuperación frente a $6.500
+ * (o $9.500 si agrega la Batería de Respaldo de $3.000 de la Parte 1).
  */
-function calcularAhorroVecino(reciboMensual) {
+function calcularAhorroVecino(reciboMensual, incluyeBateria = false) {
   const recibo = Number(reciboMensual);
   if (isNaN(recibo) || recibo < 20 || recibo > 2000) {
     throw new Error('El monto del recibo de luz debe estar entre $20 y $2.000 mensuales.');
   }
+  const conBat = Boolean(incluyeBateria);
+  const inversionTotal = conBat
+    ? CASE_CONSTANTS.PRECIO_INSTALACION + CASE_CONSTANTS.PRECIO_BATERIA_RESPALDO
+    : CASE_CONSTANTS.PRECIO_INSTALACION;
+  const contribucionSolDeCasa = conBat
+    ? CASE_CONSTANTS.CONTRIBUCION_VENTA + CASE_CONSTANTS.CONTRIBUCION_BATERIA
+    : CASE_CONSTANTS.CONTRIBUCION_VENTA;
+
   const ahorroMensual = Number((recibo * CASE_CONSTANTS.PCT_AHORRO_PROMEDIO).toFixed(2));
   const reciboNuevo = Number((recibo - ahorroMensual).toFixed(2));
   const ahorroAnual = Number((ahorroMensual * 12).toFixed(2));
-  const aniosRecuperacion = Number((CASE_CONSTANTS.PRECIO_INSTALACION / ahorroAnual).toFixed(1));
+  const aniosRecuperacion = Number((inversionTotal / ahorroAnual).toFixed(1));
 
   return {
     recibo_ingresado: recibo,
+    incluye_bateria_respaldo: conBat,
     porcentaje_ahorro: 70,
     ahorro_mensual_estimado: ahorroMensual,
     recibo_nuevo_estimado: reciboNuevo,
     ahorro_anual_estimado: ahorroAnual,
-    costo_instalacion_referencia: CASE_CONSTANTS.PRECIO_INSTALACION,
+    costo_instalacion_referencia: inversionTotal,
+    contribucion_para_sol_de_casa: contribucionSolDeCasa,
     anios_recuperacion: aniosRecuperacion
   };
 }

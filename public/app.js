@@ -185,6 +185,11 @@ function renderizarPantalla1(data) {
   postalMonto.textContent = formatearDolares(resumen_ahorro.ahorro_ultimo_mes);
   postalLinkPersonal.textContent = `${window.location.origin}${link_compartir.url_relativa}`;
 
+  const textoGatillo = document.getElementById('texto-gatillo-inversor');
+  if (textoGatillo && data.gatillo_conductual_inversor) {
+    textoGatillo.textContent = data.gatillo_conductual_inversor.alerta_inteligente;
+  }
+
   // Actualizar Constelación del Barrio y Placa QR Solar del Portón (con QR REAL escaneable)
   const tituloConstelacion = document.getElementById('titulo-constelacion-barrio');
   const mapaNodoFamilia = document.getElementById('mapa-nodo-familia');
@@ -283,13 +288,16 @@ async function cargarVistaVecino(codigoRef) {
 }
 
 async function ejecutarCalculadoraVecino(reciboMensual) {
+  const checkBateria = document.getElementById('check-bateria-vecino');
+  const incluyeBateria = checkBateria ? checkBateria.checked : false;
   try {
     const resp = await fetch('/api/vecino/calculadora', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         codigo_ref: state.ultimoCodigoRef,
-        recibo_mensual: Number(reciboMensual)
+        recibo_mensual: Number(reciboMensual),
+        incluye_bateria: incluyeBateria
       })
     });
     const data = await resp.json();
@@ -621,6 +629,13 @@ formCalculadoraVecino.addEventListener('submit', (e) => {
   e.preventDefault();
   ejecutarCalculadoraVecino(inputReciboVecino.value);
 });
+
+const checkBateriaVecino = document.getElementById('check-bateria-vecino');
+if (checkBateriaVecino) {
+  checkBateriaVecino.addEventListener('change', () => {
+    ejecutarCalculadoraVecino(inputReciboVecino.value);
+  });
+}
 
 formAgendarVecino.addEventListener('submit', agendarVisitaVecino);
 

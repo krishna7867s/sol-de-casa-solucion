@@ -199,6 +199,14 @@ app.get('/api/familias/:token/ahorro', (req, res) => {
       url_relativa: `/vecino/${comparticionActiva.codigo_ref}`,
       mensaje_whatsapp_sugerido: `¡Hola vecina! Le cuento que en nuestra casa en ${familia.barrio} el recibo de luz bajó un 70% con Sol de Casa. Este mes nos ahorramos $${ultimoMes ? ultimoMes.ahorro : 77} (simulado). Aquí puede ver mi postal de ahorro y calcular cuánto le bajaría su recibo y agendar directo sin esperar que la llamen:`
     },
+    gatillo_conductual_inversor: {
+      momento_optimo_detectado: `Día de cierre del recibo de luz en ${familia.barrio.split(',')[0]} + Récord solar del inversor`,
+      alerta_inteligente: `¡Momento ideal para compartir! Hoy llegó el cobro de luz en ${familia.barrio.split(',')[0]} y sus paneles acaban de cruzar $${ahorroAcumulado} de ahorro acumulado (simulado). Además, el técnico Jorge tiene ruta programada en su barrio esta semana.`,
+      upsell_bateria_familia: {
+        titulo: 'Elegible para Batería de Respaldo contra apagones ($3.000)',
+        detalle: `Con su ahorro de $${ultimoMes ? ultimoMes.ahorro : 77}/mes, usted ya financia el 75% de una Batería de Respaldo para cortes de luz (Parte 1, Sección 4).`
+      }
+    },
     historial_mensual: historial
   });
 });
@@ -312,11 +320,13 @@ app.get('/api/vecino/tarjeta/:codigo_ref', (req, res) => {
 
 // ============================================================================
 // ENDPOINT 4: Registrar uso de la calculadora del vecino (Pieza 3 - Paso 2)
-// Dice la verdad: 70% de ahorro y recuperación en ≈ 7 años con recibo de $110.
+// Dice la verdad: 70% de ahorro y recuperación en ≈ 7 años con recibo de $110,
+// y permite cotizar la Batería de Respaldo ($3.000, +$510 contribución de Parte 1).
 // ============================================================================
 app.post('/api/vecino/calculadora', (req, res) => {
   const codigoRef = sanitizarTexto(req.body?.codigo_ref, 60);
   const reciboMensual = Number(req.body?.recibo_mensual);
+  const incluyeBateria = Boolean(req.body?.incluye_bateria);
 
   if (!codigoRef) {
     return res.status(400).json({ error: 'El campo codigo_ref es obligatorio.' });
@@ -329,7 +339,7 @@ app.post('/api/vecino/calculadora', (req, res) => {
 
   let calculo;
   try {
-    calculo = calcularAhorroVecino(reciboMensual);
+    calculo = calcularAhorroVecino(reciboMensual, incluyeBateria);
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
@@ -348,13 +358,17 @@ app.post('/api/vecino/calculadora', (req, res) => {
     new Date().toISOString()
   );
 
+  const textoBateria = calculo.incluye_bateria_respaldo
+    ? ` Incluye la Batería de Respaldo contra apagones ($3.000 adicionales, total $9.500; aporta +$510 de contribución neta a Sol de Casa).`
+    : '';
+
   res.status(201).json({
     ok: true,
     visita_vecino_id: info.lastInsertRowid,
     codigo_ref: codigoRef,
     resultado_calculadora: {
       ...calculo,
-      explicacion_honesta: `Con un recibo de $${calculo.recibo_ingresado}/mes, el ahorro promedio real de las 420 familias de Sol de Casa es del 70% ($${calculo.ahorro_mensual_estimado}/mes, o $${calculo.ahorro_anual_estimado} al año). Frente a una instalación promedio de $${calculo.costo_instalacion_referencia}, la inversión se recupera en aproximadamente ${calculo.anios_recuperacion} años (sin promesas falsas de ahorro del 100%).`,
+      explicacion_honesta: `Con un recibo de $${calculo.recibo_ingresado}/mes, el ahorro promedio real de las 420 familias de Sol de Casa es del 70% ($${calculo.ahorro_mensual_estimado}/mes, o $${calculo.ahorro_anual_estimado} al año). Frente a una inversión de $${calculo.costo_instalacion_referencia}, se recupera en aproximadamente ${calculo.anios_recuperacion} años (sin promesas falsas de ahorro del 100%).${textoBateria}`,
       es_simulado: true
     }
   });
